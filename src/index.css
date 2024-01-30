@@ -5,3 +5,8 @@
 body {
   background-color: #091320;
 }
+
+.leaflet-container {
+  width: 95%;
+  height: 500px;
+}

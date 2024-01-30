@@ -1,28 +1,24 @@
 // src/components/LoginPage.js
-import React, { useState } from 'react';
-import logo from '../assets/logo.png';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleLogin = () => {
     // Add your login logic here
-    console.log('Logging in with:', { username, password });
-  };
+    console.log('Logging in with:', { username, password })
+  }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="mb-6 text-center top-0 center">
-        <img src={logo} alt="Logo" className="w-80 h-80" />
-      </div>
+    <div className="flex flex-col justify-center items-center p-8">
       <div className="bg-bgs p-8 rounded shadow-md w-96 mt-4">
-        <h2 className="text-2xl font-semibold mb-6 text-primary">Login</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-primary">Logowanie</h2>
         <form>
           <div className="mb-4">
             <label htmlFor="username" className="block text-white mb-1">
-              Username
+              Nazwa użytkownika
             </label>
             <input
               type="text"
@@ -33,7 +29,7 @@ const LoginPage = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="password" className="block text-white mb-1">
-              Password
+              Hasło
             </label>
             <input
               type="password"
@@ -51,14 +47,24 @@ const LoginPage = () => {
           </button>
         </form>
         <p className="mt-4 text-gray-300 text-sm">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-[#96DA2B] hover:underline hover:text-primary">
-            Create one
+          <Link
+            to="/register"
+            className="text-err hover:underline hover:text-primary"
+          >
+            Nie pamiętasz hasła?
+          </Link>
+        </p>
+        <p className="mt-4 text-gray-300 text-sm">
+          <Link
+            to="/register"
+            className="text-primary hover:underline hover:text-primary"
+          >
+            Utwórz konto
           </Link>
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
