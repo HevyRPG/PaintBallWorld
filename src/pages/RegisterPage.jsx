@@ -128,7 +128,7 @@ const RegisterPage = () => {
                   htmlFor="businessEmail"
                   className="block text-primary mb-1"
                 >
-                  Służbowy adres e-mail (Kontaktowy)*
+                  Służbowy adres e-mail (Kontaktowy)
                 </label>
                 <input
                   type="email"
@@ -180,7 +180,7 @@ const RegisterPage = () => {
                   htmlFor="companyAddress"
                   className="block text-primary mb-1"
                 >
-                  Adres pola (Ulica, Miasto, Kod pocztowy)*
+                  Adres pola (Ulica, Miasto, Kod pocztowy)
                 </label>
                 <input
                   id="companyAddress"

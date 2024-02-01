@@ -1,4 +1,5 @@
 import React from 'react'
+import TestMap from '../components/TestMap'
 
 const AboutPage = () => {
   return (
@@ -15,6 +16,7 @@ const AboutPage = () => {
         </p>
         {/* Add more content as needed */}
       </div>
+      <TestMap></TestMap>
     </div>
   )
 }
