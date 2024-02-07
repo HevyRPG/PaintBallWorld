@@ -19,8 +19,8 @@ const MapForCallendar = () => {
 
   return (
     <>
-      <div className="container mx-auto mt-8 mb-8 max-w-screen-xl flex">
-        <div className="w-[900px]">
+      <div className="container mx-auto mt-8 mb-8 max-w-screen-2xl flex">
+        <div className="w-[1100px]">
           <MapContainer
             key={mapPosition.join(',')}
             center={mapPosition}
@@ -42,7 +42,7 @@ const MapForCallendar = () => {
           </MapContainer>
         </div>
 
-        <div className="w-[400px] overflow-y-auto bg-bgs max-h-[500px]">
+        <div className="w-[436px] overflow-y-auto bg-bgs max-h-[500px]">
           {/* Example scrollable list */}
           <ul className="text-white list-none p-0 grid">
             <li
@@ -62,9 +62,6 @@ const MapForCallendar = () => {
             {/* Add more list items as needed */}
           </ul>
         </div>
-      </div>
-      <div className="max-w-screen-xl mx-auto">
-        <h1 className="text-white">KURWY</h1>
       </div>
     </>
   )

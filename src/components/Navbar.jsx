@@ -10,7 +10,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="flex items-center justify-between max-w-screen-xl border-b mx-auto py-4 px-4 lg:px-8">
+    <nav className="flex items-center justify-between max-w-screen-2xl border-b mx-auto py-4 px-4 lg:px-8">
       <div className="flex items-center">
         <span className="text-2xl font-bold tracking-tight italic text-white">
           PaintballWorld©

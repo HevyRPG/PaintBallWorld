@@ -4,7 +4,7 @@ import TestMap from '../components/TestMap'
 const AboutPage = () => {
   return (
     <div>
-      <div className="container mx-auto mt-8 max-w-screen-xl">
+      <div className="container mx-auto mt-8 max-w-screen-2xl">
         <h1 className="text-4xl text-white font-bold mb-4">About Us</h1>
         <p className="text-lg text-white">
           Welcome to our website! We are a team of passionate individuals
@@ -16,7 +16,6 @@ const AboutPage = () => {
         </p>
         {/* Add more content as needed */}
       </div>
-      <TestMap></TestMap>
     </div>
   )
 }

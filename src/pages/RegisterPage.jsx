@@ -15,8 +15,11 @@ const RegisterPage = () => {
   const [companyPhone, setCompanyPhone] = useState('')
   const [companyAddress, setCompanyAddress] = useState('')
   const [fieldAddress, setFieldAddress] = useState('')
+  const [errorRegister, setErrorRegister] = useState('')
 
-  const handleRegister = () => {
+  const API_BASE_URL = 'http://192.168.1.191:2137'
+
+  const handleOwnerRegister = () => {
     // Add your registration logic here
     console.log('Registering with:', {
       username,
@@ -31,6 +34,44 @@ const RegisterPage = () => {
       companyAddress,
       fieldAddress,
     })
+  }
+
+  const handleRegister = async () => {
+    // Validation for regular user registration
+    if (!username || !email || !password || !birthdate) {
+      setErrorRegister('Uzupełnij wszystkie wymagane pola.')
+      return
+    }
+
+    const userData = {
+      username,
+      email,
+      password,
+    }
+
+    try {
+      // Send registration request to backend
+      const response = await fetch(
+        `${API_BASE_URL}/api/Auth/Register/Register`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        }
+      )
+      if (!response.ok) {
+        const errorData = await response.json()
+        setErrorRegister(errorData.message)
+        return
+      }
+
+      // Registration successful
+      setErrorRegister('Zarejestrowano pomyślnie!')
+    } catch (errorRegister) {
+      setErrorRegister('Wystąpił błąd. Spróbuj ponownie później')
+    }
   }
 
   return (
@@ -203,12 +244,20 @@ const RegisterPage = () => {
           <button
             type="button"
             className="w-full bg-[#96DA2B] text-white p-2 rounded hover:bg-primary"
-            onClick={handleRegister}
+            onClick={registerAsOwner ? handleOwnerRegister : handleRegister}
           >
             Zarejestruj
           </button>
         </form>
-        <p className="mt-4 text-gray-300 text-sm"></p>
+        {errorRegister && (
+          <p
+            className={`mt-2 text-sm ${
+              errorRegister === 'passed' ? 'text-green-500' : 'text-red-500'
+            }`}
+          >
+            {errorRegister}
+          </p>
+        )}
       </div>
     </div>
   )

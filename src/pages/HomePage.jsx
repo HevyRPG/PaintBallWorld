@@ -3,7 +3,7 @@ import logosm from '../assets/logosm.png'
 
 const HomePage = () => {
   return (
-    <div className="bg-bg container mx-auto m-8 max-w-screen-xl ">
+    <div className="bg-bg container mx-auto m-8 max-w-screen-2xl ">
       <div className="flex flex-col items-center justify-center">
         <div className="mb-4 size-1/2 bg-bgs">
           <img src={logosm} alt="Logo" className="w-full h-full" />
