@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const location = useLocation()
+  const location = useLocation();
   const isActive = (path) => {
     return location.pathname === path
-      ? 'text-white font-bold'
-      : 'text-primary hover:text-white'
-  }
+      ? "text-white font-bold"
+      : "text-primary hover:text-white";
+  };
 
   return (
     <nav className="flex items-center justify-between max-w-screen-2xl border-b mx-auto py-4 px-4 lg:px-8">
@@ -22,7 +22,7 @@ const Navbar = () => {
           <li className="mx-4">
             <Link
               to="/"
-              className={`ml-2 text-xl flex items-center ${isActive('/')}`}
+              className={`ml-2 text-xl flex items-center ${isActive("/")}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const Navbar = () => {
             <Link
               to="/calendar"
               className={`ml-2 text-xl flex items-center ${isActive(
-                '/calendar'
+                "/calendar"
               )}`}
             >
               <svg
@@ -68,7 +68,7 @@ const Navbar = () => {
           <li className="mx-4">
             <Link
               to="/about"
-              className={`ml-2 text-xl flex items-center ${isActive('/about')}`}
+              className={`ml-2 text-xl flex items-center ${isActive("/about")}`}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,9 +97,15 @@ const Navbar = () => {
         >
           Zaloguj
         </Link>
+        <Link
+          to="/dashboard"
+          className="text-xl px-4 py-2 leading-none border rounded bg-primary text-white border-primary hover:bg-secondary hover:text-white hover:border-secondary mx-1"
+        >
+          Profil [username]
+        </Link>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
