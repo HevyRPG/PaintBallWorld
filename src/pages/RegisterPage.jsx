@@ -1,13 +1,14 @@
-// src/components/RegisterPage.js
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
+import '../index.css'
+import APIHeaders from '../components/APIHeaders'
 
 const RegisterPage = () => {
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [repeatPassword, setRepeatPassword] = useState('')
-  const [birthdate, setBirthdate] = useState('')
+  const [Username, setUsername] = useState('')
+  const [Email, setEmail] = useState('')
+  const [Password, setPassword] = useState('')
+  const [RepeatPassword, setRepeatPassword] = useState('')
+  const [DateOfBirth, setDateOfBirth] = useState('')
   const [registerAsOwner, setRegisterAsOwner] = useState(false)
   const [companyName, setCompanyName] = useState('')
   const [businessEmail, setBusinessEmail] = useState('')
@@ -16,16 +17,15 @@ const RegisterPage = () => {
   const [companyAddress, setCompanyAddress] = useState('')
   const [fieldAddress, setFieldAddress] = useState('')
   const [errorRegister, setErrorRegister] = useState('')
-
-  const API_BASE_URL = 'http://192.168.1.191:2137'
+  const [loading, setLoading] = useState(false) // Add loading state
 
   const handleOwnerRegister = () => {
     // Add your registration logic here
     console.log('Registering with:', {
-      username,
-      email,
-      password,
-      birthdate,
+      Username,
+      Email,
+      Password,
+      DateOfBirth,
       registerAsOwner,
       companyName,
       businessEmail,
@@ -37,40 +37,62 @@ const RegisterPage = () => {
   }
 
   const handleRegister = async () => {
+    // Set loading to true to show spinner
+    setLoading(true)
+
+    // Reset error message
+    setErrorRegister('')
+
     // Validation for regular user registration
-    if (!username || !email || !password || !birthdate) {
+    if (!Username || !Email || !Password || !DateOfBirth) {
       setErrorRegister('Uzupełnij wszystkie wymagane pola.')
+      setLoading(false) // Set loading to false
       return
     }
-
-    const userData = {
-      username,
-      email,
-      password,
+    if (Password !== RepeatPassword) {
+      setErrorRegister('Hasła nie pasują do siebie.')
+      setLoading(false) // Set loading to false
+      return
     }
+    const formattedDateOfBirth = `${DateOfBirth}T00:00:00`
+    const userData = {
+      Username,
+      Email,
+      Password,
+      DateOfBirth: formattedDateOfBirth,
+    }
+    console.log('User Data:', JSON.stringify(userData))
+
+    const apitest = await axios.get('/api/ping/ping', APIHeaders)
+    console.log(apitest.data)
 
     try {
-      // Send registration request to backend
-      const response = await fetch(
-        `${API_BASE_URL}/api/Auth/Register/Register`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData),
-        }
+      // Send registration request to backend using Axios
+      const response = await axios.post(
+        '/api/Auth/Register/Register',
+        JSON.stringify(userData),
+        APIHeaders
       )
-      if (!response.ok) {
-        const errorData = await response.json()
-        setErrorRegister(errorData.message)
-        return
-      }
 
-      // Registration successful
-      setErrorRegister('Zarejestrowano pomyślnie!')
-    } catch (errorRegister) {
-      setErrorRegister('Wystąpił błąd. Spróbuj ponownie później')
+      // Check if the response status is OK
+      if (response.status === 200) {
+        setErrorRegister('Zarejestrowano pomyślnie!')
+      }
+    } catch (error) {
+      // Handle error responses
+      if (error.response && error.response.status === 400) {
+        // Extract error messages from the response
+        const { data } = error.response
+        const errorMessages = data.errors
+          .map((error) => error.description)
+          .join(', ')
+        setErrorRegister(errorMessages)
+      } else {
+        console.error('Error registering user:', error)
+      }
+    } finally {
+      // Set loading to false after request completes
+      setLoading(false)
     }
   }
 
@@ -82,12 +104,12 @@ const RegisterPage = () => {
         </h2>
         <form>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-primary mb-1">
+            <label htmlFor="Username" className="block text-primary mb-1">
               Nazwa użytkownika
             </label>
             <input
               type="text"
-              id="username"
+              id="Username"
               className="w-full p-2 border rounded"
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -98,29 +120,29 @@ const RegisterPage = () => {
             </label>
             <input
               type="email"
-              id="email"
+              id="Email"
               className="w-full p-2 border rounded"
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="birthdate" className="block text-primary mb-1">
+            <label htmlFor="DateOfBirth" className="block text-primary mb-1">
               Data urodzenia
             </label>
             <input
               type="date"
-              id="birthdate"
+              id="DateOfBirth"
               className="w-full p-2 border rounded"
-              onChange={(e) => setBirthdate(e.target.value)}
+              onChange={(e) => setDateOfBirth(e.target.value)}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-primary mb-1">
+            <label htmlFor="Password" className="block text-primary mb-1">
               Hasło
             </label>
             <input
               type="password"
-              id="password"
+              id="Password"
               className="w-full p-2 border rounded"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -249,10 +271,18 @@ const RegisterPage = () => {
             Zarejestruj
           </button>
         </form>
+        {loading && (
+          <div className="flex justify-center mt-2">
+            <div className="loader"></div>
+          </div>
+        )}
+        {/* Error message */}
         {errorRegister && (
           <p
             className={`mt-2 text-sm ${
-              errorRegister === 'passed' ? 'text-green-500' : 'text-red-500'
+              errorRegister === 'Zarejestrowano pomyślnie!'
+                ? 'text-green-500'
+                : 'text-red-500'
             }`}
           >
             {errorRegister}
