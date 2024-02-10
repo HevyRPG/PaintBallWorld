@@ -53,7 +53,7 @@ const Footer = () => {
             <li>
               <a
                 className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                href="#"
+                href="/about"
               >
                 About
               </a>
@@ -62,7 +62,7 @@ const Footer = () => {
             <li>
               <a
                 className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                href="#"
+                href="/contact"
               >
                 Kontakt
               </a>
@@ -71,7 +71,7 @@ const Footer = () => {
             <li>
               <a
                 className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                href="#"
+                href="/calendar"
               >
                 Terminarz
               </a>
@@ -80,7 +80,7 @@ const Footer = () => {
             <li>
               <a
                 className="text-gray-700 transition hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                href="#"
+                href="/login"
               >
                 Login
               </a>
