@@ -63,7 +63,7 @@ export default function About() {
                         <div className="h-32 w-32">
                           <img
                             src="https://avatar.iran.liara.run/public/13"
-                            alt
+                            
                             className="rounded-full object-cover h-full w-full shadow-md"
                           />
                         </div>
@@ -92,7 +92,7 @@ export default function About() {
                         <div className="h-32 w-32">
                           <img
                             src="https://avatar.iran.liara.run/public/26"
-                            alt
+                            
                             className="rounded-full object-cover h-full w-full shadow-md"
                           />
                         </div>
@@ -122,7 +122,7 @@ export default function About() {
                         <div className="h-32 w-32">
                           <img
                             src="https://avatar.iran.liara.run/public/29"
-                            alt
+                            
                             className="rounded-full object-cover h-full w-full shadow-md"
                           />
                         </div>
