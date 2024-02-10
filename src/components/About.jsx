@@ -99,7 +99,7 @@ export default function About() {
                       </div>
                       <div className="px-6 mt-16">
                         <div className="font-bold text-3xl text-center pb-1">
-                          Filip
+                          Mateusz
                         </div>
                         <p className="text-gray-800 text-sm text-center">
                           Frontend
