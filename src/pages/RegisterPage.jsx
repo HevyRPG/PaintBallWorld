@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import '../index.css'
 import APIHeaders from '../components/APIHeaders'
+import FormInput from '../components/FormInput'
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('')
@@ -86,10 +87,24 @@ const RegisterPage = () => {
       }
     } catch (error) {
       console.error('Error registering user:', error)
-      setErrorRegister(
-        'Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.'
-      )
+      if (error.response && error.response.status === 400) {
+        // Extract error messages from the response
+        const { data } = error.response
+        if (data && data.errors) {
+          const errorMessages = data.errors
+            .map((error) => error.description)
+            .join(', ')
+          setErrorRegister(errorMessages)
+        } else {
+          setErrorRegister(
+            'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.'
+          )
+        }
+      } else {
+        setErrorRegister('Wystąpił błąd podczas rejestracji. Spróbuj ponownie.')
+      }
     } finally {
+      // Set loading to false after request completes
       setLoading(false)
     }
   }
@@ -129,10 +144,24 @@ const RegisterPage = () => {
       }
     } catch (error) {
       console.error('Error registering user:', error)
-      setErrorRegister(
-        'Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.'
-      )
+      if (error.response && error.response.status === 400) {
+        // Extract error messages from the response
+        const { data } = error.response
+        if (data && data.errors) {
+          const errorMessages = data.errors
+            .map((error) => error.description)
+            .join(', ')
+          setErrorRegister(errorMessages)
+        } else {
+          setErrorRegister(
+            'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.'
+          )
+        }
+      } else {
+        setErrorRegister('Wystąpił błąd podczas rejestracji. Spróbuj ponownie.')
+      }
     } finally {
+      // Set loading to false after request completes
       setLoading(false)
     }
   }
@@ -144,61 +173,41 @@ const RegisterPage = () => {
           Zarejestruj się
         </h2>
         <form>
-          <div className="mb-4">
-            <label htmlFor="Username" className="block text-primary mb-1">
-              Nazwa użytkownika
-            </label>
-            <input
-              type="text"
-              id="Username"
-              className="w-full p-2 border rounded"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-primary mb-1">
-              Adres e-mail
-            </label>
-            <input
-              type="email"
-              id="Email"
-              className="w-full p-2 border rounded"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="DateOfBirth" className="block text-primary mb-1">
-              Data urodzenia
-            </label>
-            <input
-              type="date"
-              id="DateOfBirth"
-              className="w-full p-2 border rounded"
-              onChange={(e) => setDateOfBirth(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="Password" className="block text-primary mb-1">
-              Hasło
-            </label>
-            <input
-              type="password"
-              id="Password"
-              className="w-full p-2 border rounded"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="repeatPassword" className="block text-primary mb-1">
-              Powtórz hasło
-            </label>
-            <input
-              type="password"
-              id="repeatPassword"
-              className="w-full p-2 border rounded"
-              onChange={(e) => setRepeatPassword(e.target.value)}
-            />
-          </div>
+          <FormInput
+            label="Nazwa użytkownika"
+            type="text"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <FormInput
+            label="Adres e-mail"
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <FormInput
+            label="Data urodzenia"
+            type="date"
+            name="dateOfBirth"
+            value={dateOfBirth}
+            onChange={(e) => setDateOfBirth(e.target.value)}
+          />
+          <FormInput
+            label="Hasło"
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FormInput
+            label="Powtórz hasło"
+            type="password"
+            name="repetPassword"
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+          />
           <div className="text-primary mb-4">
             <label htmlFor="registerAsOwner" className="flex items-center">
               <input
@@ -213,139 +222,76 @@ const RegisterPage = () => {
           </div>
           {registerAsOwner && (
             <>
-              <div className="mb-4">
-                <label
-                  htmlFor="companyName"
-                  className="block text-primary mb-1"
-                >
-                  Nazwa firmy*
-                </label>
-                <input
-                  type="text"
-                  id="companyName"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setCompanyName(e.target.value)}
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="ownerFirstName"
-                  className="block text-primary mb-1"
-                >
-                  Imię właściciela
-                </label>
-                <input
-                  type="text"
-                  id="ownerFirstName"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setOwnerFirstName(e.target.value)}
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="ownerLastName"
-                  className="block text-primary mb-1"
-                >
-                  Nazwisko właściciela
-                </label>
-                <input
-                  type="text"
-                  id="ownerLastName"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setOwnerLastName(e.target.value)}
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="businessEmail"
-                  className="block text-primary mb-1"
-                >
-                  Służbowy adres e-mail (Kontaktowy)
-                </label>
-                <input
-                  type="email"
-                  id="businessEmail"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setBusinessEmail(e.target.value)}
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="nip" className="block text-primary mb-1">
-                  NIP*
-                </label>
-                <input
-                  type="text"
-                  id="nip"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setNip(e.target.value)}
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="companyPhone"
-                  className="block text-primary mb-1"
-                >
-                  Służbowy numer telefonu*
-                </label>
-                <input
-                  type="tel"
-                  id="companyPhone"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setCompanyPhone(e.target.value)}
-                />
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="companyStreet"
-                  className="block text-primary mb-1"
-                >
-                  Ulica*
-                </label>
-                <input
-                  id="companyStreet"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setCompanyStreet(e.target.value)}
-                ></input>
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="companyHouseNO"
-                  className="block text-primary mb-1"
-                >
-                  Numer domu*
-                </label>
-                <input
-                  id="companyHouseNO"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setCompanyHouseNO(e.target.value)}
-                ></input>
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="companyCity"
-                  className="block text-primary mb-1"
-                >
-                  Miasto*
-                </label>
-                <input
-                  id="companyCity"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setCompanyCity(e.target.value)}
-                ></input>
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="companyPostalNumber"
-                  className="block text-primary mb-1"
-                >
-                  Kod pocztowy*
-                </label>
-                <input
-                  id="companyPostalNumber"
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setCompanyPostalNumber(e.target.value)}
-                ></input>
-              </div>
+              <FormInput
+                label="Nazwa firmy"
+                type="text"
+                name="companyName"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+              />
+              <FormInput
+                label="Imię właściciela"
+                type="text"
+                name="ownerFirstName"
+                value={ownerFirstName}
+                onChange={(e) => setOwnerFirstName(e.target.value)}
+              />
+              <FormInput
+                label="Nazwisko właściciela"
+                type="text"
+                name="ownerLastName"
+                value={ownerLastName}
+                onChange={(e) => setOwnerLastName(e.target.value)}
+              />
+              <FormInput
+                label="Służbowy adres e-mail (Kontaktowy)"
+                type="email"
+                name="businessEmail"
+                value={businessEmail}
+                onChange={(e) => setBusinessEmail(e.target.value)}
+              />
+              <FormInput
+                label="NIP"
+                type="text"
+                name="nip"
+                value={nip}
+                onChange={(e) => setNip(e.target.value)}
+              />
+              <FormInput
+                label="Służbowy numer telefonu"
+                type="tel"
+                name="companyPhone"
+                value={companyPhone}
+                onChange={setCompanyPhone}
+              />
+              <FormInput
+                label="Ulica"
+                type="text"
+                name="companyStreet"
+                value={companyStreet}
+                onChange={setCompanyStreet}
+              />
+              <FormInput
+                label="Numer domu"
+                type="text"
+                name="companyHouseNO"
+                value={companyHouseNO}
+                onChange={setCompanyHouseNO}
+              />
+              <FormInput
+                label="Miasto"
+                type="text"
+                name="companyCity"
+                value={companyCity}
+                onChange={(e) => setCompanyCity(e.target.value)}
+              />
+              <FormInput
+                label="Kod pocztowy"
+                type="text"
+                name="companyPostalNumber"
+                value={companyPostalNumber}
+                onChange={(e) => setCompanyPostalNumber(e.target.value)}
+              />
               <div className="mb-4">
                 <p className="mt-4 text-gray-300 text-sm">
                   * Powyższe dane mają na celu szybszą weryfikację właściciela i
