@@ -4,94 +4,135 @@ import '../index.css'
 import APIHeaders from '../components/APIHeaders'
 
 const RegisterPage = () => {
-  const [Username, setUsername] = useState('')
-  const [Email, setEmail] = useState('')
-  const [Password, setPassword] = useState('')
-  const [RepeatPassword, setRepeatPassword] = useState('')
-  const [DateOfBirth, setDateOfBirth] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [repeatPassword, setRepeatPassword] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('')
   const [registerAsOwner, setRegisterAsOwner] = useState(false)
   const [companyName, setCompanyName] = useState('')
+  const [ownerFirstName, setOwnerFirstName] = useState('')
+  const [ownerLastName, setOwnerLastName] = useState('')
   const [businessEmail, setBusinessEmail] = useState('')
   const [nip, setNip] = useState('')
   const [companyPhone, setCompanyPhone] = useState('')
-  const [companyAddress, setCompanyAddress] = useState('')
-  const [fieldAddress, setFieldAddress] = useState('')
-  const [errorRegister, setErrorRegister] = useState('')
-  const [loading, setLoading] = useState(false) // Add loading state
+  const [companyStreet, setCompanyStreet] = useState('')
+  const [companyHouseNO, setCompanyHouseNO] = useState('')
+  const [companyCity, setCompanyCity] = useState('')
+  const [companyPostalNumber, setCompanyPostalNumber] = useState('')
 
-  const handleOwnerRegister = () => {
-    // Add your registration logic here
-    console.log('Registering with:', {
-      Username,
-      Email,
-      Password,
-      DateOfBirth,
-      registerAsOwner,
-      companyName,
-      businessEmail,
-      nip,
-      companyPhone,
-      companyAddress,
-      fieldAddress,
-    })
+  const [errorRegister, setErrorRegister] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleOwnerRegister = async () => {
+    setLoading(true)
+    setErrorRegister('')
+
+    // Validation for owner
+    if (
+      !username ||
+      !email ||
+      !password ||
+      !dateOfBirth ||
+      !ownerFirstName ||
+      !ownerLastName ||
+      !businessEmail
+    ) {
+      setErrorRegister('Uzupełnij wszystkie wymagane pola (bez *).')
+      setLoading(false)
+      return
+    }
+    if (password !== repeatPassword) {
+      setErrorRegister('Hasła nie pasują do siebie.')
+      setLoading(false)
+      return
+    }
+
+    const formattedDateOfBirth = `${dateOfBirth}T00:00:00`
+    const ownerData = {
+      email,
+      username,
+      password,
+      DateOfBirth: formattedDateOfBirth,
+      owner: {
+        firstName: ownerFirstName,
+        lastName: ownerLastName,
+        company: {
+          taxId: nip,
+          Name: companyName,
+          phoneNo: companyPhone,
+          email: businessEmail,
+          address: {
+            phoneNo: companyPhone,
+            street: companyStreet,
+            houseNo: companyHouseNO,
+            city: companyCity,
+            postalNumber: companyPostalNumber,
+            country: '',
+            coordinates: '',
+          },
+        },
+      },
+    }
+
+    try {
+      const response = await axios.post(
+        '/api/Auth/Register/RegisterOwner',
+        JSON.stringify(ownerData),
+        APIHeaders
+      )
+      if (response.status === 200) {
+        setErrorRegister('Zarejestrowano pomyślnie!')
+      }
+    } catch (error) {
+      console.error('Error registering user:', error)
+      setErrorRegister(
+        'Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.'
+      )
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleRegister = async () => {
-    // Set loading to true to show spinner
     setLoading(true)
-
-    // Reset error message
     setErrorRegister('')
 
     // Validation for regular user registration
-    if (!Username || !Email || !Password || !DateOfBirth) {
-      setErrorRegister('Uzupełnij wszystkie wymagane pola.')
-      setLoading(false) // Set loading to false
+    if (!username || !email || !password || !dateOfBirth) {
+      setErrorRegister('Uzupełnij wszystkie wymagane pola (bez *).')
+      setLoading(false)
       return
     }
-    if (Password !== RepeatPassword) {
+    if (password !== repeatPassword) {
       setErrorRegister('Hasła nie pasują do siebie.')
-      setLoading(false) // Set loading to false
+      setLoading(false)
       return
     }
-    const formattedDateOfBirth = `${DateOfBirth}T00:00:00`
+
+    const formattedDateOfBirth = `${dateOfBirth}T00:00:00`
     const userData = {
-      Username,
-      Email,
-      Password,
+      username,
+      email,
+      password,
       DateOfBirth: formattedDateOfBirth,
     }
-    console.log('User Data:', JSON.stringify(userData))
-
-    const apitest = await axios.get('/api/ping/ping', APIHeaders)
-    console.log(apitest.data)
 
     try {
-      // Send registration request to backend using Axios
       const response = await axios.post(
         '/api/Auth/Register/Register',
         JSON.stringify(userData),
         APIHeaders
       )
-
-      // Check if the response status is OK
       if (response.status === 200) {
         setErrorRegister('Zarejestrowano pomyślnie!')
       }
     } catch (error) {
-      // Handle error responses
-      if (error.response && error.response.status === 400) {
-        // Extract error messages from the response
-        const { data } = error.response
-        const errorMessages = data.errors
-          .map((error) => error.description)
-          .join(', ')
-        setErrorRegister(errorMessages)
-      } else {
-        console.error('Error registering user:', error)
-      }
+      console.error('Error registering user:', error)
+      setErrorRegister(
+        'Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.'
+      )
     } finally {
-      // Set loading to false after request completes
       setLoading(false)
     }
   }
@@ -188,6 +229,34 @@ const RegisterPage = () => {
               </div>
               <div className="mb-4">
                 <label
+                  htmlFor="ownerFirstName"
+                  className="block text-primary mb-1"
+                >
+                  Imię właściciela
+                </label>
+                <input
+                  type="text"
+                  id="ownerFirstName"
+                  className="w-full p-2 border rounded"
+                  onChange={(e) => setOwnerFirstName(e.target.value)}
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="ownerLastName"
+                  className="block text-primary mb-1"
+                >
+                  Nazwisko właściciela
+                </label>
+                <input
+                  type="text"
+                  id="ownerLastName"
+                  className="w-full p-2 border rounded"
+                  onChange={(e) => setOwnerLastName(e.target.value)}
+                />
+              </div>
+              <div className="mb-4">
+                <label
                   htmlFor="businessEmail"
                   className="block text-primary mb-1"
                 >
@@ -227,28 +296,54 @@ const RegisterPage = () => {
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="companyAddress"
+                  htmlFor="companyStreet"
                   className="block text-primary mb-1"
                 >
-                  Adres firmy (Ulica, Miasto, Kod pocztowy)*
+                  Ulica*
                 </label>
                 <input
-                  id="companyAddress"
+                  id="companyStreet"
                   className="w-full p-2 border rounded"
-                  onChange={(e) => setCompanyAddress(e.target.value)}
+                  onChange={(e) => setCompanyStreet(e.target.value)}
                 ></input>
               </div>
               <div className="mb-4">
                 <label
-                  htmlFor="companyAddress"
+                  htmlFor="companyHouseNO"
                   className="block text-primary mb-1"
                 >
-                  Adres pola (Ulica, Miasto, Kod pocztowy)
+                  Numer domu*
                 </label>
                 <input
-                  id="companyAddress"
+                  id="companyHouseNO"
                   className="w-full p-2 border rounded"
-                  onChange={(e) => setFieldAddress(e.target.value)}
+                  onChange={(e) => setCompanyHouseNO(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="companyCity"
+                  className="block text-primary mb-1"
+                >
+                  Miasto*
+                </label>
+                <input
+                  id="companyCity"
+                  className="w-full p-2 border rounded"
+                  onChange={(e) => setCompanyCity(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="companyPostalNumber"
+                  className="block text-primary mb-1"
+                >
+                  Kod pocztowy*
+                </label>
+                <input
+                  id="companyPostalNumber"
+                  className="w-full p-2 border rounded"
+                  onChange={(e) => setCompanyPostalNumber(e.target.value)}
                 ></input>
               </div>
               <div className="mb-4">
@@ -281,8 +376,8 @@ const RegisterPage = () => {
           <p
             className={`mt-2 text-sm ${
               errorRegister === 'Zarejestrowano pomyślnie!'
-                ? 'text-green-500'
-                : 'text-red-500'
+                ? 'text-secondary'
+                : 'text-err'
             }`}
           >
             {errorRegister}
