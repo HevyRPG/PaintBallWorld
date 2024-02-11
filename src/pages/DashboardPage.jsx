@@ -1,37 +1,37 @@
-import { useRef, useState } from "react";
-import ContactOwnerModal from "../components/ContactOwnerModal";
+import { useRef, useState } from 'react'
+import ContactOwnerModal from '../components/ContactOwnerModal'
 
 // Mock:
 const userData = {
-  firstName: "Jan",
-  lastName: "Nowak",
-  username: "SuperNowak79",
-  phoneNumber: "669-696-353",
-  email: "Jannowak@example.com",
-  profilePicture: "https://avatar.iran.liara.run/public/24", // Placeholder image URL
-  info: "Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.",
-};
+  firstName: 'Jan',
+  lastName: 'Nowak',
+  username: 'SuperNowak79',
+  phoneNumber: '669-696-353',
+  email: 'Jannowak@example.com',
+  profilePicture: 'https://avatar.iran.liara.run/public/24', // Placeholder image URL
+  info: 'Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.',
+}
 
 const paintballFieldsData = [
   {
     id: 1,
-    fieldName: "Paintball Arena Xtreme",
-    location: "Los Angeles, CA",
-    ownerName: "Adam Smith",
+    fieldName: 'Paintball Arena Xtreme',
+    location: 'Los Angeles, CA',
+    ownerName: 'Adam Smith',
   },
   {
     id: 2,
-    fieldName: "Urban Paintball Park",
-    location: "New York City, NY",
-    ownerName: "Emily Johnson",
+    fieldName: 'Urban Paintball Park',
+    location: 'New York City, NY',
+    ownerName: 'Emily Johnson',
   },
   {
     id: 3,
-    fieldName: "Wilderness Paintball Fields",
-    location: "Denver, CO",
-    ownerName: "Michael Brown",
+    fieldName: 'Wilderness Paintball Fields',
+    location: 'Denver, CO',
+    ownerName: 'Michael Brown',
   },
-];
+]
 //
 
 const DashboardPage = () => {
@@ -43,18 +43,18 @@ const DashboardPage = () => {
     email,
     profilePicture,
     info,
-  } = userData;
+  } = userData
 
-  const [selectedField, setSelectedField] = useState(null);
+  const [selectedField, setSelectedField] = useState(null)
 
-  const modal = useRef();
+  const modal = useRef()
   const handleOpenContactClick = (field) => {
-    setSelectedField(field);
-    modal.current.open(); // Otwiera modal -> do przerobienia
-  };
+    setSelectedField(field)
+    modal.current.open() // Otwiera modal -> do przerobienia
+  }
 
   return (
-    <div className="container max-w-screen-2xl p-16">
+    <div className="container max-w-screen-2xl mx-auto p-16">
       <div className="p-8 bg-white shadow mt-14 rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-3">
           <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
@@ -137,7 +137,7 @@ const DashboardPage = () => {
         )
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardPage;
+export default DashboardPage
