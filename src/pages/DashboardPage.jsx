@@ -54,52 +54,52 @@ const DashboardPage = () => {
   };
 
   return (
-    <div class="p-16">
-      <div class="p-8 bg-white shadow mt-14 rounded-lg">
-        <div class="grid grid-cols-1 md:grid-cols-3">
-          <div class="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
+    <div className="container max-w-screen-2xl p-16">
+      <div className="p-8 bg-white shadow mt-14 rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-3">
+          <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
             <div>
-              <p class="font-bold text-gray-700 text-xl">3</p>
-              <p class="text-gray-400">Rozgrywki</p>
+              <p className="font-bold text-gray-700 text-xl">3</p>
+              <p className="text-gray-400">Rozgrywki</p>
             </div>
             <div>
-              <p class="font-bold text-gray-700 text-xl">6</p>
-              <p class="text-gray-400">Strzały w głowę</p>
+              <p className="font-bold text-gray-700 text-xl">6</p>
+              <p className="text-gray-400">Strzały w głowę</p>
             </div>
             <div>
-              <p class="font-bold text-gray-700 text-xl">13</p>
-              <p class="text-gray-400">Znajomi</p>
+              <p className="font-bold text-gray-700 text-xl">13</p>
+              <p className="text-gray-400">Znajomi</p>
             </div>
           </div>
-          <div class="relative">
-            <div class="w-48 h-48 bg-indigo-200 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
+          <div className="relative">
+            <div className="w-48 h-48 bg-indigo-200 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
               <img src={profilePicture} />
             </div>
           </div>
-          <div class="space-x-4 flex justify-between mt-32 md:mt-0 md:justify-center">
-            <button class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+          <div className="space-x-4 flex justify-between mt-32 md:mt-0 md:justify-center">
+            <button className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
               Zostań właścicielem
             </button>
-            <button class="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+            <button className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
               Edytuj profil
             </button>
           </div>
         </div>
-        <div class="mt-16 text-center border-b pb-12">
-          <h1 class="text-4xl font-medium text-gray-700">
+        <div className="mt-16 text-center border-b pb-12">
+          <h1 className="text-4xl font-medium text-gray-700">
             {firstName} {lastName}
           </h1>
-          <p class="font-light text-gray-600 mt-3">@{username}</p>
+          <p className="font-light text-gray-600 mt-3">@{username}</p>
 
-          <p class="my-4 text-gray-900 dark:text-gray-500 first-line:tracking-widest text-left first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 dark:first-letter:text-gray-600 first-letter:pr-1 ">
+          <p className="my-4 text-gray-900 dark:text-gray-500 first-line:tracking-widest text-left first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 dark:first-letter:text-gray-600 first-letter:pr-1 ">
             {info}
           </p>
         </div>
-        <h1 class="text-3xl text-center font-medium text-gray-700 mt-4 mb-12">
+        <h1 className="text-3xl text-center font-medium text-gray-700 mt-4 mb-12">
           Historia rozgrywek
         </h1>
-        <div class="m-8 flex flex-col">
-          <table class="table-auto">
+        <div className="m-8 flex flex-col">
+          <table className="table-auto">
             <thead>
               <tr>
                 <th>Nazwa Pola</th>
@@ -119,7 +119,7 @@ const DashboardPage = () => {
                   <td>
                     <button
                       onClick={() => handleOpenContactClick(field)}
-                      class="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                      className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
                     >
                       Kontakt
                     </button>
