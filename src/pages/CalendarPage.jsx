@@ -1,27 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import axios from 'axios' // Import Axios for making HTTP requests
+import axios from 'axios'
+import Autocomplete from '../components/Autocomplete' // Import the Autocomplete component
+import PhotoCarousel from '../components/PhotoCarousel'
 
 const CallendarPage = () => {
-  const initialPosition = [52.405453159532335, 16.92534423921864] // Initial map position
+  const initialPosition = [52.405453159532335, 16.92534423921864]
   const [mapPosition, setMapPosition] = useState(initialPosition)
-  const [events, setEvents] = useState([]) // State to store fetched events
-  const [selectedDistance, setSelectedDistance] = useState(null) // State to store selected distance
-  const [searchInput, setSearchInput] = useState('') // State to store search input
-  const [isDistanceExpanded, setIsDistanceExpanded] = useState(false) // State to manage distance filter expansion
-
-  const handleListClick = (newPosition) => {
-    setMapPosition(newPosition)
-  }
+  const [events, setEvents] = useState([])
 
   const mapRef = useRef()
 
   useEffect(() => {
-    // Fetch events when component mounts
     fetchEvents()
   }, [])
 
-  // Fetch events from the API
   const fetchEvents = async () => {
     try {
       const response = await axios.get('https://your-api-url/events')
@@ -31,18 +24,12 @@ const CallendarPage = () => {
     }
   }
 
-  // Filter events based on selected distance
-  const filterEventsByDistance = (distance) => {
-    setSelectedDistance(distance)
-    setIsDistanceExpanded(false) // Collapse the distance filter
-    // Implement filtering logic based on the selected distance
-    // You can use a library like GeoLib to calculate distances
+  const handleListClick = (newPosition) => {
+    setMapPosition(newPosition)
   }
 
-  // Filter events based on search input
-  const filterEventsBySearch = (input) => {
-    setSearchInput(input)
-    // Implement filtering logic based on the search input
+  const handleInputChange = (event) => {
+    setSearchInput(event.target.value)
   }
 
   return (
@@ -55,7 +42,7 @@ const CallendarPage = () => {
         </p>
       </div>
       <div className="container mx-auto mt-8 mb-8 max-w-screen-2xl flex">
-        <div className="w-[1100px]">
+        <div className="w-2/3">
           <MapContainer
             key={mapPosition.join(',')}
             center={mapPosition}
@@ -68,79 +55,33 @@ const CallendarPage = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {events.map((event) => (
-              <Marker
-                key={event.id}
-                position={[event.latitude, event.longitude]}
-              >
-                <Popup>{event.name}</Popup>
-              </Marker>
-            ))}
+
+            <Marker position={mapPosition}>
+              <Popup>tetss</Popup>
+            </Marker>
           </MapContainer>
         </div>
 
-        <div className="w-[436px] overflow-y-auto bg-bgs max-h-[500px]">
-          {/* Search bar */}
-          <div className="flex items-center mb-4">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchInput}
-              onChange={(e) => filterEventsBySearch(e.target.value)}
-              className="w-1/2 p-2 mr-2"
-            />
-            {/* Distance filter */}
-            <div className="relative">
-              <button
-                onClick={() => setIsDistanceExpanded(!isDistanceExpanded)}
-                className="rounded-md border border-gray-300 bg-secondary text-gray-800 px-4 py-2 w-32"
+        <div className="w-1/3 overflow-y-auto max-h-[500px] bg-bgs">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <Autocomplete />
+            </div>
+            <div>
+              <select
+                onChange={(e) =>
+                  filterEventsByDistance(parseInt(e.target.value))
+                }
+                className="p-3 rounded"
               >
-                +{selectedDistance !== null ? selectedDistance : '0'} km
-              </button>
-              {isDistanceExpanded && (
-                <div className="absolute top-full right-0 bg-white p-2 border rounded flex flex-col">
-                  <button
-                    className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary "
-                    onClick={() => filterEventsByDistance(0)}
-                  >
-                    +0 km
-                  </button>
-                  <button
-                    className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary "
-                    onClick={() => filterEventsByDistance(20)}
-                  >
-                    +20 km
-                  </button>
-                  <button
-                    className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary "
-                    onClick={() => filterEventsByDistance(50)}
-                  >
-                    +50 km
-                  </button>
-                  <button
-                    className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary "
-                    onClick={() => filterEventsByDistance(100)}
-                  >
-                    +100 km
-                  </button>
-                </div>
-              )}
+                <option value="10">+10 KM</option>
+                <option value="50">+50 KM</option>
+                <option value="100">+100 KM</option>
+              </select>
             </div>
           </div>
 
-          {/* Example scrollable list */}
           <ul className="text-white list-none p-0 grid">
-            {events.map((event) => (
-              <li
-                key={event.id}
-                onClick={() =>
-                  handleListClick([event.latitude, event.longitude])
-                }
-                className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
-              >
-                {event.name}
-              </li>
-            ))}
             <li
               onClick={() =>
                 handleListClick([52.5478589721108, 16.65486723010457])
@@ -155,11 +96,77 @@ const CallendarPage = () => {
             >
               Event 2
             </li>
+            <li
+              onClick={() => handleListClick([53.548, 12.68])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
+            <li
+              onClick={() => handleListClick([53.548, 16.65])}
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+            >
+              Event 2
+            </li>
           </ul>
         </div>
       </div>
-      <div className="container mx-auto h-96 mt-8 mb-4 max-w-screen-2xl bg-bgs">
-        <h1 className="text-white">KURWY</h1>
+      <div className="container mx-auto h-96 mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-col items-center justify-center">
+        <h1 className="text-indigo-400 text-xl font-bold italic ">
+          NAZWA POLA
+        </h1>
+        <h1 className="text-yellow-300 text-xl">OWNER</h1>
+        <h1 className="text-white text-xl">ADRES</h1>
+        <h1 className="text-gray-400 text-xl ">GEOTAG</h1>
+        <div className="text-center">ZDJĘCIA</div>
       </div>
     </>
   )
