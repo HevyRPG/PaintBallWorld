@@ -22,8 +22,8 @@ const ContactPage = () => {
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 489.536 489.536"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                enable-background="new 0 0 489.536 489.536"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                enableBackground="new 0 0 489.536 489.536"
               >
                 <g>
                   <g>
@@ -49,11 +49,11 @@ const ContactPage = () => {
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 x="0px"
                 y="0px"
                 viewBox="0 0 60.002 60.002"
-                xml:space="preserve"
+                xmlSpace="preserve"
               >
                 <g>
                   <path
@@ -101,11 +101,11 @@ const ContactPage = () => {
                 version="1.1"
                 id="Capa_1"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 x="0px"
                 y="0px"
                 viewBox="0 0 300.988 300.988"
-                xml:space="preserve"
+                xmlSpace="preserve"
               >
                 <g>
                   <g>
@@ -126,7 +126,7 @@ const ContactPage = () => {
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-first-name"
+                  htmlFor="grid-first-name"
                 >
                   First Name
                 </label>
@@ -141,7 +141,7 @@ const ContactPage = () => {
               <div className="w-full md:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-last-name"
+                  htmlFor="grid-last-name"
                 >
                   Last Name
                 </label>
@@ -157,7 +157,7 @@ const ContactPage = () => {
               <div className="w-full px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-password"
+                  htmlFor="grid-password"
                 >
                   Email Address
                 </label>
@@ -174,7 +174,7 @@ const ContactPage = () => {
               <div className="w-full px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  for="grid-password"
+                  htmlFor="grid-password"
                 >
                   Your Message
                 </label>
