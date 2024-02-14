@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import axios from 'axios'
 import Autocomplete from '../components/Autocomplete'
 import PhotoGallery from '../components/PhotoGallery'
+import OpenEventsTable from '../components/OpenEventsTable'
+import PrivateEventsTable from '../components/PrivateEventsTable'
 
 const CallendarPage = () => {
   const initialPosition = [52.405453159532335, 16.92534423921864]
@@ -10,6 +12,84 @@ const CallendarPage = () => {
   const [events, setEvents] = useState([])
   const initialFieldID = 'TESTGAL' // Set the initial fieldID to 'TEST'
   const [fieldID, setFieldID] = useState(initialFieldID)
+
+  const testEvents1 = [
+    {
+      id: 1,
+      name: 'Event 1',
+      date: '2024-02-14',
+      hour: '16:00',
+      attendees: 20,
+      maxAttendees: 30,
+    },
+    {
+      id: 1,
+      name: 'Event 1',
+      date: '2024-02-14',
+      hour: '16:00',
+      attendees: 20,
+      maxAttendees: 30,
+    },
+    {
+      id: 1,
+      name: 'Event 1',
+      date: '2024-02-14',
+      hour: '16:00',
+      attendees: 20,
+      maxAttendees: 30,
+    },
+    {
+      id: 1,
+      name: 'Event 1',
+      date: '2024-02-14',
+      hour: '16:00',
+      attendees: 20,
+      maxAttendees: 30,
+    },
+    {
+      id: 2,
+      name: 'Event 2',
+      date: '2024-02-15',
+      hour: '16:00',
+      attendees: 15,
+      maxAttendees: 25,
+    },
+    {
+      id: 3,
+      name: 'Event 3',
+      date: '2024-02-16',
+      hour: '16:00',
+      attendees: 25,
+      maxAttendees: 35,
+    },
+  ]
+
+  const testEvents2 = [
+    {
+      id: 4,
+      name: 'Event 4',
+      date: '2024-02-17',
+      hour: '18:00',
+      uptime: 5,
+      attendees: 30,
+    },
+    {
+      id: 5,
+      name: 'Event 5',
+      date: '2024-02-18',
+      hour: '16:00',
+      uptime: 2,
+      attendees: 10,
+    },
+    {
+      id: 6,
+      name: 'Event 6',
+      date: '2024-02-19',
+      hour: '17:00',
+      uptime: 3,
+      attendees: 22,
+    },
+  ]
 
   const photoGalleryProps = {
     showFullscreenButton: false,
@@ -198,11 +278,21 @@ const CallendarPage = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center">
-        <h1 className="text-white text-xl">Najbliższe rozgrywki otwarte</h1>
+      <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center ">
+        <div className="w-full ">
+          <h1 className="text-white text-xl font-bold italic mb-4 ">
+            Najbliższe rozgrywki otwarte na NAZWA POLA
+          </h1>
+          <OpenEventsTable events={testEvents1} />
+        </div>
       </div>
       <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center">
-        <h1 className="text-white text-xl">Najbliższe wolne terminy</h1>
+        <div className="w-full">
+          <h1 className="text-white text-xl font-bold italic mb-4">
+            Najbliższe wolne terminy na zamówienie pola na NAZWA POLA
+          </h1>
+          <PrivateEventsTable className="text-white" events={testEvents2} />
+        </div>
       </div>
     </>
   )
