@@ -1,14 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import axios from 'axios'
-import Autocomplete from '../components/Autocomplete' // Import the Autocomplete component
-import PhotoCarousel from '../components/PhotoCarousel'
+import Autocomplete from '../components/Autocomplete'
+import PhotoGallery from '../components/PhotoGallery'
 
 const CallendarPage = () => {
   const initialPosition = [52.405453159532335, 16.92534423921864]
   const [mapPosition, setMapPosition] = useState(initialPosition)
   const [events, setEvents] = useState([])
+  const initialFieldID = 'TESTGAL' // Set the initial fieldID to 'TEST'
+  const [fieldID, setFieldID] = useState(initialFieldID)
 
+  const photoGalleryProps = {
+    showFullscreenButton: false,
+    showThumbnails: true,
+    showPlayButton: false,
+    disableLazyLoad: true,
+    autoPlay: true,
+  }
+
+  const handleFieldIDChange = (newFieldID) => {
+    setFieldID(newFieldID)
+  }
   const mapRef = useRef()
 
   useEffect(() => {
@@ -86,13 +99,16 @@ const CallendarPage = () => {
               onClick={() =>
                 handleListClick([52.5478589721108, 16.65486723010457])
               }
-              className="mb-2 p-2  active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary bg-indigo-900 cursor-pointer transition-all flex flex-col items-center justify-center h-16"
             >
-              Test pos
+              <span className="text-center font-bold">
+                Paintball Wielkopolska
+              </span>
+              <span className="text-center italic">Pamiątkowo</span>
             </li>
             <li
               onClick={() => handleListClick([53.548, 16.65])}
-              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center"
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary cursor-pointer transition-all flex items-center justify-center h-16"
             >
               Event 2
             </li>
@@ -159,14 +175,34 @@ const CallendarPage = () => {
           </ul>
         </div>
       </div>
-      <div className="container mx-auto h-96 mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-col items-center justify-center">
-        <h1 className="text-indigo-400 text-xl font-bold italic ">
-          NAZWA POLA
-        </h1>
-        <h1 className="text-yellow-300 text-xl">OWNER</h1>
-        <h1 className="text-white text-xl">ADRES</h1>
-        <h1 className="text-gray-400 text-xl ">GEOTAG</h1>
-        <div className="text-center">ZDJĘCIA</div>
+      <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center">
+        {/* First div */}
+        <div className="flex flex-col items-center justify-center w-full md:w-1/2">
+          <h1 className="text-indigo-400 text-xl font-bold italic">
+            NAZWA POLA
+          </h1>
+          <h1 className="text-yellow-300 text-xl">OWNER</h1>
+          <h1 className="text-white text-xl">ADRES</h1>
+          <h1 className="text-gray-400 text-xl">GEOTAG</h1>
+        </div>
+
+        {/* Second div */}
+        <div className="flex items-center justify-center w-full md:w-1/2">
+          <div className="min-h-600 min-w-400">
+            <PhotoGallery
+              fieldID="TESTGAL"
+              photoGalleryProps={photoGalleryProps}
+              width={600}
+              height={400}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center">
+        <h1 className="text-white text-xl">Najbliższe rozgrywki otwarte</h1>
+      </div>
+      <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center">
+        <h1 className="text-white text-xl">Najbliższe wolne terminy</h1>
       </div>
     </>
   )

@@ -4,7 +4,6 @@
 
 body {
   background-color: #091320;
-  
 }
 
 .leaflet-container {
@@ -50,9 +49,8 @@ body {
   animation: slide-down-fade-in 0.7 ease-out forwards;
 }
 
-.gradient{
+.gradient {
   color: white;
   /* background: linear-gradient(90deg, #d53369 0%, #daae51 100%); */
-  background: linear-gradient(90deg, #371080 0%, #61c947 100%)
+  background: linear-gradient(90deg, #371080 0%, #61c947 100%);
 }
-
