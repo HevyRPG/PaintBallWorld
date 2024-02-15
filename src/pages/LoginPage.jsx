@@ -1,15 +1,28 @@
 // src/components/LoginPage.js
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import axios from "axios";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import APIHeaders from "../components/APIHeaders";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    // Add your login logic here
-    console.log('Logging in with:', { username, password })
-  }
+  const handleLogin = async (e) => {
+    console.log("Logging in with:", { username, password });
+    try {
+      const response = await axios.post(
+        "/api/Auth/Login/Login",
+        { username, password },
+        APIHeaders
+      );
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      console.log("token:", token);
+    } catch (error) {
+      console.error("Blad logowania", error);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center p-8">
@@ -22,7 +35,8 @@ const LoginPage = () => {
             </label>
             <input
               type="text"
-              id="username"
+              placeholder="username"
+              value={username}
               className="w-full p-2 border rounded"
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -33,7 +47,8 @@ const LoginPage = () => {
             </label>
             <input
               type="password"
-              id="password"
+              placeholder="*****"
+              value={password}
               className="w-full p-2 border rounded"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -64,7 +79,7 @@ const LoginPage = () => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

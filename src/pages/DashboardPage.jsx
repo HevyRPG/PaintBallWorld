@@ -134,7 +134,7 @@ const DashboardPage = () => {
           selectedField={selectedField}
           email={email}
         />
-        )
+        
       </div>
     </div>
   )
