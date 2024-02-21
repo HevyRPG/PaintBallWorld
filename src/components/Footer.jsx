@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react'
 
 const Footer = () => {
   const goToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
-  };
+      behavior: 'smooth',
+    })
+  }
 
   return (
-    <footer className="bg-gray-100 dark:bg-gray-900">
+    <footer className="bg-gray-900">
       <div className="relative mx-auto max-w-screen-2xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-16">
         <div className="absolute end-4 top-4 sm:end-6 sm:top-6 lg:end-8 lg:top-8">
           <button
@@ -93,7 +93,7 @@ const Footer = () => {
         </p>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

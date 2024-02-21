@@ -1,6 +1,7 @@
 // src/components/LoginPage.js
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
 
 const LoginPage = () => {
   const [username, setUsername] = useState('')
