@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { isLoggedIn } from "../components/auth";
@@ -5,17 +6,18 @@ import { isLoggedIn } from "../components/auth";
 const Navbar = () => {
   const location = useLocation();
   const [shouldReload, setShouldReload] = useState(false);
+
   const isActive = (path) => {
     return location.pathname === path
-      ? "text-white font-bold"
-      : "text-primary hover:text-white";
-  };
+      ? 'text-white font-bold'
+      : 'text-primary hover:text-white'
+  }
 
   const navLinks = [
-    { path: "/", label: "Home" },
-    { path: "/calendar", label: "Terminarz" },
-    { path: "/about", label: "O nas" },
-  ];
+    { path: '/', label: 'Home' },
+    { path: '/calendar', label: 'Terminarz' },
+    { path: '/about', label: 'O nas' },
+  ]
 
   const renderNavLinks = () => {
     return navLinks.map(({ path, label }) => (
@@ -24,8 +26,8 @@ const Navbar = () => {
           {label}
         </Link>
       </li>
-    ));
-  };
+    ))
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -33,10 +35,10 @@ const Navbar = () => {
   };
 
   const buttonStyles =
-    "inline-block px-4 py-2 text-sm font-medium border rounded focus:outline-none ";
+    'inline-block px-4 py-2 text-sm font-medium border rounded focus:outline-none '
 
   return (
-    <nav className="bg-gray-100 dark:bg-gray-900 shadow shadow-gray-900 w-full px-8 py-2 md:px-auto">
+    <nav className="bg-gray-900 shadow shadow-gray-900 w-full px-8 py-2 md:px-auto">
       <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
         <div className="text-indigo-500 md:order-1">
           <img className="w-12 h-12" src="./logosm.png" alt="Logo" />
@@ -47,6 +49,7 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="order-2 md:order-3">
+
           {isLoggedIn() ? (
             <Link
               to="/login"
@@ -74,10 +77,11 @@ const Navbar = () => {
               </Link>
             </>
           )}
+
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

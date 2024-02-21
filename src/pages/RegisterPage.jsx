@@ -3,6 +3,7 @@ import axios from 'axios'
 import '../index.css'
 import APIHeaders from '../components/APIHeaders'
 import FormInput from '../components/FormInput'
+import { Button } from '@/components/ui/button'
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('')
@@ -304,13 +305,14 @@ const RegisterPage = () => {
               </div>
             </>
           )}
-          <button
+          <Button
+            variant="outline"
             type="button"
-            className="w-full bg-[#96DA2B] text-white p-2 rounded hover:bg-primary"
+            className="w-full bg-primary text-primary-foreground p-2 rounded hover:bg-secondary"
             onClick={registerAsOwner ? handleOwnerRegister : handleRegister}
           >
             Zarejestruj
-          </button>
+          </Button>
         </form>
         {loading && (
           <div className="flex justify-center mt-2">
@@ -323,7 +325,7 @@ const RegisterPage = () => {
             className={`mt-2 text-sm ${
               errorRegister === 'Zarejestrowano pomyślnie!'
                 ? 'text-secondary'
-                : 'text-err'
+                : 'text-destructive-foreground'
             }`}
           >
             {errorRegister}
