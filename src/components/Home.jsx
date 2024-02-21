@@ -27,7 +27,7 @@ const data = [
 export default function Home() {
   return (
     <div className="flex justify-center">
-      <div className="container p-8 max-w-screen-2xl gradient">
+      <div className="container  rounded max-w-screen-2xl gradient">
         <div className="container px-9 mx-auto flex flex-wrap flex-col md:flex-row items-center ">
           <div className="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
             <p className="uppercase tracking-loose w-full">
@@ -47,7 +47,7 @@ export default function Home() {
 
           <div className="w-full md:w-3/5 py-6 text-center">
             <img
-              className="ml-16 w-5/6 z-50 rounded-xl"
+              className="ml-16 m-2 w-5/6 z-50 rounded-xl"
               src={photo}
               alt="PaintballWorld"
             />

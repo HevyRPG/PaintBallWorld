@@ -1,8 +1,12 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { isLoggedIn } from "../components/auth";
 
 const Navbar = () => {
-  const location = useLocation()
+  const location = useLocation();
+  const [shouldReload, setShouldReload] = useState(false);
+
   const isActive = (path) => {
     return location.pathname === path
       ? 'text-white font-bold'
@@ -25,6 +29,11 @@ const Navbar = () => {
     ))
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setShouldReload((prevState) => !prevState);
+  };
+
   const buttonStyles =
     'inline-block px-4 py-2 text-sm font-medium border rounded focus:outline-none '
 
@@ -40,22 +49,35 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="order-2 md:order-3">
-          <Link
-            to="/login"
-            className={`${buttonStyles} text-white bg-violet-600 border-violet-600 active:text-violet-500 hover:bg-transparent hover:text-violet-600 ${isActive(
-              '/'
-            )}`}
-          >
-            Login
-          </Link>
-          <Link
-            to="/dashboard"
-            className={`${buttonStyles} ml-4 text-violet-600 border-violet-600 hover:bg-violet-600 hover:text-white active:bg-indigo-500 ${isActive(
-              '/'
-            )}`}
-          >
-            Profil
-          </Link>
+
+          {isLoggedIn() ? (
+            <Link
+              to="/login"
+              className={`${buttonStyles} text-white bg-violet-600 border-violet-600 active:text-violet-500 hover:bg-transparent hover:text-violet-600 ${isActive(
+                "/"
+              )}`}
+            >
+              Login
+            </Link>
+          ) : (
+            <>
+              <button
+                className=" className={`${buttonStyles} text-white bg-violet-600 border-violet-600 active:text-violet-500 hover:bg-transparent hover:text-violet-600  "
+                onClick={handleLogout}
+              >
+                Wyloguj
+              </button>
+              <Link
+                to="/dashboard"
+                className={`${buttonStyles} ml-4 text-violet-600 border-violet-600 hover:bg-violet-600 hover:text-white active:bg-indigo-500 ${isActive(
+                  "/"
+                )}`}
+              >
+                Profil
+              </Link>
+            </>
+          )}
+
         </div>
       </div>
     </nav>
