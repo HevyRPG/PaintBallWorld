@@ -324,8 +324,8 @@ const RegisterPage = () => {
           <p
             className={`mt-2 text-sm ${
               errorRegister === 'Zarejestrowano pomyślnie!'
-                ? 'text-secondary'
-                : 'text-destructive-foreground'
+                ? 'text-primary'
+                : 'text-destructive'
             }`}
           >
             {errorRegister}

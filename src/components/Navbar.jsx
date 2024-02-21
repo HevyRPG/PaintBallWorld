@@ -1,11 +1,11 @@
-
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { isLoggedIn } from "../components/auth";
+import React, { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { isLoggedIn } from '../components/auth'
+import { Button } from '@/components/ui/button'
 
 const Navbar = () => {
-  const location = useLocation();
-  const [shouldReload, setShouldReload] = useState(false);
+  const location = useLocation()
+  const [shouldReload, setShouldReload] = useState(false)
 
   const isActive = (path) => {
     return location.pathname === path
@@ -21,63 +21,70 @@ const Navbar = () => {
 
   const renderNavLinks = () => {
     return navLinks.map(({ path, label }) => (
-      <li key={path} className="md:px-4 md:py-2 hover:text-indigo-400">
+      <lu key={path} className="md:px-4 md:py-2 ">
         <Link to={path} className={`ml-2 text-xl ${isActive(path)}`}>
           {label}
         </Link>
-      </li>
+      </lu>
     ))
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setShouldReload((prevState) => !prevState);
-  };
+    localStorage.removeItem('token')
+    setShouldReload((prevState) => !prevState)
+  }
 
   const buttonStyles =
     'inline-block px-4 py-2 text-sm font-medium border rounded focus:outline-none '
 
   return (
     <nav className="bg-gray-900 shadow shadow-gray-900 w-full px-8 py-2 md:px-auto">
-      <div className="md:h-16 h-28 mx-auto md:px-4 container flex items-center justify-between flex-wrap md:flex-nowrap">
+      <div className="md:h-16 h-28 mx-auto md:px-4 container flex max-w-screen-2xl items-center justify-between flex-wrap md:flex-nowrap">
         <div className="text-indigo-500 md:order-1">
           <img className="w-12 h-12" src="./logosm.png" alt="Logo" />
         </div>
         <div className="text-gray-500 order-3 w-full md:w-auto md:order-2">
-          <ul className="flex font-semibold justify-between">
+          <div className="flex font-semibold justify-between">
             {renderNavLinks()}
-          </ul>
+          </div>
         </div>
         <div className="order-2 md:order-3">
-
           {isLoggedIn() ? (
-            <Link
-              to="/login"
-              className={`${buttonStyles} text-white bg-violet-600 border-violet-600 active:text-violet-500 hover:bg-transparent hover:text-violet-600 ${isActive(
-                "/"
-              )}`}
-            >
-              Login
-            </Link>
+            <>
+              <Link to="/register">
+                <Button variant="ghost" size="" className="rounded h-10 mr-2">
+                  Zarejestruj się
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded bg-primary text-primary-foreground"
+                >
+                  Login
+                </Button>
+              </Link>
+            </>
           ) : (
             <>
-              <button
-                className=" className={`${buttonStyles} text-white bg-violet-600 border-violet-600 active:text-violet-500 hover:bg-transparent hover:text-violet-600  "
+              <Link to="/dashboard">
+                <Button
+                  variant="default"
+                  className=" mr-4 rounded bg-secondary text-primary hover:bg-white "
+                >
+                  Profil
+                </Button>
+              </Link>
+              <Button
+                variant="ghost"
+                className=" rounded "
                 onClick={handleLogout}
               >
                 Wyloguj
-              </button>
-              <Link
-                to="/dashboard"
-                className={`${buttonStyles} ml-4 text-violet-600 border-violet-600 hover:bg-violet-600 hover:text-white active:bg-indigo-500 ${isActive(
-                  "/"
-                )}`}
-              >
-                Profil
-              </Link>
+              </Button>
             </>
           )}
-
         </div>
       </div>
     </nav>

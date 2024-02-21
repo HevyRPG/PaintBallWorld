@@ -1,33 +1,59 @@
-
-import axios from "axios";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { isLoggedIn } from "../components/auth";
-import APIHeaders from "../components/APIHeaders";
-
+import axios from 'axios'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { isLoggedIn } from '../components/auth'
+import APIHeaders from '../components/APIHeaders'
+import { Button } from '@/components/ui/button'
+import FormInput from '../components/FormInput'
+import '../index.css'
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [errorRegister, setErrorRegister] = useState('')
 
-  console.log(isLoggedIn());
+  console.log(isLoggedIn())
 
   const handleLogin = async (e) => {
-    console.log("Logging in with:", { username, password });
+    setLoading(true)
+    setErrorRegister('')
+
+    console.log('Logging in with:', { username, password })
     try {
       const response = await axios.post(
-        "/api/Auth/Login/Login",
+        '/api/Auth/Login/Login',
         { username, password },
         APIHeaders
-      );
-      const token = response.data.token;
-      localStorage.setItem("token", token);
-      console.log("token:", token);
+      )
+      const token = response.data.token
+      localStorage.setItem('token', token)
+      console.log('token:', token)
       window.location.href = '/'
+      if (response.status === 200) {
+        setErrorRegister('Witamy!')
+      }
     } catch (error) {
-      console.error("Blad logowania", error);
+      console.error('Error registering user:', error)
+      if (error.response && error.response.status === 400) {
+        // Extract error messages from the response
+        const { data } = error.response
+        if (data && data.errors) {
+          const errorMessages = data.errors
+            .map((error) => error.description)
+            .join(', ')
+          setErrorRegister(errorMessages)
+        } else {
+          setErrorRegister('Wystąpił błąd podczas logowania. Spróbuj ponownie.')
+        }
+      } else {
+        setErrorRegister('Wystąpił błąd podczas logowania. Spróbuj ponownie.')
+      }
+    } finally {
+      // Set loading to false after request completes
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="flex flex-col justify-center items-center p-8">
@@ -38,38 +64,48 @@ const LoginPage = () => {
               Logowanie
             </h2>
             <form>
-              <div className="mb-4">
-                <label htmlFor="username" className="block text-white mb-1">
-                  Nazwa użytkownika
-                </label>
-                <input
-                  type="text"
-                  placeholder="username"
-                  value={username}
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-white mb-1">
-                  Hasło
-                </label>
-                <input
-                  type="password"
-                  placeholder="*****"
-                  value={password}
-                  className="w-full p-2 border rounded"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button
+              <FormInput
+                label="Nazwa użytkownika"
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <FormInput
+                label="Hasło"
+                type="password"
+                name="password"
+                placeholder="*****"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <Button
+                variant="outline"
                 type="button"
-                className="w-full bg-[#96DA2B] text-white p-2 rounded hover:bg-primary"
+                className="w-full p-2 rounded bg-primary text-primary-foreground"
                 onClick={handleLogin}
               >
                 Login
-              </button>
+              </Button>
             </form>
+            {loading && (
+              <div className="flex justify-center mt-2">
+                <div className="loader"></div>
+              </div>
+            )}
+            {errorRegister && (
+              <p
+                className={`mt-2 text-sm ${
+                  errorRegister === 'Witamy!'
+                    ? 'text-primary'
+                    : 'text-destructive'
+                }`}
+              >
+                {errorRegister}
+              </p>
+            )}
             <p className="mt-4 text-gray-300 text-sm">
               <Link
                 to="/register"
@@ -78,7 +114,7 @@ const LoginPage = () => {
                 Nie pamiętasz hasła?
               </Link>
             </p>
-            <p className="mt-4 text-gray-300 text-sm">
+            <p className="mt-4  text-sm">
               <Link
                 to="/register"
                 className="text-primary hover:underline hover:text-primary"
@@ -92,7 +128,7 @@ const LoginPage = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
