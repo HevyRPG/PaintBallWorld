@@ -52,30 +52,28 @@ const RegisterPage = () => {
 
     const formattedDateOfBirth = `${dateOfBirth}T00:00:00`
     const ownerData = {
-      email,
-      username,
-      password,
-      DateOfBirth: formattedDateOfBirth,
-      owner: {
-        firstName: ownerFirstName,
-        lastName: ownerLastName,
-        company: {
-          taxId: nip,
-          Name: companyName,
+      email: email,
+      username: username,
+      password: password,
+      dateOfBirth: formattedDateOfBirth,
+      firstName: ownerFirstName,
+      lastName: ownerLastName,
+      company: {
+        taxId: nip,
+        companyName: companyName,
+        email: businessEmail,
+        address: {
           phoneNo: companyPhone,
-          email: businessEmail,
-          address: {
-            phoneNo: companyPhone,
-            street: companyStreet,
-            houseNo: companyHouseNO,
-            city: companyCity,
-            postalNumber: companyPostalNumber,
-            country: '',
-            coordinates: '',
-          },
+          street: companyStreet,
+          houseNo: companyHouseNO,
+          city: companyCity,
+          postalNumber: companyPostalNumber,
+          country: 'string',
+          coordinates: 'string',
         },
       },
     }
+    console.log(ownerData)
 
     try {
       const response = await axios.post(
@@ -91,10 +89,21 @@ const RegisterPage = () => {
       if (error.response && error.response.status === 400) {
         // Extract error messages from the response
         const { data } = error.response
-        if (data && data.errors) {
-          const errorMessages = data.errors
-            .map((error) => error.description)
-            .join(', ')
+        /* if (data && data.errors) {
+          const errorMessages = data.errors.map((error, index) => (
+            <React.Fragment key={index}>
+              {error.description}
+              <br />
+            </React.Fragment>
+          ))
+          setErrorRegister(errorMessages) DO WERYFIKACJI CZEMU NIE ŁAPIE*/
+        if (data && Array.isArray(data.errors)) {
+          const errorMessages = data.errors.map((error, index) => (
+            <React.Fragment key={index}>
+              {error.description}
+              <br />
+            </React.Fragment>
+          ))
           setErrorRegister(errorMessages)
         } else {
           setErrorRegister(
@@ -149,9 +158,12 @@ const RegisterPage = () => {
         // Extract error messages from the response
         const { data } = error.response
         if (data && data.errors) {
-          const errorMessages = data.errors
-            .map((error) => error.description)
-            .join(', ')
+          const errorMessages = data.errors.map((error, index) => (
+            <React.Fragment key={index}>
+              {error.description}
+              <br />
+            </React.Fragment>
+          ))
           setErrorRegister(errorMessages)
         } else {
           setErrorRegister(
@@ -175,35 +187,35 @@ const RegisterPage = () => {
         </h2>
         <form>
           <FormInput
-            label="Nazwa użytkownika"
+            label="Nazwa użytkownika*"
             type="text"
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <FormInput
-            label="Adres e-mail"
+            label="Adres e-mail*"
             type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <FormInput
-            label="Data urodzenia"
+            label="Data urodzenia*"
             type="date"
             name="dateOfBirth"
             value={dateOfBirth}
             onChange={(e) => setDateOfBirth(e.target.value)}
           />
           <FormInput
-            label="Hasło"
+            label="Hasło*"
             type="password"
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <FormInput
-            label="Powtórz hasło"
+            label="Powtórz hasło*"
             type="password"
             name="repetPassword"
             value={repeatPassword}
@@ -231,21 +243,21 @@ const RegisterPage = () => {
                 onChange={(e) => setCompanyName(e.target.value)}
               />
               <FormInput
-                label="Imię właściciela"
+                label="Imię właściciela*"
                 type="text"
                 name="ownerFirstName"
                 value={ownerFirstName}
                 onChange={(e) => setOwnerFirstName(e.target.value)}
               />
               <FormInput
-                label="Nazwisko właściciela"
+                label="Nazwisko właściciela*"
                 type="text"
                 name="ownerLastName"
                 value={ownerLastName}
                 onChange={(e) => setOwnerLastName(e.target.value)}
               />
               <FormInput
-                label="Służbowy adres e-mail (Kontaktowy)"
+                label="Służbowy adres e-mail (Kontaktowy)*"
                 type="email"
                 name="businessEmail"
                 value={businessEmail}
@@ -263,21 +275,21 @@ const RegisterPage = () => {
                 type="tel"
                 name="companyPhone"
                 value={companyPhone}
-                onChange={setCompanyPhone}
+                onChange={(e) => setCompanyPhone(e.target.value)}
               />
               <FormInput
                 label="Ulica"
                 type="text"
                 name="companyStreet"
                 value={companyStreet}
-                onChange={setCompanyStreet}
+                onChange={(e) => setCompanyStreet(e.target.value)}
               />
               <FormInput
                 label="Numer domu"
                 type="text"
                 name="companyHouseNO"
                 value={companyHouseNO}
-                onChange={setCompanyHouseNO}
+                onChange={(e) => setCompanyHouseNO(e.target.value)}
               />
               <FormInput
                 label="Miasto"
@@ -324,7 +336,7 @@ const RegisterPage = () => {
           <p
             className={`mt-2 text-sm ${
               errorRegister === 'Zarejestrowano pomyślnie!'
-                ? 'text-primary'
+                ? 'text-green-500'
                 : 'text-destructive'
             }`}
           >

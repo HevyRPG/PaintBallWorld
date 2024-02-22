@@ -165,7 +165,7 @@ const CallendarPage = () => {
                 onChange={(e) =>
                   filterEventsByDistance(parseInt(e.target.value))
                 }
-                className="p-3 rounded"
+                className="p-3 rounded text-primary-foreground"
               >
                 <option value="10">+10 KM</option>
                 <option value="50">+50 KM</option>
@@ -179,7 +179,7 @@ const CallendarPage = () => {
               onClick={() =>
                 handleListClick([52.5478589721108, 16.65486723010457])
               }
-              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary bg-indigo-900 cursor-pointer transition-all flex flex-col items-center justify-center h-16"
+              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary bg-primary cursor-pointer text-primary-foreground hover:text-secondary-foreground transition-all flex flex-col items-center justify-center h-16"
             >
               <span className="text-center font-bold">
                 Paintball Wielkopolska

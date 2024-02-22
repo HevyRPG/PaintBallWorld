@@ -21,11 +21,11 @@ const Navbar = () => {
 
   const renderNavLinks = () => {
     return navLinks.map(({ path, label }) => (
-      <lu key={path} className="md:px-4 md:py-2 ">
+      <div key={path} className="md:px-4 md:py-2 ">
         <Link to={path} className={`ml-2 text-xl ${isActive(path)}`}>
           {label}
         </Link>
-      </lu>
+      </div>
     ))
   }
 
@@ -52,7 +52,7 @@ const Navbar = () => {
           {isLoggedIn() ? (
             <>
               <Link to="/register">
-                <Button variant="ghost" size="" className="rounded h-10 mr-2">
+                <Button variant="ghost" size="" className="rounded h-10 mr-2 ">
                   Zarejestruj się
                 </Button>
               </Link>

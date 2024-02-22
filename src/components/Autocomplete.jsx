@@ -34,7 +34,7 @@ const Autocomplete = () => {
         placeholder="Podaj swoje miasto..."
         value={searchInput}
         onChange={handleInputChange}
-        className="w-[380px] p-3 rounded"
+        className="w-[380px] p-3 rounded text-primary-foreground"
       />
       {suggestions.length > 0 && (
         <ul className="absolute bg-white w-1/2 rounded-lg shadow-md mt-1 z-10">
