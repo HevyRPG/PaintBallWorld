@@ -6,12 +6,12 @@ export default function About() {
           <div className="flex flex-col lg:flex-row justify-between gap-8">
             <div className="w-full lg:w-5/12 flex flex-col justify-center">
               <h1 className="text-3xl lg:text-4xl font-bold leading-9 text-gray-300 pb-4">
-                About Us
+                Trochę o nas
               </h1>
-              <p className="text-xl font-normal text-base leading-6 text-gray-400 ">
-                Jesteśmy zespołem zapalonych entuzjastów tej dynamicznej i
-                ekscytującej dyscypliny. Nasza historia z paintballem sięga
-                daleko wstecz, a nasza pasja do tego sportu stale rośnie.{' '}
+              <p className="text-xl font-normal  leading-6 text-gray-400 ">
+                Projekt powstał przy luźnej rozmowie na temat pracy
+                inżynierskiej. Szukaliśmy jakiegoś pomysłu, no i się trafił.
+                Paintball.{' '}
               </p>
             </div>
             <div className="w-full lg:w-8/12 ">
@@ -26,13 +26,14 @@ export default function About() {
           <div className="flex lg:flex-row flex-col justify-between gap-8 pt-28">
             <div className="w-full lg:w-5/12 flex flex-col justify-center">
               <h1 className="text-3xl lg:text-4xl font-bold leading-9 text-gray-300 pb-4">
-                Our Story
+                Dlaczego paintball?
               </h1>
-              <p className="text-xl font-normal text-base leading-6 text-gray-400 ">
-                Nasza misja to nie tylko dostarczanie wspaniałych doświadczeń
-                związanych z paintballem, ale także tworzenie miejsca, gdzie
-                pasjonaci mogą spotkać się, wymieniać doświadczeniami i rozwijać
-                swoje umiejętności.
+              <p className="text-xl font-normal leading-6 text-gray-400 ">
+                Myślę że każdy z nas kojarzy ten temat, chociażby z wyjazdów
+                integracyjnych (mniej lub bardziej udanych). Od czasu do czasu
+                lubimy sobie pojechać, postrzelać, wylatać się. Świetny pomysł
+                na spędzanie czasu przy świeżym powietrzu! (chyba że maska jest
+                z wypożyczalni, wtedy to różnie).
               </p>
             </div>
             <div className="w-full lg:w-8/12 ">
@@ -47,10 +48,10 @@ export default function About() {
             <div className="container flex justify-center mx-auto pt-24 ">
               <div>
                 <p className="text-gray-200 text-xl text-center font-normal py-6">
-                  BUILDING TEAM
+                  TWÓRCY
                 </p>
                 <h1 className="xl:text-4xl text-3xl text-center text-gray-400 font-extrabold pb-6 sm:w-4/6 w-5/6 mx-auto">
-                  The Talented People Behind the Scenes of the Organization
+                  Jakimś cudem udało się to ogarnąć z pomocą tych dżentelmenów:
                 </h1>
               </div>
             </div>
@@ -63,25 +64,19 @@ export default function About() {
                         <div className="h-32 w-32">
                           <img
                             src="https://avatar.iran.liara.run/public/13"
-                            
                             className="rounded-full object-cover h-full w-full shadow-md"
                           />
                         </div>
                       </div>
                       <div className="px-6 mt-16">
-                        <div className="font-bold text-3xl text-center pb-1">
+                        <div className="font-bold text-3xl text-center text-primary-foreground pb-1">
                           Robert
                         </div>
                         <p className="text-gray-800 text-sm text-center">
                           Frontend
                         </p>
                         <p className="text-center text-gray-600 text-base pt-3 font-normal mb-6">
-                          One morning, when Gregor Samsa woke from troubled
-                          dreams, he found himself transformed in his bed into a
-                          horrible vermin. He lay on his armour-like back, and
-                          if he lifted his head a little he could see his brown
-                          belly, slightly domed and divided by arches into stiff
-                          sections.
+                          Froncik
                         </p>
                       </div>
                     </div>
@@ -92,26 +87,19 @@ export default function About() {
                         <div className="h-32 w-32">
                           <img
                             src="https://avatar.iran.liara.run/public/26"
-                            
                             className="rounded-full object-cover h-full w-full shadow-md"
                           />
                         </div>
                       </div>
                       <div className="px-6 mt-16">
-                        <div className="font-bold text-3xl text-center pb-1">
+                        <div className="font-bold text-3xl text-center text-primary-foreground pb-1">
                           Mateusz
                         </div>
                         <p className="text-gray-800 text-sm text-center">
                           Frontend
                         </p>
                         <p className="text-center text-gray-600 text-base pt-3 font-normal mb-6">
-                          The bedding was hardly able to cover it and seemed
-                          ready to slide off any moment. His many legs,
-                          pitifully thin compared with the size of the rest of
-                          him, waved about helplessly as he looked. "What's
-                          happened to me?" he thought. It wasn't a dream. His
-                          room, a proper human room although a little too small,
-                          lay peacefully between its four familiar walls.
+                          Coś tam front robie
                         </p>
                       </div>
                     </div>
@@ -122,24 +110,23 @@ export default function About() {
                         <div className="h-32 w-32">
                           <img
                             src="https://avatar.iran.liara.run/public/29"
-                            
                             className="rounded-full object-cover h-full w-full shadow-md"
                           />
                         </div>
                       </div>
                       <div className="px-6 mt-16">
-                        <div className="font-bold text-3xl text-center pb-1">
+                        <div className="font-bold text-3xl text-center text-primary-foreground pb-1">
                           Błażej
                         </div>
                         <p className="text-gray-800 text-sm text-center">
                           Backend
                         </p>
                         <p className="text-center text-gray-600 text-base pt-3 font-normal mb-6">
-                          A collection of textile samples lay spread out on the
-                          table - Samsa was a travelling salesman - and above it
-                          there hung a picture that he had recently cut out of
-                          an illustrated magazine and housed in a nice, gilded
-                          frame.
+                          Backend Backend Backend Backend Backend Backend
+                          Backend Backend Backend Backend Backend Backend
+                          Backend Backend Backend Backend Backend Backend
+                          Backend Backend Backend BackendBackend Backend Backend
+                          Backend
                         </p>
                       </div>
                     </div>

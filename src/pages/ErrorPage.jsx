@@ -9,7 +9,7 @@ export default function ErrorPage() {
   return (
     <div
       id="error-page"
-      className="text-white h-screen flex flex-col items-center justify-center"
+      className="text-destructive h-screen flex flex-col items-center justify-center"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +24,14 @@ export default function ErrorPage() {
         />
       </svg>
 
-      <h1 className="text-4xl mb-4 font-bold">O nie!</h1>
-      <p className="mb-2 text-xl">
+      <h1 className="text-4xl text-destructive-foreground mb-4 font-bold">
+        O nie!
+      </h1>
+      <p className="mb-2 text-xl text-destructive-foreground">
         Znalazłeś miejsce do którego nikt nie zagląda.
       </p>
-      <p className="mb-2">Błąd:</p>
-      <p className="italic">{errorMessage}</p>
+      <p className="mb-2 text-destructive-foreground">Błąd:</p>
+      <p className="italic text-destructive-foreground">{errorMessage}</p>
     </div>
   )
 }
