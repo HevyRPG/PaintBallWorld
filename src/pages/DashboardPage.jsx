@@ -33,7 +33,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="bg-slate-900 m-8 rounded-xl ">
+    <div className="bg-slate-900 m-8 rounded-xl max-w-screen-2xl ">
       <div className="flex-grow text-gray-200">
         <main className="p-6 sm:p-10 space-y-6">
           <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
@@ -92,7 +92,7 @@ const DashboardPage = () => {
               </div>
             </div>
             <div className="flex flex-col items-center text-center font-semibold pt-8 bg-white shadow rounded-xl md:w-3/4  text-gray-500">
-              <span class="block text-black  text-2xl font-bold mb-12  ">
+              <span class="block text-primary-foreground  text-2xl font-bold mb-12  ">
                 Statystyki
               </span>
               <div class="grid grid-cols-4 gap-4">
@@ -125,7 +125,7 @@ const DashboardPage = () => {
             <div className="w-full flex flex-col text-gray-400 ">
               <div className="bg-white shadow rounded-xl">
                 <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
-                  <span className="text-black pb-8">Najblizsze rozgrywki</span>
+                  <span className="text-primary-foreground pb-8">Najblizsze rozgrywki</span>
                   <span>Poznań 06.05.2024</span>
                   <span>Warszawa 04.06.2024</span>
                 </div>
@@ -133,7 +133,7 @@ const DashboardPage = () => {
 
               <div className="bg-white shadow rounded-xl  mt-6">
                 <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
-                  <span className="text-black pb-8">Historia rozgrywek</span>
+                  <span className="text-primary-foreground pb-8">Historia rozgrywek</span>
                   <span>Poznań 06.05.2024</span>
                   <span>Warszawa 04.06.2024</span>
                 </div>
