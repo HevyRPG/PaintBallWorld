@@ -13,6 +13,9 @@ const CallendarPage = () => {
   const initialFieldID = 'TESTGAL' // Set the initial fieldID to 'TEST'
   const [fieldID, setFieldID] = useState(initialFieldID)
 
+  const handleAutocompleteSelection = (selectedCityName) =>
+    console.log('Selected Value:', selectedCityName)
+
   const testEvents1 = [
     {
       id: 1,
@@ -23,31 +26,31 @@ const CallendarPage = () => {
       maxAttendees: 30,
     },
     {
-      id: 1,
-      name: 'Event 1',
-      date: '2024-02-14',
-      hour: '16:00',
-      attendees: 20,
-      maxAttendees: 30,
-    },
-    {
-      id: 1,
-      name: 'Event 1',
-      date: '2024-02-14',
-      hour: '16:00',
-      attendees: 20,
-      maxAttendees: 30,
-    },
-    {
-      id: 1,
-      name: 'Event 1',
-      date: '2024-02-14',
-      hour: '16:00',
-      attendees: 20,
-      maxAttendees: 30,
-    },
-    {
       id: 2,
+      name: 'Event 1',
+      date: '2024-02-14',
+      hour: '16:00',
+      attendees: 20,
+      maxAttendees: 30,
+    },
+    {
+      id: 3,
+      name: 'Event 1',
+      date: '2024-02-14',
+      hour: '16:00',
+      attendees: 20,
+      maxAttendees: 30,
+    },
+    {
+      id: 4,
+      name: 'Event 1',
+      date: '2024-02-14',
+      hour: '16:00',
+      attendees: 20,
+      maxAttendees: 30,
+    },
+    {
+      id: 5,
       name: 'Event 2',
       date: '2024-02-15',
       hour: '16:00',
@@ -55,7 +58,7 @@ const CallendarPage = () => {
       maxAttendees: 25,
     },
     {
-      id: 3,
+      id: 6,
       name: 'Event 3',
       date: '2024-02-16',
       hour: '16:00',
@@ -66,7 +69,7 @@ const CallendarPage = () => {
 
   const testEvents2 = [
     {
-      id: 4,
+      id: 7,
       name: 'Event 4',
       date: '2024-02-17',
       hour: '18:00',
@@ -74,7 +77,7 @@ const CallendarPage = () => {
       attendees: 30,
     },
     {
-      id: 5,
+      id: 8,
       name: 'Event 5',
       date: '2024-02-18',
       hour: '16:00',
@@ -82,7 +85,7 @@ const CallendarPage = () => {
       attendees: 10,
     },
     {
-      id: 6,
+      id: 9,
       name: 'Event 6',
       date: '2024-02-19',
       hour: '17:00',
@@ -158,7 +161,7 @@ const CallendarPage = () => {
         <div className="w-1/3 overflow-y-auto max-h-[500px] bg-bgs">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <Autocomplete />
+              <Autocomplete onSelection={handleAutocompleteSelection} />
             </div>
             <div>
               <select
