@@ -1,38 +1,17 @@
-import { useRef, useState } from 'react'
-import ContactOwnerModal from '../components/ContactOwnerModal'
-
+import { useRef, useState } from "react";
+import ContactOwnerModal from "../components/ContactOwnerModal";
+import Calendar from "../components/Calendar";
+import OpenEventsTable from "../components/OpenEventsTable";
 // Mock:
 const userData = {
-  firstName: 'Jan',
-  lastName: 'Nowak',
-  username: 'SuperNowak79',
-  phoneNumber: '669-696-353',
-  email: 'Jannowak@example.com',
-  profilePicture: 'https://avatar.iran.liara.run/public/24', // Placeholder image URL
-  info: 'Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.',
-}
-
-const paintballFieldsData = [
-  {
-    id: 1,
-    fieldName: 'Paintball Arena Xtreme',
-    location: 'Los Angeles, CA',
-    ownerName: 'Adam Smith',
-  },
-  {
-    id: 2,
-    fieldName: 'Urban Paintball Park',
-    location: 'New York City, NY',
-    ownerName: 'Emily Johnson',
-  },
-  {
-    id: 3,
-    fieldName: 'Wilderness Paintball Fields',
-    location: 'Denver, CO',
-    ownerName: 'Michael Brown',
-  },
-]
-//
+  firstName: "Jan",
+  lastName: "Nowak",
+  username: "SuperNowak79",
+  phoneNumber: "669-696-353",
+  email: "Jannowak@example.com",
+  profilePicture: "https://avatar.iran.liara.run/public/24", // Placeholder image URL
+  info: "Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.",
+};
 
 const DashboardPage = () => {
   const {
@@ -43,101 +22,136 @@ const DashboardPage = () => {
     email,
     profilePicture,
     info,
-  } = userData
+  } = userData;
 
-  const [selectedField, setSelectedField] = useState(null)
+  const [selectedField, setSelectedField] = useState(null);
 
-  const modal = useRef()
+  const modal = useRef();
   const handleOpenContactClick = (field) => {
-    setSelectedField(field)
-    modal.current.open() // Otwiera modal -> do przerobienia
-  }
+    setSelectedField(field);
+    modal.current.open(); // Otwiera modal -> do przerobienia
+  };
 
   return (
-    <div className="container max-w-screen-2xl mx-auto p-16">
-      <div className="p-8 bg-white shadow mt-14 rounded-lg">
-        <div className="grid grid-cols-1 md:grid-cols-3">
-          <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
-            <div>
-              <p className="font-bold text-gray-700 text-xl">3</p>
-              <p className="text-gray-400">Rozgrywki</p>
+    <div className="bg-slate-900 m-8 rounded-xl ">
+      <div className="flex-grow text-gray-200">
+        <main className="p-6 sm:p-10 space-y-6">
+          <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+            <div className="mr-6">
+              <h1 className="text-4xl font-semibold mb-2">Dashboard</h1>
+              <h2 className="text-gray-600 ml-0.5">Zarządzaj swoim profilem</h2>
             </div>
-            <div>
-              <p className="font-bold text-gray-700 text-xl">6</p>
-              <p className="text-gray-400">Strzały w głowę</p>
-            </div>
-            <div>
-              <p className="font-bold text-gray-700 text-xl">13</p>
-              <p className="text-gray-400">Znajomi</p>
+            <div className="flex flex-wrap items-start justify-end -mb-3">
+              <button className="inline-flex px-5 py-3 text-purple-600 hover:text-purple-700 focus:text-purple-700 hover:bg-purple-100 focus:bg-purple-100 border border-purple-600 rounded-md mb-3">
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="flex-shrink-0 h-5 w-5 -ml-1 mt-0.5 mr-2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+                Zostań właścicielem
+              </button>
+              <button className="inline-flex px-5 py-3 text-white bg-purple-600 hover:bg-purple-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+                <svg
+                  aria-hidden="true"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+                Edytuj profil
+              </button>
             </div>
           </div>
-          <div className="relative">
-            <div className="w-48 h-48 bg-indigo-200 mx-auto rounded-full shadow-2xl absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-              <img src={profilePicture} />
+          <section className="flex gap-6">
+            <div className="flex items-center text-center justify-center py-4 bg-white shadow rounded-xl md:w-1/4">
+              <div>
+                <img
+                  src="https://avatar.iran.liara.run/public/36"
+                  className="max-h-24 max-w-24 mx-auto"
+                />
+                <span className="block text-blue-500">@username</span>
+                <span className="block text-gray-500">Imie i nazwisko</span>
+                <span className="block text-gray-500">email</span>
+                <span className="block text-gray-500">socialki</span>
+              </div>
             </div>
-          </div>
-          <div className="space-x-4 flex justify-between mt-32 md:mt-0 md:justify-center">
-            <button className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-              Zostań właścicielem
-            </button>
-            <button className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-              Edytuj profil
-            </button>
-          </div>
-        </div>
-        <div className="mt-16 text-center border-b pb-12">
-          <h1 className="text-4xl font-medium text-gray-700">
-            {firstName} {lastName}
-          </h1>
-          <p className="font-light text-gray-600 mt-3">@{username}</p>
+            <div className="flex flex-col items-center text-center font-semibold pt-8 bg-white shadow rounded-xl md:w-3/4  text-gray-500">
+              <span class="block text-black  text-2xl font-bold mb-12  ">
+                Statystyki
+              </span>
+              <div class="grid grid-cols-4 gap-4">
+                <div>
+                  <span class="block ">Ukończone rozgrywki</span>
+                  <span class="block ">100</span>
+                </div>
+                <div>
+                  <span class="block ">Odwiedzone pola</span>
+                  <span class="  ">50</span>
+                </div>
+                <div>
+                  <span class="block ">Łączny czas gry</span>
+                  <span class="  ">10 godzin</span>
+                </div>
+                <div>
+                  <span class="block ">Wystawione opinie</span>
+                  <span class="block  ">5</span>
+                </div>
+              </div>
+            </div>
+          </section>
 
-          <p className="my-4 text-gray-900 dark:text-gray-500 first-line:tracking-widest text-left first-letter:text-7xl first-letter:font-bold first-letter:text-gray-900 dark:first-letter:text-gray-600 first-letter:pr-1 ">
-            {info}
-          </p>
-        </div>
-        <h1 className="text-3xl text-center font-medium text-gray-700 mt-4 mb-12">
-          Historia rozgrywek
-        </h1>
-        <div className="m-8 flex flex-col">
-          <table className="table-auto">
-            <thead>
-              <tr>
-                <th>Nazwa Pola</th>
-                <th>Miejscowość</th>
-                <th>Właściciel</th>
-                <th>Oceń</th>
-                <th>Kontakt</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paintballFieldsData.map((field, index) => (
-                <tr key={index}>
-                  <td>{field.fieldName}</td>
-                  <td>{field.location}</td>
-                  <td>{field.ownerName}</td>
-                  <td>⭐⭐⭐⭐⭐</td>
-                  <td>
-                    <button
-                      onClick={() => handleOpenContactClick(field)}
-                      className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                    >
-                      Kontakt
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <ContactOwnerModal
-          ref={modal}
-          selectedField={selectedField}
-          email={email}
-        />
-        
+          <section className="flex gap-6">
+            <div className="flex flex-col">
+              {/* Calendar */}
+              <Calendar />
+            </div>
+
+            <div className="w-full flex flex-col text-gray-400 ">
+              <div className="bg-white shadow rounded-xl">
+                <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
+                  <span className="text-black pb-8">Najblizsze rozgrywki</span>
+                  <span>Poznań 06.05.2024</span>
+                  <span>Warszawa 04.06.2024</span>
+                </div>
+              </div>
+
+              <div className="bg-white shadow rounded-xl  mt-6">
+                <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
+                  <span className="text-black pb-8">Historia rozgrywek</span>
+                  <span>Poznań 06.05.2024</span>
+                  <span>Warszawa 04.06.2024</span>
+                </div>
+              </div>
+
+              <div className="bg-white shadow rounded-xl  mt-6">
+                <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
+                  <span className="text-black pb-8">Polecane rozgrywki</span>
+                  <span>Poznań 06.05.2024</span>
+                  <span>Warszawa 04.06.2024</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DashboardPage
+export default DashboardPage;
