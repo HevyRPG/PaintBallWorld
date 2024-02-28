@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { isLoggedIn } from '../components/auth'
+import React, { useContext } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext' // Adjust the path as necessary
 import { Button } from '@/components/ui/button'
 
 const Navbar = () => {
   const location = useLocation()
-  const [shouldReload, setShouldReload] = useState(false)
+  const navigate = useNavigate() // Use the useNavigate hook
+  const { isLoggedIn, logout } = useContext(AuthContext) // Use context to check if user is logged in
 
   const isActive = (path) => {
     return location.pathname === path
@@ -30,12 +31,9 @@ const Navbar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    setShouldReload((prevState) => !prevState)
+    logout() // Use logout function from context
+    navigate('/') // Redirect to home page after logout
   }
-
-  const buttonStyles =
-    'inline-block px-4 py-2 text-sm font-medium border rounded focus:outline-none '
 
   return (
     <nav className="bg-gray-900 shadow shadow-gray-900 w-full px-8 py-2 md:px-auto">
@@ -49,20 +47,19 @@ const Navbar = () => {
           </div>
         </div>
         <div className="order-2 md:order-3">
-          {isLoggedIn() ? (
+          {!isLoggedIn ? (
             <>
-              <Link to="/register">
-                <Button variant="ghost" size="" className="rounded h-10 mr-2 ">
-                  Zarejestruj się
-                </Button>
-              </Link>
               <Link to="/login">
                 <Button
                   variant="outline"
-                  size="lg"
-                  className="rounded bg-primary text-primary-foreground"
+                  className="rounded bg-primary text-primary-foreground mr-2"
                 >
                   Login
+                </Button>
+              </Link>
+              <Link to="/register">
+                <Button variant="ghost" className="rounded h-10">
+                  Zarejestruj się
                 </Button>
               </Link>
             </>
@@ -71,14 +68,14 @@ const Navbar = () => {
               <Link to="/dashboard">
                 <Button
                   variant="default"
-                  className=" mr-4 rounded bg-secondary text-primary hover:bg-white "
+                  className="mr-4 rounded bg-secondary text-primary hover:bg-white"
                 >
                   Profil
                 </Button>
               </Link>
               <Button
                 variant="ghost"
-                className=" rounded "
+                className="rounded"
                 onClick={handleLogout}
               >
                 Wyloguj
