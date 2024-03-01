@@ -140,14 +140,6 @@ const DashboardPage = () => {
                   <span>Warszawa 04.06.2024</span>
                 </div>
               </div>
-
-              <div className="bg-white shadow rounded-xl  mt-6">
-                <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
-                  <span className="text-black pb-8">Polecane rozgrywki</span>
-                  <span>Poznań 06.05.2024</span>
-                  <span>Warszawa 04.06.2024</span>
-                </div>
-              </div>
             </div>
           </section>
         </main>
