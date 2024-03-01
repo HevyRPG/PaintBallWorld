@@ -7,11 +7,16 @@ export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isChecking, setIsChecking] = useState(true) // add a state to indicate the checking process
 
   useEffect(() => {
-    // Check if token exists in cookies
-    const token = Cookies.get('authToken')
-    setIsLoggedIn(!!token)
+    const checkAuthStatus = async () => {
+      const token = Cookies.get('authToken')
+      setIsLoggedIn(!!token)
+      setIsChecking(false) // set it to false after checking the auth status
+    }
+
+    checkAuthStatus()
   }, [])
 
   const login = async (username, password) => {
