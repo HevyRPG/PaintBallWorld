@@ -1,16 +1,18 @@
+
 import * as React from "react";
 import { useRef, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
+
 // Mock:
 const userData = {
-  firstName: "Jan",
-  lastName: "Nowak",
-  username: "SuperNowak79",
-  phoneNumber: "669-696-353",
-  email: "Jannowak@example.com",
-  profilePicture: "https://avatar.iran.liara.run/public/24", // Placeholder image URL
-  info: "Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.",
-};
+  firstName: 'Jan',
+  lastName: 'Nowak',
+  username: 'SuperNowak79',
+  phoneNumber: '669-696-353',
+  email: 'Jannowak@example.com',
+  profilePicture: 'https://avatar.iran.liara.run/public/24', // Placeholder image URL
+  info: 'Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.',
+}
 
 const DashboardPage = () => {
   const {
@@ -21,18 +23,20 @@ const DashboardPage = () => {
     email,
     profilePicture,
     info,
-  } = userData;
+  } = userData
 
-  const [selectedField, setSelectedField] = useState(null);
+  const [selectedField, setSelectedField] = useState(null)
 
-  const modal = useRef();
+  const modal = useRef()
   const handleOpenContactClick = (field) => {
-    setSelectedField(field);
-    modal.current.open(); // Otwiera modal -> do przerobienia
-  };
+    setSelectedField(field)
+    modal.current.open() // Otwiera modal -> do przerobienia
+  }
 
   return (
+
     <div className="container bg-slate-900 m-8 rounded-xl max-w-screen-2xl">
+ main
       <div className="flex-grow text-gray-200">
         <main className="p-6 sm:p-10 space-y-6">
           <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
@@ -145,7 +149,7 @@ const DashboardPage = () => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardPage;
+export default DashboardPage

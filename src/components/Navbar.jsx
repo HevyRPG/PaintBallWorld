@@ -22,11 +22,9 @@ const Navbar = () => {
 
   const renderNavLinks = () => {
     return navLinks.map(({ path, label }) => (
-      <div key={path} className="md:px-4 md:py-2 ">
-        <Link to={path} className={`ml-2 text-xl ${isActive(path)}`}>
-          {label}
-        </Link>
-      </div>
+      <Link key={path} to={path} className={`mx-4 text-xl ${isActive(path)}`}>
+        {label}
+      </Link>
     ))
   }
 
@@ -36,17 +34,15 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-gray-900 shadow shadow-gray-900 w-full px-8 py-2 md:px-auto">
-      <div className="md:h-16 h-28 mx-auto md:px-4 container flex max-w-screen-2xl items-center justify-between flex-wrap md:flex-nowrap">
-        <div className="text-indigo-500 md:order-1">
+    <nav className="bg-gray-900 shadow shadow-gray-900 w-full">
+      <div className="container mx-auto flex items-center justify-between py-4 px-8 md:flex-row">
+        <div className="flex-1 flex justify-start">
           <img className="w-12 h-12" src="./logosm.png" alt="Logo" />
         </div>
-        <div className="text-gray-500 order-3 w-full md:w-auto md:order-2">
-          <div className="flex font-semibold justify-between">
-            {renderNavLinks()}
-          </div>
+        <div className="flex-1 flex justify-center font-semibold">
+          {renderNavLinks()}
         </div>
-        <div className="order-2 md:order-3">
+        <div className="flex-1 flex justify-end">
           {!isLoggedIn ? (
             <>
               <Link to="/login">
