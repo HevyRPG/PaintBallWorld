@@ -20,6 +20,7 @@ import DashboardPage from './pages/DashboardPage.jsx'
 import ContactPage from './pages/Contact.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import TestPage from './pages/TestPage.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
 
 // Custom route component to protect routes
 const ProtectedRoute = () => {
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="about" element={<AboutPage />} />
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
             {/* Wrap the DashboardPage in a ProtectedRoute */}
             <Route element={<ProtectedRoute />}>
               <Route path="dashboard" element={<DashboardPage />} />
