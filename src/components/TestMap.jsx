@@ -100,7 +100,7 @@ const TestMap = () => {
         </div>
       </div>
       <div className="max-w-screen-xl mx-auto">
-        <h1 className="text-white">KURWY</h1>
+       
       </div>
     </>
   )
