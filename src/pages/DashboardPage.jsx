@@ -33,7 +33,7 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="bg-slate-900 m-8 rounded-xl max-w-screen-2xl ">
+    <div className="container bg-slate-900 m-8 rounded-xl max-w-screen-2xl ">
       <div className="flex-grow text-gray-200">
         <main className="p-6 sm:p-10 space-y-6">
           <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
