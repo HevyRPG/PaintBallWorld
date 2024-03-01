@@ -1,10 +1,9 @@
-import { useRouteError } from 'react-router-dom'
+// errorpage.jsx
+import React from 'react'
 
 export default function ErrorPage() {
-  const error = useRouteError()
-  console.error(error)
-
-  const errorMessage = error?.statusText || error?.message || 'Unknown error'
+  // Removed useRouteError and using a static error message instead.
+  const errorMessage = 'Page not found.'
 
   return (
     <div
