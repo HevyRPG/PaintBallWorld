@@ -1,7 +1,7 @@
-
-import * as React from "react";
-import { useRef, useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
+import * as React from 'react'
+import { useRef, useState } from 'react'
+import { Calendar } from '@/components/ui/calendar'
+import { Button } from '@/components/ui/button'
 
 // Mock:
 const userData = {
@@ -34,18 +34,23 @@ const DashboardPage = () => {
   }
 
   return (
-
-    <div className="container bg-slate-900 m-8 rounded-xl max-w-screen-2xl">
- main
+    <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
       <div className="flex-grow text-gray-200">
         <main className="p-6 sm:p-10 space-y-6">
           <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
             <div className="mr-6">
-              <h1 className="text-4xl font-semibold mb-2">Dashboard</h1>
-              <h2 className="text-gray-600 ml-0.5">Zarządzaj swoim profilem</h2>
+              <h1 className="text-4xl font-semibold text-primary mb-2">
+                Dashboard
+              </h1>
+              <h2 className="text-secondary-foreground ml-0.5">
+                Zarządzaj swoim profilem
+              </h2>
             </div>
             <div className="flex flex-wrap items-start justify-end -mb-3">
-              <button className="inline-flex px-5 py-3 text-purple-600 hover:text-purple-700 focus:text-purple-700 hover:bg-purple-100 focus:bg-purple-100 border border-purple-600 rounded-md mb-3">
+              <Button
+                variant="outline"
+                className="inline-flex px-3 py-6  border-primary rounded-md mb-3"
+              >
                 <svg
                   aria-hidden="true"
                   fill="none"
@@ -61,14 +66,17 @@ const DashboardPage = () => {
                   />
                 </svg>
                 Zostań właścicielem
-              </button>
-              <button className="inline-flex px-5 py-3 text-white bg-purple-600 hover:bg-purple-700 focus:bg-purple-700 rounded-md ml-6 mb-3">
+              </Button>
+              <Button
+                variant="default"
+                className="inline-flex px-3 py-6 rounded-md mt-0.5 ml-6 mb-3 hover:text-secondary-foreground hover:bg-secondary"
+              >
                 <svg
                   aria-hidden="true"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  className="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2"
+                  className="flex-shrink-0 h-6 w-6 text-primary-foreground -ml-1 mr-2"
                 >
                   <path
                     stroke-linecap="round"
@@ -78,27 +86,27 @@ const DashboardPage = () => {
                   />
                 </svg>
                 Edytuj profil
-              </button>
+              </Button>
             </div>
           </div>
           <section className="flex gap-6">
-            <div className="flex items-center text-center justify-center py-4 bg-white shadow rounded-xl md:w-1/4">
+            <div className="flex items-center text-center justify-center py-4 border bg-secondary text-secondary-foreground shadow rounded-xl md:w-1/4">
               <div>
                 <img
                   src="https://avatar.iran.liara.run/public/36"
                   className="max-h-24 max-w-24 mx-auto"
                 />
-                <span className="block text-blue-500">@username</span>
-                <span className="block text-gray-500">Imie i nazwisko</span>
-                <span className="block text-gray-500">email</span>
-                <span className="block text-gray-500">socialki</span>
+                <span className="block text-primary">@username</span>
+                <span className="block ">Imie i nazwisko</span>
+                <span className="block ">email</span>
+                <span className="block ">socialki</span>
               </div>
             </div>
-            <div className="flex flex-col items-center text-center font-semibold pt-8 bg-white shadow rounded-xl md:w-3/4  text-gray-500">
-              <span class="block text-primary-foreground  text-2xl font-bold mb-12  ">
+            <div className="flex flex-col items-center text-center font-semibold pt-8 border  bg-secondary shadow rounded-xl md:w-3/4  text-card-foreground">
+              <span class="block text-accent-foreground  text-2xl font-bold mb-12  ">
                 Statystyki
               </span>
-              <div class="grid grid-cols-4 gap-4">
+              <div class="grid grid-cols-4  gap-4">
                 <div>
                   <span class="block ">Ukończone rozgrywki</span>
                   <span class="block ">100</span>
@@ -124,10 +132,10 @@ const DashboardPage = () => {
               <Calendar mode="single" className="rounded-md border shadow" />
             </div>
 
-            <div className="w-full flex flex-col text-gray-400 ">
-              <div className="bg-white shadow rounded-xl">
-                <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
-                  <span className="text-primary-foreground pb-8">
+            <div className="w-full flex flex-col  text-secondary-foreground ">
+              <div className="shadow rounded-xl">
+                <div className="flex flex-col rounded-xl items-center bg-secondary justify-between px-6 py-5 font-semibold border">
+                  <span className="text-secondary-foreground pb-8">
                     Najblizsze rozgrywki
                   </span>
                   <span>Poznań 06.05.2024</span>
@@ -135,9 +143,9 @@ const DashboardPage = () => {
                 </div>
               </div>
 
-              <div className="bg-white shadow rounded-xl  mt-6">
-                <div className="flex flex-col rounded-xl items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
-                  <span className="text-primary-foreground pb-8">
+              <div className=" shadow rounded-xl bg-secondary  mt-6">
+                <div className="flex flex-col rounded-xl  items-center justify-between px-6 py-5 font-semibold border">
+                  <span className="text-secondary-foreground pb-8">
                     Historia rozgrywek
                   </span>
                   <span>Poznań 06.05.2024</span>

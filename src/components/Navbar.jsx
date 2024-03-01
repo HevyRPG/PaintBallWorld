@@ -61,7 +61,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/dashboard">
+              <Link to="/profile">
                 <Button
                   variant="default"
                   className="mr-4 rounded bg-secondary text-primary hover:bg-white"

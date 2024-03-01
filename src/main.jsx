@@ -16,7 +16,7 @@ import CalendarPage from './pages/CalendarPage.jsx'
 import AboutPage from './pages/AboutPage.jsx'
 import RegisterPage from './pages/RegisterPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
-import DashboardPage from './pages/DashboardPage.jsx'
+import ProfilePage from './pages/ProfilePage.jsx'
 import ContactPage from './pages/Contact.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import TestPage from './pages/TestPage.jsx'
@@ -41,9 +41,8 @@ const App = () => {
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
-            {/* Wrap the DashboardPage in a ProtectedRoute */}
             <Route element={<ProtectedRoute />}>
-              <Route path="dashboard" element={<DashboardPage />} />
+              <Route path="profile" element={<ProfilePage />} />
             </Route>
             <Route path="contact" element={<ContactPage />} />
             <Route path="test" element={<TestPage />} />

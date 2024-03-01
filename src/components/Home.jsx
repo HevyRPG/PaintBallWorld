@@ -7,7 +7,7 @@ export default function Home() {
     <main className="mx-auto max-w-screen-2xl bg-background text-primary-foreground">
       {/* Sekcja główna */}
       <section className="text-center py-20 px-4 bg-background text-primary">
-        <div className="max-w-4xl mx-auto">
+        <div className="sm:max-w-md md:max-w-md 2xl:max-w-3xl   mx-auto">
           <img src="logosm.png" alt="logo" />
           <h1 className="text-6xl text-secondary-foreground font-bold mb-4">
             Witamy na{' '}

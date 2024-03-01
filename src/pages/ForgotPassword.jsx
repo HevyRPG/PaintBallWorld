@@ -1,18 +1,17 @@
-import * as React from "react";
-import { Button } from "@/components/ui/button";
+import * as React from 'react'
+import { Button } from '@/components/ui/button'
 
 const ForgotPassword = () => {
   return (
     <>
-      <div className="container mx-auto flex flex-col m-20 items-center rounded-xl justify-center max-w-screen-2xl">
-     
+      <div className="flex items-center justify-center min-h-screen ">
         <div className="w-full bg-white p-6 bg-bgs rounded-xl shadow md:mt-0 sm:max-w-md sm:p-8">
           <h1 className="mb-4 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Nie pamiętasz hasła?
           </h1>
           <p className="font-light text-gray-500 dark:text-gray-400">
             Wpisz e-mail odpowiedni dla Twojego konta. Na adres e-mail wyślemy
-            Ci link do strony, na której będzie można łatwo utworzyć nowe hasło.{" "}
+            Ci link do strony, na której będzie można łatwo utworzyć nowe hasło.{' '}
           </p>
           <form className="mt-4 space-y-4 lg:mt-5 md:space-y-5" action="#">
             <div>
@@ -46,7 +45,7 @@ const ForgotPassword = () => {
                   htmlFor="terms"
                   className="font-light text-gray-500 dark:text-gray-300"
                 >
-                  Akceptuje{" "}
+                  Akceptuje{' '}
                   <a
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                     href="#"
@@ -57,7 +56,6 @@ const ForgotPassword = () => {
               </div>
             </div>
             <Button
-              
               type="submit"
               className="w-full p-2 rounded bg-primary text-primary-foreground"
             >
@@ -67,7 +65,7 @@ const ForgotPassword = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

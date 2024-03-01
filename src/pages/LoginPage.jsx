@@ -19,7 +19,7 @@ const LoginPage = () => {
 
     try {
       await login(username, password)
-      navigate('/dashboard') // Redirect to dashboard on successful login
+      navigate('/profile') // Redirect to dashboard on successful login
     } catch (error) {
       console.error('Error logging in:', error)
       setErrorRegister('Wystąpił błąd podczas logowania. Spróbuj ponownie.')

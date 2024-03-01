@@ -30,8 +30,8 @@ export const AuthProvider = ({ children }) => {
       const token = response.data.token
       // Store token in cookies with security flags
       Cookies.set('authToken', token, {
-        expires: 1,
-        secure: true,
+        expires: 3,
+        secure: false,
         sameSite: 'Strict',
       })
       setIsLoggedIn(true)
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, isChecking }}>
       {children}
     </AuthContext.Provider>
   )
