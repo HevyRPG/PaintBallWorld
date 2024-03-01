@@ -26,7 +26,8 @@ const RegisterPage = () => {
   const [errorRegister, setErrorRegister] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleOwnerRegister = async () => {
+  const handleOwnerRegister = async (e) => {
+    e.preventDefault()
     setLoading(true)
     setErrorRegister('')
 
@@ -119,7 +120,8 @@ const RegisterPage = () => {
     }
   }
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault()
     setLoading(true)
     setErrorRegister('')
 
@@ -319,7 +321,7 @@ const RegisterPage = () => {
           )}
           <Button
             variant="outline"
-            type="button"
+            type="submit"
             className="w-full bg-primary text-primary-foreground p-2 rounded hover:bg-secondary"
             onClick={registerAsOwner ? handleOwnerRegister : handleRegister}
           >

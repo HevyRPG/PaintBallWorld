@@ -57,7 +57,7 @@ const LoginPage = () => {
           />
           <Button
             variant="outline"
-            type="button"
+            type="submit"
             className="w-full p-2 rounded bg-primary text-primary-foreground"
             onClick={handleLogin}
             disabled={loading} // Disable button while loading
