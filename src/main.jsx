@@ -21,6 +21,7 @@ import ContactPage from './pages/Contact.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 import TestPage from './pages/TestPage.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
+import EditProfile from './pages/EditProfile.jsx'
 
 // Custom route component to protect routes
 const ProtectedRoute = () => {
@@ -46,6 +47,7 @@ const App = () => {
             </Route>
             <Route path="contact" element={<ContactPage />} />
             <Route path="test" element={<TestPage />} />
+            <Route path="edit-profile" element={<EditProfile />} />
             {/* Catch-all route */}
             <Route path="*" element={<ErrorPage />} />
           </Route>

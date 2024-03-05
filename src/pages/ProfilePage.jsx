@@ -1,38 +1,21 @@
-import * as React from 'react'
-import { useRef, useState } from 'react'
-import { Calendar } from '@/components/ui/calendar'
-import { Button } from '@/components/ui/button'
+import * as React from "react";
+import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
 
 // Mock:
 const userData = {
-  firstName: 'Jan',
-  lastName: 'Nowak',
-  username: 'SuperNowak79',
-  phoneNumber: '669-696-353',
-  email: 'Jannowak@example.com',
-  profilePicture: 'https://avatar.iran.liara.run/public/24', // Placeholder image URL
-  info: 'Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.',
-}
+  firstName: "Jan",
+  lastName: "Nowak",
+  username: "SuperNowak79",
+  phoneNumber: "669-696-353",
+  email: "Jannowak@example.com",
+  profilePicture: "https://avatar.iran.liara.run/public/24", // Placeholder image URL
+  info: "Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.",
+};
 
 const DashboardPage = () => {
-  const {
-    firstName,
-    lastName,
-    username,
-    phoneNumber,
-    email,
-    profilePicture,
-    info,
-  } = userData
-
-  const [selectedField, setSelectedField] = useState(null)
-
-  const modal = useRef()
-  const handleOpenContactClick = (field) => {
-    setSelectedField(field)
-    modal.current.open() // Otwiera modal -> do przerobienia
-  }
-
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
       <div className="flex-grow text-gray-200">
@@ -67,26 +50,28 @@ const DashboardPage = () => {
                 </svg>
                 Zostań właścicielem
               </Button>
-              <Button
-                variant="default"
-                className="inline-flex px-3 py-6 rounded-md mt-0.5 ml-6 mb-3 hover:text-secondary-foreground hover:bg-secondary"
-              >
-                <svg
-                  aria-hidden="true"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="flex-shrink-0 h-6 w-6 text-primary-foreground -ml-1 mr-2"
+              <Link to="/edit-profile">
+                <Button
+                  variant="default"
+                  className="inline-flex px-3 py-6 rounded-md mt-0.5 ml-6 mb-3 hover:text-secondary-foreground hover:bg-secondary"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
-                Edytuj profil
-              </Button>
+                  <svg
+                    aria-hidden="true"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="flex-shrink-0 h-6 w-6 text-primary-foreground -ml-1 mr-2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  Edytuj profil
+                </Button>
+              </Link>
             </div>
           </div>
           <section className="flex gap-6">
@@ -157,7 +142,7 @@ const DashboardPage = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DashboardPage
+export default DashboardPage;
