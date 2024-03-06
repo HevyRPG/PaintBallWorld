@@ -11,7 +11,7 @@ export default function About() {
               <p className="text-xl font-normal  leading-6 text-gray-400 ">
                 Projekt powstał przy luźnej rozmowie na temat pracy
                 inżynierskiej. Szukaliśmy jakiegoś pomysłu, no i się trafił.
-                Paintball.{' '}
+                Paintball.{" "}
               </p>
             </div>
             <div className="w-full lg:w-8/12 ">
@@ -75,8 +75,13 @@ export default function About() {
                         <p className="text-gray-800 text-sm text-center">
                           Frontend
                         </p>
-                        <p className="text-center text-gray-600 text-base pt-3 font-normal mb-6">
-                          Froncik
+                        <p className=" text-gray-600 text-base pt-3 font-normal mb-6">
+                          Robert jest doświadczonym frontend developerem z
+                          obszernym doświadczeniem w budowaniu responsywnych i
+                          przyjaznych użytkownikowi stron internetowych. Robert
+                          jest zmotywowany do ciągłego doskonalenia się i
+                          poszukiwania najlepszych praktyk w dziedzinie frontend
+                          developmentu.
                         </p>
                       </div>
                     </div>
@@ -98,8 +103,14 @@ export default function About() {
                         <p className="text-gray-800 text-sm text-center">
                           Frontend
                         </p>
-                        <p className="text-center text-gray-600 text-base pt-3 font-normal mb-6">
-                          Coś tam front robie
+                        <p className=" text-gray-600 text-base pt-3 font-normal mb-6">
+                          Mateusz specjalizuje się w tworzeniu interaktywnych
+                          interfejsów. Posiada szeroką wiedzę z zakresu HTML,
+                          CSS i JavaScript oraz doświadczenie w pracy z
+                          popularnymi bibliotekami i frameworkami frontendowymi,
+                          takimi jak React.js. Mateusz jest pasjonatem
+                          nowoczesnych rozwiązań webowych i zawsze dąży do
+                          doskonałości w każdym projekcie, w którym uczestniczy.
                         </p>
                       </div>
                     </div>
@@ -121,12 +132,12 @@ export default function About() {
                         <p className="text-gray-800 text-sm text-center">
                           Backend
                         </p>
-                        <p className="text-center text-gray-600 text-base pt-3 font-normal mb-6">
+                        <p className="text-gray-600 text-base pt-3 font-normal mb-6">
                           Backend Backend Backend Backend Backend Backend
                           Backend Backend Backend Backend Backend Backend
                           Backend Backend Backend Backend Backend Backend
                           Backend Backend Backend BackendBackend Backend Backend
-                          Backend
+                          Backend king
                         </p>
                       </div>
                     </div>
@@ -144,5 +155,5 @@ export default function About() {
         </div>
       </div>
     </>
-  )
+  );
 }
