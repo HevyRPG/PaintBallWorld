@@ -25,10 +25,17 @@ import EditProfile from "./pages/EditProfile.jsx";
 
 // Custom route component to protect routes
 const ProtectedRoute = () => {
-  const { isLoggedIn } = useContext(AuthContext); // Use useContext to access AuthContext
 
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
-};
+  const { isLoggedIn, isChecking } = useContext(AuthContext) // Accessing isChecking along with isLoggedIn
+
+  // If still checking the auth status, you might want to display a loading indicator or similar
+  if (isChecking) {
+    return <div>Loading...</div> // Placeholder for loading state, consider replacing with a loading spinner or similar
+  }
+
+  // After checking is complete, proceed based on the isLoggedIn status
+  return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />
+}
 
 const App = () => {
   return (

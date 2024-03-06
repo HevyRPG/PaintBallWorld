@@ -5,6 +5,14 @@ import 'react-image-gallery/styles/css/image-gallery.css'
 function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
   const [images, setImages] = useState([])
 
+  const defaultPhotoGalleryProps = {
+    showFullscreenButton: false,
+    showThumbnails: true,
+    showPlayButton: false,
+    disableLazyLoad: true,
+    autoPlay: true,
+  }
+
   useEffect(() => {
     if (fieldID === 'TESTGAL') {
       // If fieldID is 'TESTGAL', display placeholder images
@@ -57,7 +65,7 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
       <ImageGallery
         items={images}
         className="image-gallery"
-        {...photoGalleryProps} // Spread the photoGalleryProps
+        {...defaultPhotoGalleryProps} // Spread the photoGalleryProps
         renderItem={(item) => (
           <div className="image-gallery-image">
             <img

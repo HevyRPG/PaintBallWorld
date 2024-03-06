@@ -183,7 +183,7 @@ const RegisterPage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center bg-bgm p-8">
-      <div className="bg-bgs p-8 rounded shadow-md w-96">
+      <div className="bg-bgs p-8 rounded shadow-md w-96 border-primary border">
         <h2 className="text-2xl font-semibold mb-6 text-primary">
           Zarejestruj się
         </h2>
