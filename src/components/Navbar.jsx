@@ -1,37 +1,37 @@
-import React, { useContext } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext' // Adjust the path as necessary
-import { Button } from '@/components/ui/button'
+import React, { useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext'; // Adjust the path as necessary
+import { Button } from '@/components/ui/button';
 
 const Navbar = () => {
-  const location = useLocation()
-  const navigate = useNavigate() // Use the useNavigate hook
-  const { isLoggedIn, logout } = useContext(AuthContext) // Use context to check if user is logged in
+  const location = useLocation();
+  const navigate = useNavigate(); // Use the useNavigate hook
+  const { isLoggedIn, logout } = useContext(AuthContext); // Use context to check if user is logged in
 
   const isActive = (path) => {
     return location.pathname === path
       ? 'text-white font-bold'
-      : 'text-primary hover:text-white'
-  }
+      : 'text-primary hover:text-white';
+  };
 
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/calendar', label: 'Terminarz' },
     { path: '/about', label: 'O nas' },
-  ]
+  ];
 
   const renderNavLinks = () => {
     return navLinks.map(({ path, label }) => (
       <Link key={path} to={path} className={`mx-4 text-xl ${isActive(path)}`}>
         {label}
       </Link>
-    ))
-  }
+    ));
+  };
 
   const handleLogout = () => {
-    logout() // Use logout function from context
-    navigate('/') // Redirect to home page after logout
-  }
+    logout(); // Use logout function from context
+    navigate('/'); // Redirect to home page after logout
+  };
 
   return (
     <nav className="bg-gray-900 shadow shadow-gray-900 w-full">
@@ -61,6 +61,14 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              <Link to="/dashboard">
+                <Button
+                  variant="outline"
+                  className="mr-4 rounded text-yellow-300 rounded"
+                >
+                  Dashboard
+                </Button>
+              </Link>
               <Link to="/profile">
                 <Button
                   variant="default"
@@ -81,7 +89,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

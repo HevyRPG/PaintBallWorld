@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
       // Store token in cookies with security flags
       Cookies.set('authToken', token, {
         expires: 3,
-        secure: true,
+        secure: false,
         sameSite: 'Strict',
       })
       setIsLoggedIn(true)

@@ -9,10 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import FormInput from '../components/FormInput'
-import { AuthContext } from '../context/AuthContext' // Ensure this path is correct
-import APIKEYS from '../components/APIKEYS' // Ensure this path is correct
-import '../index.css'
+import FormInput from '@/components/FormInput'
+import { AuthContext } from '@/context/AuthContext' // Ensure this path is correct
+import APIKEYS from '@/components/APIKEYS' // Ensure this path is correct
+import '@/index.css'
 
 const MultiPageDialog = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -83,10 +83,7 @@ const MultiPageDialog = () => {
     const formData = new FormData()
     setLoading(true)
     setErrorRegister('')
-    console.log(formData)
-    // Retrieve the token from cookies
     const token = Cookies.get('authToken')
-    console.log(token)
 
     formData.append('address.PhoneNo', formState.phone)
     formData.append('address.Street', formState.street)
@@ -98,8 +95,6 @@ const MultiPageDialog = () => {
     formData.append('name', formState.fieldName)
     formData.append('area', formState.area)
 
-    // Ensure 'formState.regulations' contains a File object.
-    // If 'formState.regulations' is coming from a file input, it should be a File object.
     if (formState.regulations instanceof File)
       formData.append('regulations', formState.regulations)
 
@@ -110,26 +105,17 @@ const MultiPageDialog = () => {
     formData.append('fieldType', 'Paintball')
     formData.append('Sets', JSON.stringify(formState.sets))
 
-    // Dynamically adjust headers to include the Authorization token
+    
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
         ...APIKEYS.headers,
-        Authorization: `Bearer ${token}`, // Append Authorization header
+        Authorization: `Bearer ${token}`, 
       },
     }
-    console.log('Logging config:', config)
+   
     try {
-      /* const response = await axios.post('/api/Field/Fields/Create', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          PW_API_KEY: 'jTxdHH3hnSuGtDKAsT0ikOmI76AVfPVo1VHWnSzfVuo',
-          'CF-Access-Client-Id': 'a9304e041abe76649c56c1e31cdd57b1.access',
-          'CF-Access-Client-Secret':
-            'ac24e7280b8bbf48434640839b9ae632c6a0661bf8603b19c1b4771ba84f5bee',
-          Authorization: `Bearer ${token}`,
-        },
-      }) */
+     
       const response = await axios.post(
         '/api/Field/Fields/Create',
         formData,
@@ -138,7 +124,7 @@ const MultiPageDialog = () => {
 
       if (response.status === 200) {
         setErrorRegister('Pole dodane pomyślnie! Możesz zamknąć to okno')
-        // Reset form or navigate as needed
+        
         setLoading(false)
       }
     } catch (error) {

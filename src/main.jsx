@@ -22,6 +22,7 @@ import ErrorPage from "./pages/ErrorPage.jsx";
 import TestPage from "./pages/TestPage.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import EditProfile from "./pages/EditProfile.jsx";
+import DashboardPage from "./pages/DashboardPage.jsx";
 
 // Custom route component to protect routes
 const ProtectedRoute = () => {
@@ -55,6 +56,7 @@ const App = () => {
             <Route element={<ProtectedRoute />}>
               <Route path="profile" element={<ProfilePage />} />
               <Route path="edit-profile" element={<EditProfile />} />
+              <Route path="dashboard" element={<DashboardPage />}></Route>
             </Route>
             {/* Catch-all route */}
             <Route path="*" element={<ErrorPage />} />
