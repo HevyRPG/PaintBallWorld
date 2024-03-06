@@ -85,3 +85,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+.active {
+  background-color: hsl(var(--primary));
+  color: white;
+  border: 1px solid
+}
