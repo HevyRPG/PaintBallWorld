@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button'
 const ForgotPassword = () => {
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen ">
-        <div className="w-full bg-white p-6 bg-bgs rounded-xl shadow md:mt-0 sm:max-w-md sm:p-8">
-          <h1 className="mb-4 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+      <div className="flex items-center border justify-center min-h-screen ">
+        <div className="w-full bg-background border-primary border p-6 bg-bgs rounded-xl shadow md:mt-0 sm:max-w-md sm:p-8">
+          <h1 className="mb-4 text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl ">
             Nie pamiętasz hasła?
           </h1>
-          <p className="font-light text-gray-500 dark:text-gray-400">
+          <p className="font-light text-secondary-foreground">
             Wpisz e-mail odpowiedni dla Twojego konta. Na adres e-mail wyślemy
             Ci link do strony, na której będzie można łatwo utworzyć nowe hasło.{' '}
           </p>
@@ -17,7 +17,7 @@ const ForgotPassword = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-secondary-foreground"
               >
                 Twój email
               </label>
@@ -25,8 +25,8 @@ const ForgotPassword = () => {
                 type="email"
                 name="email"
                 id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@company.com"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                placeholder="name@email.com"
                 required=""
               />
             </div>
@@ -36,18 +36,18 @@ const ForgotPassword = () => {
                   id="terms"
                   aria-describedby="terms"
                   type="checkbox"
-                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 "
                   required=""
                 />
               </div>
               <div className="ml-3 text-sm">
                 <label
                   htmlFor="terms"
-                  className="font-light text-gray-500 dark:text-gray-300"
+                  className="font-light text-secondary-foreground "
                 >
                   Akceptuje{' '}
                   <a
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    className="font-medium text-primary hover:underline "
                     href="#"
                   >
                     Regulamin

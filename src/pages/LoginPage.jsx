@@ -36,7 +36,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center p-8">
-      <div className="bg-bgs p-8 rounded shadow-md w-96 mt-4">
+      <div className="bg-bgs p-8 rounded shadow-md w-96 mt-4 border-primary border">
         <h2 className="text-2xl font-semibold mb-6 text-primary">Logowanie</h2>
         <form>
           <FormInput
