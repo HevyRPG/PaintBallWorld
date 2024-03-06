@@ -4,17 +4,6 @@ import { Link } from "react-router-dom";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 
-// Mock:
-const userData = {
-  firstName: "Jan",
-  lastName: "Nowak",
-  username: "SuperNowak79",
-  phoneNumber: "669-696-353",
-  email: "Jannowak@example.com",
-  profilePicture: "https://avatar.iran.liara.run/public/24", // Placeholder image URL
-  info: "Janek to mistrz taktyki i strategii. Zdobył reputację jako doskonały strzelec z niezwykłą precyzją. Jego szybkość, zwinność i skuteczność w poruszaniu się po polu czynią go nie doścignionym w starciach jeden na jeden. Jest także znakomitym liderem, potrafiącym zjednoczyć zespół wokół wspólnego celu i wydobyć z każdego gracza jego najlepsze umiejętności.",
-};
-
 const DashboardPage = () => {
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">

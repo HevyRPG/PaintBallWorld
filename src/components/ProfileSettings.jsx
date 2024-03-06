@@ -1,5 +1,6 @@
 import { Button } from "@radix-ui/themes";
 import FormInput from "../components/FormInput";
+import FormTextarea from "../components/FormTextarea";
 const ProfileSettings = () => {
   return (
     <>
@@ -43,66 +44,45 @@ const ProfileSettings = () => {
                 </div>
 
                 <div className="w-full">
-                <FormInput
+                  <FormInput
                     label="Nazwisko"
                     type="text"
                     name="Nazwisko"
-                    placeholder="Jan"
+                    placeholder="Nowak"
                   />
                 </div>
               </div>
 
               <div className="mb-2 sm:mb-6">
-                <label
-                  htmlFor="phone"
-                  className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"
-                >
-                  Numer telefonu
-                </label>
-                <input
-                  type="text"
-                  id="phone"
-                  className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
-                  placeholder="518-422-874"
-                  required
+                <FormInput
+                  label="Telefon"
+                  type="tel"
+                  name="Telefon"
+                  placeholder="435-654-669"
                 />
               </div>
 
               <div className="mb-2 sm:mb-6">
-                <label
-                  htmlFor="socialki"
-                  className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"
-                >
-                  Socialki
-                </label>
-                <input
+                <FormInput
+                  label="Socialki"
                   type="text"
-                  id="socialki"
-                  className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
-                  placeholder="instagram: super gracz, github: to nie ta profesja 👺"
-                  required
+                  name="Socialki"
+                  placeholder="insta: super-gracz-16"
                 />
               </div>
 
-              <div className="mb-6">
-                <label
-                  htmlFor="message"
-                  className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"
-                >
-                  Bio
-                </label>
-                <textarea
-                  id="message"
-                  rows="4"
-                  className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 "
-                  placeholder="Write your bio here..."
-                ></textarea>
+              <div className="mb-6 sm:mb-6 text-secondary">
+                <FormTextarea
+                  label="Opis"
+                  placeholder="Lorem Ipsum"
+                  name="Opis"
+                />
               </div>
 
               <div className="flex justify-end">
                 <Button
                   variant="default"
-                  className="p-2 rounded bg-primary text-white hover:bg-white"
+                  className="p-2 rounded bg-primary text-white"
                 >
                   Save
                 </Button>
