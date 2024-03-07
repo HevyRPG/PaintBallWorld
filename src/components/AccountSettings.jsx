@@ -6,12 +6,12 @@ const AccountSettings = () => {
     <>
       <div className="p-2 md:p-4">
         <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg p-12">
-          <h2 className="text-3xl font-bold sm:text-xl">Ustawienia konta</h2>
+          <h2 className="text-3xl ml-2 font-bold sm:text-xl">Ustawienia konta</h2>
 
           <div className="grid mx-auto mt-4">
             <div className="items-center mt-8 sm:mt-14 ">
               <div className="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
-                <div className="bg-teal border border-secondary  rounded-xl w-full p-6 flex flex-col mb-4">
+                <div className="bg-secondary border border-secondary  rounded-xl w-full p-6 flex flex-col mb-4">
                   <FormInput
                     label="Zmień adres e-mail"
                     type="email"
@@ -29,7 +29,7 @@ const AccountSettings = () => {
                 </div>
               </div>
 
-              <div className="bg-teal border border-secondary  rounded-xl w-full p-6 flex flex-col mb-12">
+              <div className="bg-secondary border border-secondary  rounded-xl w-full p-6 flex flex-col mb-12">
                 <FormInput
                   label="Zmień Hasło"
                   type="password"
