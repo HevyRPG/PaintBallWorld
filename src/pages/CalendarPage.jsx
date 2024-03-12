@@ -1,47 +1,49 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import axios from 'axios'
-import Autocomplete from '../components/CallendarContent/Autocomplete'
-import PhotoGallery from '../components/ui/PhotoGallery'
-import OpenEventsTable from '../components/CallendarContent/OpenEventsTable'
-import PrivateEventsTable from '../components/CallendarContent/PrivateEventsTable'
-import FieldInfo from '../components/CallendarContent/FieldInfo'
+import React, { useState, useEffect, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import axios from "axios";
+import Autocomplete from "../components/CallendarContent/Autocomplete";
+import PhotoGallery from "../components/ui/PhotoGallery";
+import OpenEventsTable from "../components/CallendarContent/OpenEventsTable";
+import PrivateEventsTable from "../components/CallendarContent/PrivateEventsTable";
+import FieldInfo from "../components/CallendarContent/FieldInfo";
+import Select from "../components/CallendarContent/SelectComponent";
+import SelectComponent from "../components/CallendarContent/SelectComponent";
 
 const CallendarPage = () => {
-  const initialPosition = [52.405453159532335, 16.92534423921864]
-  const [mapPosition, setMapPosition] = useState(initialPosition)
-  const [events, setEvents] = useState([])
-  const initialFieldID = 'TESTGAL' // Set the initial fieldID to 'TEST'
-  const [fieldID, setFieldID] = useState(initialFieldID)
+  const initialPosition = [52.405453159532335, 16.92534423921864];
+  const [mapPosition, setMapPosition] = useState(initialPosition);
+  const [events, setEvents] = useState([]);
+  const initialFieldID = "TESTGAL"; // Set the initial fieldID to 'TEST'
+  const [fieldID, setFieldID] = useState(initialFieldID);
 
   const handleAutocompleteSelection = (selectedCityName) =>
-    console.log('Selected Value:', selectedCityName)
+    console.log("Selected Value:", selectedCityName);
 
   const handleFieldIDChange = (newFieldID) => {
-    setFieldID(newFieldID)
-  }
-  const mapRef = useRef()
+    setFieldID(newFieldID);
+  };
+  const mapRef = useRef();
 
   useEffect(() => {
-    fetchEvents()
-  }, [])
+    fetchEvents();
+  }, []);
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('https://your-api-url/events')
-      setEvents(response.data)
+      const response = await axios.get("https://your-api-url/events");
+      setEvents(response.data);
     } catch (error) {
-      console.error('Error fetching events:', error)
+      console.error("Error fetching events:", error);
     }
-  }
+  };
 
   const handleListClick = (newPosition) => {
-    setMapPosition(newPosition)
-  }
+    setMapPosition(newPosition);
+  };
 
   const handleInputChange = (event) => {
-    setSearchInput(event.target.value)
-  }
+    setSearchInput(event.target.value);
+  };
 
   return (
     <>
@@ -55,7 +57,7 @@ const CallendarPage = () => {
       <div className="container mx-auto mt-8 mb-8 max-w-screen-2xl flex">
         <div className="w-2/3">
           <MapContainer
-            key={mapPosition.join(',')}
+            key={mapPosition.join(",")}
             center={mapPosition}
             zoom={13}
             scrollWheelZoom={true}
@@ -73,24 +75,19 @@ const CallendarPage = () => {
           </MapContainer>
         </div>
 
-        <div className="w-1/3 overflow-y-auto max-h-[500px]">
+        <div className="overflow-y-auto max-h-[500px]">
           {/* Sticky container for Autocomplete and Select components */}
           <div className="sticky top-0 bg-background z-10">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-8">
               <div>
                 <Autocomplete onSelection={handleAutocompleteSelection} />
               </div>
               <div>
-                <select
+                <SelectComponent
                   onChange={(e) =>
                     filterEventsByDistance(parseInt(e.target.value))
                   }
-                  className="p-3 rounded text-primary-foreground"
-                >
-                  <option value="10">+10 KM</option>
-                  <option value="50">+50 KM</option>
-                  <option value="100">+100 KM</option>
-                </select>
+                />
               </div>
             </div>
           </div>
@@ -189,7 +186,7 @@ const CallendarPage = () => {
       <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center  ">
         <div className="w-full ">
           <h1 className="text-white text-xl font-bold italic mb-4 ">
-            Najbliższe rozgrywki otwarte na{' '}
+            Najbliższe rozgrywki otwarte na{" "}
             <span className="text-primary">NAZWA POLA</span>
           </h1>
           <OpenEventsTable fieldID="123" />
@@ -198,14 +195,14 @@ const CallendarPage = () => {
       <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center justify-center ">
         <div className="w-full">
           <h1 className="text-white text-xl font-bold italic mb-4">
-            Najbliższe wolne terminy na zamówienie pola na{' '}
+            Najbliższe wolne terminy na zamówienie pola na{" "}
             <span className="text-primary">NAZWA POLA</span>
           </h1>
           <PrivateEventsTable fieldID="123" />
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CallendarPage
+export default CallendarPage;

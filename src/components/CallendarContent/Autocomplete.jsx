@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, createContext } from 'react'
 import axios from 'axios'
 import { Skeleton } from '@/components/ui/skeleton'
 import APIHeaders from '../APIHeaders'
+import { Input } from "@/components/ui/input"
+
 
 const SelectedCityNameContext = createContext()
 
@@ -60,12 +62,12 @@ const Autocomplete = ({ onSelection }) => {
   return (
     <SelectedCityNameContext.Provider value={selectedCityName}>
       <div className="relative" ref={inputRef}>
-        <input
+        <Input
           type="text"
           placeholder="Podaj swoje miasto..."
           value={searchInput}
           onChange={handleInputChange}
-          className="w-[360px] p-3 rounded text-primary-foreground" // Original className preserved
+          className="w-[280px] m-1 rounded" 
         />
         {isLoading ? (
           // Skeleton loader styled similar to suggestions for visual consistency
