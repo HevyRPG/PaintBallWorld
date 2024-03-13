@@ -9,10 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import FormInput from '../components/FormInput'
-import { AuthContext } from '../context/AuthContext' // Ensure this path is correct
-import APIKEYS from '../components/APIKEYS' // Ensure this path is correct
-import '../index.css'
+import FormInput from '@/components/FormInput'
+import { AuthContext } from '@/context/AuthContext' // Ensure this path is correct
+import APIKEYS from '@/components/APIKEYS' // Ensure this path is correct
+import '@/index.css'
 
 const MultiPageDialog = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -426,7 +426,7 @@ const AddFieldDialog = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="outline" size="lg" className="rounded">
+        <Button variant="outline" size="lg" className="rounded border-primary">
           Dodaj Pole
         </Button>
       </DialogTrigger>
