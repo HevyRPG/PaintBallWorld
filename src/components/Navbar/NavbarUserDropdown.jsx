@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 export function DropdownMenuDemo() {
   const { logout } = useContext(AuthContext); // Use context to check if user is logged in
   const navigate = useNavigate(); // Use the useNavigate hook

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext"; // Adjust the path as necessary
+import { AuthContext } from "../../context/AuthContext"; // Adjust the path as necessary
 import { Button } from "@/components/ui/button";
 import NavbarUserView from "./NavbarUserView";
 
