@@ -1,6 +1,6 @@
 import { Button } from "@radix-ui/themes";
-import FormInput from "../components/FormInput";
-import FormTextarea from "../components/FormTextarea";
+import FormInput from "../FormInput";
+import FormTextarea from "../FormTextarea";
 const ProfileSettings = () => {
   return (
     <>

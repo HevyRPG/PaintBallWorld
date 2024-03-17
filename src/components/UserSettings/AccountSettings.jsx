@@ -1,5 +1,5 @@
 import { Button } from "@radix-ui/themes";
-import FormInput from "../components/FormInput";
+import FormInput from "../FormInput";
 
 const AccountSettings = () => {
   return (

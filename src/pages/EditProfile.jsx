@@ -2,8 +2,8 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@radix-ui/themes";
 import { AuthContext } from '../context/AuthContext' 
-import ProfileSettings from "../components/ProfileSettings";
-import AccountSettings from "../components/AccountSettings";
+import ProfileSettings from "../components/UserSettings/ProfileSettings";
+import AccountSettings from "../components/UserSettings/AccountSettings";
 
 
 const EditProfile = () => {
