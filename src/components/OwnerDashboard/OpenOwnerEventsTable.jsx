@@ -142,38 +142,14 @@ const OpenOwnerEventsTable = ({ fieldID }) => {
           <thead>
             <tr>
               <th>
-                <Skeleton className="h-8 w-[250px]" />
-              </th>
-              <th>
-                <Skeleton className="h-8 w-[250px]" />
-              </th>
-              <th>
-                <Skeleton className="h-8 w-[250px]" />
-              </th>
-              <th>
-                <Skeleton className="h-8 w-[250px]" />
-              </th>
-              <th>
-                <Skeleton className="h-8 w-[250px]" />
+                <Skeleton className="h-8 w-[500px]" />
               </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
-                <Skeleton className="h-4 w-[250px]" />
-              </td>
-              <td>
-                <Skeleton className="h-4 w-[250px]" />
-              </td>
-              <td>
-                <Skeleton className="h-4 w-[250px]" />
-              </td>
-              <td>
-                <Skeleton className="h-4 w-[250px]" />
-              </td>
-              <td>
-                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-7 w-[250px] mb-5" />
               </td>
             </tr>
           </tbody>
