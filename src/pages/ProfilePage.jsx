@@ -1,10 +1,10 @@
-import * as React from "react";
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { Calendar } from "@/components/ui/calendar";
-import { Button } from "@/components/ui/button";
+import * as React from 'react'
+import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Calendar } from '@/components/ui/calendar'
+import { Button } from '@/components/ui/button'
 
-const DashboardPage = () => {
+const ProfilePage = () => {
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
       <div className="flex-grow text-gray-200">
@@ -12,7 +12,7 @@ const DashboardPage = () => {
           <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
             <div className="mr-6">
               <h1 className="text-4xl font-semibold text-primary mb-2">
-                Dashboard
+                Profil
               </h1>
               <h2 className="text-secondary-foreground ml-0.5">
                 Zarządzaj swoim profilem
@@ -131,7 +131,7 @@ const DashboardPage = () => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardPage;
+export default ProfilePage
