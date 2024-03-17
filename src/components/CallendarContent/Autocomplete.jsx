@@ -67,7 +67,7 @@ const Autocomplete = ({ onSelection }) => {
           placeholder="Podaj swoje miasto..."
           value={searchInput}
           onChange={handleInputChange}
-          className="w-[280px] m-1 rounded" 
+          className="w-[240px] m-1 p-6 rounded" 
         />
         {isLoading ? (
           // Skeleton loader styled similar to suggestions for visual consistency

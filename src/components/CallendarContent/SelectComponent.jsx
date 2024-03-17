@@ -11,7 +11,7 @@ const SelectComponent = ({onChange}) => {
   return (
     <>
       <Select>
-        <SelectTrigger className="m-1 w-[100px] rounded">
+        <SelectTrigger className="m-1 p-6 w-[120px] rounded">
           <SelectValue placeholder="+0 KM" />
         </SelectTrigger>
         <SelectContent>
