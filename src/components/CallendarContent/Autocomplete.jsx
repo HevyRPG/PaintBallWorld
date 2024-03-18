@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect, createContext } from 'react'
 import axios from 'axios'
 import { Skeleton } from '@/components/ui/skeleton'
 import APIHeaders from '../APIHeaders'
-import { Input } from "@/components/ui/input"
-
+import { Input } from '@/components/ui/input'
 
 const SelectedCityNameContext = createContext()
 
@@ -67,23 +66,23 @@ const Autocomplete = ({ onSelection }) => {
           placeholder="Podaj swoje miasto..."
           value={searchInput}
           onChange={handleInputChange}
-          className="w-[240px] m-1 p-6 rounded" 
+          className="w-[240px] m-1 p-6 rounded"
         />
         {isLoading ? (
           // Skeleton loader styled similar to suggestions for visual consistency
-          <div className="absolute bg-white w-1/2 rounded-lg shadow-md mt-1 z-10">
+          <div className="absolute bg-background w-1/2 rounded-lg shadow-md mt-1 z-10">
             {[...Array(2)].map((_, index) => (
               <Skeleton key={index} className="h-10 my-2 mx-2 rounded-md" />
             ))}
           </div>
         ) : (
           suggestions.length > 0 && (
-            <ul className="absolute bg-white w-1/2 rounded-lg shadow-md mt-1 z-10">
+            <ul className="absolute bg-background w-1/2 border shadow-md mt-1 z-10">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="cursor-pointer p-2 text-primary-foreground italic rounded hover:bg-gray-100" // Original className preserved
+                  className="cursor-pointer p-2 text-secondary-foreground italic  hover:bg-secondary" // Original className preserved
                 >
                   {suggestion}
                 </li>
