@@ -72,12 +72,15 @@ const Autocomplete = ({ onSelection }) => {
           // Skeleton loader styled similar to suggestions for visual consistency
           <div className="absolute bg-background w-1/2 rounded-lg shadow-md mt-1 z-10">
             {[...Array(2)].map((_, index) => (
-              <Skeleton key={index} className="h-10 my-2 mx-2 rounded-md" />
+              <Skeleton
+                key={index}
+                className="h-10 w-full my-2 mx-2 rounded-md"
+              />
             ))}
           </div>
         ) : (
           suggestions.length > 0 && (
-            <ul className="absolute bg-background w-1/2 border shadow-md mt-1 z-10">
+            <ul className="absolute bg-background w-3/4 border shadow-md mt-1 z-10">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}

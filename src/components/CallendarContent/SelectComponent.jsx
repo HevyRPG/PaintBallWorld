@@ -1,27 +1,26 @@
+import React from 'react'
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+  SelectItem,
+} from '@/components/ui/select'
 
-const SelectComponent = ({onChange}) => {
-  // @todo: onChange
+const SelectComponent = ({ onChange }) => {
   return (
-    <>
-      <Select>
-        <SelectTrigger className="m-1 p-6 w-[120px] rounded">
-          <SelectValue placeholder="+0 KM" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="10">+10 KM</SelectItem>
-          <SelectItem value="20">+20 KM</SelectItem>
-          <SelectItem value="50">+50 KM</SelectItem>
-        </SelectContent>
-      </Select>
-    </>
-  );
-};
+    <Select onValueChange={onChange}>
+      <SelectTrigger className="m-1 p-6 w-[120px] rounded">
+        <SelectValue placeholder="+10 KM" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="10">+10 KM</SelectItem>
+        <SelectItem value="20">+20 KM</SelectItem>
+        <SelectItem value="50">+50 KM</SelectItem>
+        <SelectItem value="100">+100 KM</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+}
 
-export default SelectComponent;
+export default SelectComponent
