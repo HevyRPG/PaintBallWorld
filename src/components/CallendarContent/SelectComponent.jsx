@@ -14,10 +14,10 @@ const SelectComponent = ({ onChange }) => {
         <SelectValue placeholder="+10 KM" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="10">+10 KM</SelectItem>
-        <SelectItem value="20">+20 KM</SelectItem>
-        <SelectItem value="50">+50 KM</SelectItem>
-        <SelectItem value="100">+100 KM</SelectItem>
+        <SelectItem value="10000">+10 KM</SelectItem>
+        <SelectItem value="20000">+20 KM</SelectItem>
+        <SelectItem value="50000">+50 KM</SelectItem>
+        <SelectItem value="100000">+100 KM</SelectItem>
       </SelectContent>
     </Select>
   )

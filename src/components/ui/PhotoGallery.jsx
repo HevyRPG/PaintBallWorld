@@ -61,26 +61,24 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
   }, [fieldID]) // Re-run effect whenever fieldID changes
 
   return (
-    <div className="container mx-auto">
-      <ImageGallery
-        items={images}
-        className="image-gallery"
-        {...defaultPhotoGalleryProps} // Spread the photoGalleryProps
-        renderItem={(item) => (
-          <div className="image-gallery-image">
-            <img
-              src={item.original}
-              alt={item.originalAlt}
-              style={{
-                width: `${width}px`, // Set width from props
-                height: `${height}px`, // Set height from props
-                objectFit: 'fill', // Stretch the image to fit container
-              }}
-            />
-          </div>
-        )}
-      />
-    </div>
+    <ImageGallery
+      items={images}
+      className="image-gallery"
+      {...defaultPhotoGalleryProps} // Spread the photoGalleryProps
+      renderItem={(item) => (
+        <div className="image-gallery-image">
+          <img
+            src={item.original}
+            alt={item.originalAlt}
+            style={{
+              width: `${width}px`, // Set width from props
+              height: `${height}px`, // Set height from props
+              objectFit: 'fill', // Stretch the image to fit container
+            }}
+          />
+        </div>
+      )}
+    />
   )
 }
 

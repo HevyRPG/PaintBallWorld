@@ -25,9 +25,9 @@ const FieldInfo = ({ name, owner, address, description, geoTag, fieldID }) => {
         <p className="text-secondary-foreground mt-3">{description}</p>
       </div>
 
-      <div className="flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         <div className="w-full h-full">
-          <PhotoGallery fieldID={fieldID} width={600} height={400} />
+          <PhotoGallery fieldID={fieldID} width={800} height={500} />
         </div>
       </div>
     </div>
