@@ -1,8 +1,8 @@
-import * as React from 'react'
-import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Calendar } from '@/components/ui/calendar'
-import { Button } from '@/components/ui/button'
+import * as React from "react";
+import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
 
 const ProfilePage = () => {
   return (
@@ -19,6 +19,29 @@ const ProfilePage = () => {
               </h2>
             </div>
             <div className="flex flex-wrap items-start justify-end -mb-3">
+              <Link to="/dashboard">
+                <Button
+                  variant="outline"
+                  className="inline-flex px-3 py-6  border-primary rounded-md mb-3 mr-4"
+                >
+                   <svg
+                  aria-hidden="true"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="flex-shrink-0 h-5 w-5 -ml-1 mt-0.5 mr-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+                  Dashboard
+                </Button>
+              </Link>
+
               <Button
                 variant="outline"
                 className="inline-flex px-3 py-6  border-primary rounded-md mb-3"
@@ -31,9 +54,9 @@ const ProfilePage = () => {
                   className="flex-shrink-0 h-5 w-5 -ml-1 mt-0.5 mr-2"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
                   />
                 </svg>
@@ -52,9 +75,9 @@ const ProfilePage = () => {
                     className="flex-shrink-0 h-6 w-6 text-primary-foreground -ml-1 mr-2"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                     />
                   </svg>
@@ -77,25 +100,25 @@ const ProfilePage = () => {
               </div>
             </div>
             <div className="flex flex-col items-center text-center font-semibold pt-8 border  bg-secondary shadow rounded-xl md:w-3/4  text-card-foreground">
-              <span class="block text-accent-foreground  text-2xl font-bold mb-12  ">
+              <span className="block text-accent-foreground  text-2xl font-bold mb-12  ">
                 Statystyki
               </span>
-              <div class="grid grid-cols-4  gap-4">
+              <div className="grid grid-cols-4  gap-4">
                 <div>
-                  <span class="block ">Ukończone rozgrywki</span>
-                  <span class="block ">100</span>
+                  <span className="block ">Ukończone rozgrywki</span>
+                  <span className="block ">100</span>
                 </div>
                 <div>
-                  <span class="block ">Odwiedzone pola</span>
-                  <span class="  ">50</span>
+                  <span className="block ">Odwiedzone pola</span>
+                  <span className="  ">50</span>
                 </div>
                 <div>
-                  <span class="block ">Łączny czas gry</span>
-                  <span class="  ">10 godzin</span>
+                  <span className="block ">Łączny czas gry</span>
+                  <span className="  ">10 godzin</span>
                 </div>
                 <div>
-                  <span class="block ">Wystawione opinie</span>
-                  <span class="block  ">5</span>
+                  <span className="block ">Wystawione opinie</span>
+                  <span className="block  ">5</span>
                 </div>
               </div>
             </div>
@@ -131,7 +154,7 @@ const ProfilePage = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;

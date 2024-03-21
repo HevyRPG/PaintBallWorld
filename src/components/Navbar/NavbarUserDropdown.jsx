@@ -29,6 +29,7 @@ export function DropdownMenuDemo() {
           height="16"
           viewBox="0 0 32 32"
           fill="white"
+          className="hover:cursor-pointer"
         >
           <title>chevron-down</title>
           <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
@@ -37,6 +38,11 @@ export function DropdownMenuDemo() {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Moje konto</DropdownMenuLabel>
 
+        <DropdownMenuSeparator />
+        {/* Jezeli user -> owner */}
+        <Link to="/dashboard">
+          <DropdownMenuItem className="text-primary">Dashboard</DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <Link to="/profile">
           <DropdownMenuItem>Profil</DropdownMenuItem>
