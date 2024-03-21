@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Calendar } from '@/components/ui/calendar'
 import { Button } from '@/components/ui/button'
 import AddFieldDialog from '../components/ui/AddFieldDialog.jsx'
-import PrivateOwnerEventsTable from '@/components/OwnerDashboard/PrivateOwnerEventsTable.jsx'
-import OpenOwnerEventsTable from '@/components/OwnerDashboard/OpenOwnerEventsTable.jsx'
+import OpenEventsTable from '@/components/CallendarContent/OpenEventsTable.jsx'
+import PrivateEventsTable from '@/components/CallendarContent/PrivateEventsTable.jsx'
 import PhotoGallery from '@/components/ui/PhotoGallery.jsx'
 import { pl } from 'date-fns/locale'
 
@@ -136,7 +135,7 @@ const OwnerDashboard = () => {
                 Dodaj
               </Button>
 
-              <OpenOwnerEventsTable fieldID="123" />
+              <OpenEventsTable fieldID="123" />
             </div>
             <div className=" mx-auto flex flex-wrap items-center justify-center border border-secondary  rounded-xl w-1/2">
               <h1 className="text-white text-xl font-bold italic mb-4 mt-4">
@@ -146,7 +145,7 @@ const OwnerDashboard = () => {
               <Button variant="default" size="lg" className="rounded ml-5">
                 Dodaj
               </Button>
-              <PrivateOwnerEventsTable fieldID="123" />
+              <PrivateEventsTable fieldID="123" />
             </div>
           </section>
         </main>
