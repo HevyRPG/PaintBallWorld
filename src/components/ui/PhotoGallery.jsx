@@ -17,61 +17,63 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
   }
 
   useEffect(() => {
-    if (fieldID === 'TESTGAL') {
-      // If fieldID is 'TESTGAL', display placeholder images
-      setImages([
-        {
-          original: '/paint1.jpg',
-          thumbnail: '/paint1.jpg',
-          description: 'Placeholder Image 1',
-          originalHeight: 300,
-          originalWidth: 300,
-        },
-        {
-          original: '/paint2.jpg',
-          thumbnail: '/paint2.jpg',
-          description: 'Placeholder Image 2',
-          originalHeight: 300,
-          originalWidth: 300,
-        },
-        {
-          original: '/paint3.jpg',
-          thumbnail: '/paint3.jpg',
-          description: 'Placeholder Image 3',
-          originalHeight: 300,
-          originalWidth: 300,
-        },
-        {
-          original: '/paint4.jpg',
-          thumbnail: '/paint4.jpg',
-          description: 'Placeholder Image 4',
-          originalHeight: 300,
-          originalWidth: 300,
-        },
-        // Add more placeholder images as needed
-      ])
-    } else {
-      // Fetch images based on the fieldID using Axios and custom API headers
-      axios
-        .get(`api/Field/FieldManagement/photos/${fieldID}`, APIHeaders)
-        .then((response) => {
-          // Assuming response.data is an array of image objects
+    const fetchImages = async () => {
+      if (fieldID === 'TESTGAL') {
+        setImages([
+          {
+            original: '/paint1.jpg',
+            thumbnail: '/paint1.jpg',
+            description: 'Placeholder Image 1',
+            originalHeight: 300,
+            originalWidth: 300,
+          },
+          {
+            original: '/paint2.jpg',
+            thumbnail: '/paint2.jpg',
+            description: 'Placeholder Image 2',
+            originalHeight: 300,
+            originalWidth: 300,
+          },
+          {
+            original: '/paint3.jpg',
+            thumbnail: '/paint3.jpg',
+            description: 'Placeholder Image 3',
+            originalHeight: 300,
+            originalWidth: 300,
+          },
+          {
+            original: '/paint4.jpg',
+            thumbnail: '/paint4.jpg',
+            description: 'Placeholder Image 4',
+            originalHeight: 300,
+            originalWidth: 300,
+          },
+          // Add more placeholder images as needed
+        ])
+      } else {
+        try {
+          const response = await axios.get(
+            `api/Field/FieldManagement/photos/${fieldID}`,
+            APIHeaders
+          )
           const formattedImages = response.data.map((image) => ({
-            original: image.url, // Assuming the API provides an `url` field for the image
-            thumbnail: image.url, // Use the same URL for thumbnail if a separate one isn't provided
-            description: image.description || 'No description', // Use a placeholder or omit if not needed
-            originalHeight: 300, // Placeholder or extract from the API response if available
-            originalWidth: 300, // Placeholder or extract from the API response if available
+            original: image.url, // Assuming `url` is the property name in your response
+            thumbnail: image.url,
+            description: image.description || 'No description',
+            originalHeight: 300, // Placeholder or from the API
+            originalWidth: 300, // Placeholder or from the API
           }))
 
           setImages(formattedImages)
-          setError('') // Clear any previous errors
-        })
-        .catch((error) => {
+          setError('') // Reset any previous errors
+        } catch (error) {
           console.error('Error fetching images:', error)
-          setError('Failed to fetch images. Please try again later.') // Set an error message to display
-        })
+          setError('Failed to fetch images. Please try again later.')
+        }
+      }
     }
+
+    fetchImages()
   }, [fieldID]) // Re-run effect whenever fieldID changes
 
   return (
