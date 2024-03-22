@@ -193,7 +193,7 @@ const CallendarPage = () => {
           owner="Owner Name"
           address="Address Here"
           geoTag="GeoTag Information"
-          fieldID="TESTGAL"
+          fieldID="071A0D1E-3966-42F6-998E-03A9B3F05370"
           description="Opis pola"
         />
       </div>

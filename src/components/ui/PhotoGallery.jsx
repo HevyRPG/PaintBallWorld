@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
+import axios from 'axios' // Import Axios
+import APIHeaders from '@/components/APIHeaders'
 
 function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
   const [images, setImages] = useState([])
+  const [error, setError] = useState('')
 
   const defaultPhotoGalleryProps = {
     showFullscreenButton: false,
@@ -48,14 +51,25 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
         // Add more placeholder images as needed
       ])
     } else {
-      // Fetch images based on the fieldID
-      fetch(`https://your-api-endpoint.com/images?fieldID=${fieldID}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setImages(data)
+      // Fetch images based on the fieldID using Axios and custom API headers
+      axios
+        .get(`api/Field/FieldManagement/photos/${fieldID}`, APIHeaders)
+        .then((response) => {
+          // Assuming response.data is an array of image objects
+          const formattedImages = response.data.map((image) => ({
+            original: image.url, // Assuming the API provides an `url` field for the image
+            thumbnail: image.url, // Use the same URL for thumbnail if a separate one isn't provided
+            description: image.description || 'No description', // Use a placeholder or omit if not needed
+            originalHeight: 300, // Placeholder or extract from the API response if available
+            originalWidth: 300, // Placeholder or extract from the API response if available
+          }))
+
+          setImages(formattedImages)
+          setError('') // Clear any previous errors
         })
         .catch((error) => {
           console.error('Error fetching images:', error)
+          setError('Failed to fetch images. Please try again later.') // Set an error message to display
         })
     }
   }, [fieldID]) // Re-run effect whenever fieldID changes
