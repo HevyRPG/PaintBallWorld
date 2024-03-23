@@ -1,7 +1,25 @@
-import * as React from 'react'
-import { Button } from '@/components/ui/button'
+import React, { useState } from "react";
+import axios from "axios";
+import { Button } from "@radix-ui/themes";
+import APIHeaders from "../components/APIHeaders";
 
 const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleResetPasswordRequest = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "/api/Auth/ResetPasswordRequest",
+        JSON.stringify(email),
+        APIHeaders
+      );
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage(error.response.data.message);
+    }
+  };
   return (
     <>
       <div className="flex items-center border justify-center min-h-screen ">
@@ -11,9 +29,12 @@ const ForgotPassword = () => {
           </h1>
           <p className="font-light text-secondary-foreground">
             Wpisz e-mail odpowiedni dla Twojego konta. Na adres e-mail wyślemy
-            Ci link do strony, na której będzie można łatwo utworzyć nowe hasło.{' '}
+            Ci link do strony, na której będzie można łatwo utworzyć nowe hasło.{" "}
           </p>
-          <form className="mt-4 space-y-4 lg:mt-5 md:space-y-5" action="#">
+          <form
+            className="mt-4 space-y-4 lg:mt-5 md:space-y-5"
+            onSubmit={handleResetPasswordRequest}
+          >
             <div>
               <label
                 htmlFor="email"
@@ -22,12 +43,12 @@ const ForgotPassword = () => {
                 Twój email
               </label>
               <input
-                type="email"
-                name="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                type="text"
+                value={email}
                 placeholder="name@email.com"
-                required=""
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
               />
             </div>
             <div className="flex items-start">
@@ -45,7 +66,7 @@ const ForgotPassword = () => {
                   htmlFor="terms"
                   className="font-light text-secondary-foreground "
                 >
-                  Akceptuje{' '}
+                  Akceptuje{" "}
                   <a
                     className="font-medium text-primary hover:underline "
                     href="#"
@@ -62,10 +83,11 @@ const ForgotPassword = () => {
               Resetuj hasło
             </Button>
           </form>
+          {message && <p>{message}</p>}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ForgotPassword
+export default ForgotPassword;
