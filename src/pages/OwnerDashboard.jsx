@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { Calendar } from '@/components/ui/calendar'
-import { Button } from '@/components/ui/button'
-import AddFieldDialog from '../components/ui/AddFieldDialog.jsx'
-import OpenEventsTable from '@/components/CallendarContent/OpenEventsTable.jsx'
-import PrivateEventsTable from '@/components/CallendarContent/PrivateEventsTable.jsx'
-import PhotoGallery from '@/components/ui/PhotoGallery.jsx'
-import { pl } from 'date-fns/locale'
+import React, { useState, useEffect } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import OpenEventsTable from "@/components/CallendarContent/OpenEventsTable.jsx";
+import PrivateEventsTable from "@/components/CallendarContent/PrivateEventsTable.jsx";
+import PhotoGallery from "@/components/ui/PhotoGallery.jsx";
+import OwnerDialog from "@/components/OwnerDashboard/OwnerDialog.jsx";
+import AddFieldDialog from "@/components/ui/AddFieldDialog";
+import { pl } from "date-fns/locale";
+
+const fieldsDictionary = [
+  { id: 1, name: "Wielkoposla Pole 1" },
+  { id: 2, name: "Warszawa Pole 2" },
+  { id: 3, name: "Ciechocinek Pole 3" },
+];
 
 const OwnerDashboard = () => {
-  const [date, setDate] = useState(new Date())
-  const [formattedDate, setFormattedDate] = useState('')
+  const [date, setDate] = useState(new Date());
+  const [formattedDate, setFormattedDate] = useState("");
 
   // useEffect hook to log the date whenever it changes
   useEffect(() => {
@@ -17,15 +24,15 @@ const OwnerDashboard = () => {
       // Format the date to a string in YYYY-MM-DD format
       const newFormattedDate =
         date.getFullYear() +
-        '-' +
-        String(date.getMonth() + 1).padStart(2, '0') + // Month is 0-based
-        '-' +
-        String(date.getDate()).padStart(2, '0')
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0") + // Month is 0-based
+        "-" +
+        String(date.getDate()).padStart(2, "0");
 
       // Update the formattedDate state with the new value
-      setFormattedDate(newFormattedDate)
+      setFormattedDate(newFormattedDate);
     }
-  }, [date])
+  }, [date]);
 
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
@@ -42,41 +49,8 @@ const OwnerDashboard = () => {
             </div>
           </div>
           <section className="flex gap-6">
-            <div className="relative py-4 border border-secondary text-secondary-foreground shadow rounded-xl w-2/3">
-              <h1 className="absolute top-1 text-2xl font-bold text-primary w-full text-center  py-1">
-                Zarządzaj
-              </h1>
-              <div className="flex flex-col items-center justify-center pt-10">
-                {' '}
-                {/* Add padding-top to ensure content starts below the fixed header */}
-                <div className="flex flex-row items-center justify-center gap-4 mb-4">
-                  {' '}
-                  {/* Buttons in a row */}
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    className="rounded border-primary"
-                  >
-                    Edytuj pole
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    className="rounded border-primary"
-                  >
-                    Zarządzaj galerią
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="lg"
-                    className="rounded border-primary"
-                  >
-                    Usuń pole
-                  </Button>
-                  <AddFieldDialog />
-                </div>
-                {/* Your other content goes here */}
-              </div>
+            <div className="relative py-4 border border-secondary text-secondary-foreground shadow rounded-xl w-2/3 flex items-center justify-center">
+              <AddFieldDialog />
             </div>
 
             <div className="flex flex-col items-center text-center font-semibold pt- pb-3 pr-3 border border-secondary shadow rounded-xl md:w-1/3 text-card-foreground overflow-y-auto max-h-32">
@@ -84,24 +58,13 @@ const OwnerDashboard = () => {
                 Twoje pola:
               </span>
               <div className="grid grid-cols-1 gap-2 pr-3 pl-3 w-full">
-                <Button variant="default" className="rounded">
-                  Paintball Wielkopolska
-                </Button>
-                <Button variant="default" className="rounded">
-                  Paintball Wielkopolska
-                </Button>
-                <Button variant="default" className="rounded">
-                  Paintball Wielkopolska
-                </Button>
-                <Button variant="default" className="rounded">
-                  Paintball Wielkopolska
-                </Button>
-                <Button variant="default" className="rounded">
-                  Paintball Wielkopolska
-                </Button>
-                <Button variant="default" className="rounded">
-                  Paintball Wielkopolska
-                </Button>
+                {fieldsDictionary.map((field, index) => (
+                  <OwnerDialog
+                    key={index}
+                    fieldName={field.name}
+                    fieldId={field.id}
+                  />
+                ))}
               </div>
             </div>
           </section>
@@ -128,7 +91,7 @@ const OwnerDashboard = () => {
           <section className="flex gap-5">
             <div className="mx-auto flex flex-wrap items-center justify-center border border-secondary  rounded-xl w-1/2">
               <h1 className="text-white text-xl font-bold italic mb-4 mt-4">
-                Rozgyrwki otwarte w dniu{' '}
+                Rozgyrwki otwarte w dniu{" "}
                 <span className="text-primary">{formattedDate}</span>
               </h1>
               <Button variant="default" size="lg" className="rounded ml-5">
@@ -139,7 +102,7 @@ const OwnerDashboard = () => {
             </div>
             <div className=" mx-auto flex flex-wrap items-center justify-center border border-secondary  rounded-xl w-1/2">
               <h1 className="text-white text-xl font-bold italic mb-4 mt-4">
-                Rezerwacje pola w dniu{' '}
+                Rezerwacje pola w dniu{" "}
                 <span className="text-primary">{formattedDate}</span>
               </h1>
               <Button variant="default" size="lg" className="rounded ml-5">
@@ -151,7 +114,7 @@ const OwnerDashboard = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OwnerDashboard
+export default OwnerDashboard;
