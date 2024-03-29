@@ -28,8 +28,14 @@ export const AuthProvider = ({ children }) => {
       )
 
       const token = response.data.token
+      const role = response.data.role
       // Store token in cookies with security flags
       Cookies.set('authToken', token, {
+        expires: 3,
+        secure: false,
+        sameSite: 'Strict',
+      })
+      Cookies.set('role', role, {
         expires: 3,
         secure: false,
         sameSite: 'Strict',
@@ -45,6 +51,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     // Remove token from cookies
     Cookies.remove('authToken')
+    Cookies.remove('role')
+    Cookies.remove('username')
     setIsLoggedIn(false)
   }
 

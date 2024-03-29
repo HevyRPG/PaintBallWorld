@@ -54,7 +54,7 @@ const OpenEventsTable = ({ fieldID }) => {
         maxAttendees: 35,
       },
       {
-        id: 3,
+        id: 4,
         name: 'Mock Event 3',
         date: '2024-02-16',
         hour: '20:00',
@@ -62,7 +62,7 @@ const OpenEventsTable = ({ fieldID }) => {
         maxAttendees: 35,
       },
       {
-        id: 3,
+        id: 5,
         name: 'Mock Event 3',
         date: '2024-02-16',
         hour: '20:00',
@@ -70,7 +70,7 @@ const OpenEventsTable = ({ fieldID }) => {
         maxAttendees: 35,
       },
       {
-        id: 3,
+        id: 7,
         name: 'Mock Event 3',
         date: '2024-02-16',
         hour: '20:00',
@@ -78,7 +78,7 @@ const OpenEventsTable = ({ fieldID }) => {
         maxAttendees: 35,
       },
       {
-        id: 3,
+        id: 8,
         name: 'Mock Event 3',
         date: '2024-02-16',
         hour: '20:00',
@@ -86,7 +86,7 @@ const OpenEventsTable = ({ fieldID }) => {
         maxAttendees: 35,
       },
       {
-        id: 3,
+        id: 9,
         name: 'Mock Event 3',
         date: '2024-02-16',
         hour: '20:00',
@@ -94,7 +94,7 @@ const OpenEventsTable = ({ fieldID }) => {
         maxAttendees: 35,
       },
       {
-        id: 3,
+        id: 10,
         name: 'Mock Event 3',
         date: '2024-02-16',
         hour: '20:00',

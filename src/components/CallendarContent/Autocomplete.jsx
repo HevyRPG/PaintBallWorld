@@ -4,13 +4,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 import APIHeaders from '../APIHeaders'
 import { Input } from '@/components/ui/input'
 
-const SelectedCityNameContext = createContext()
+const SelectedSuggestionContext = createContext()
 
 const Autocomplete = ({ onSelection }) => {
   const [searchInput, setSearchInput] = useState('')
   const [suggestions, setSuggestions] = useState([])
   const inputRef = useRef(null)
-  const [selectedCityName, setSelectedCityName] = useState('')
+  const [selectedSuggestion, setSelectedSuggestion] = useState(null)
   const [isLoading, setIsLoading] = useState(false) // Track loading state
 
   const apiUrl = '/api/Default/Localization'
@@ -33,7 +33,11 @@ const Autocomplete = ({ onSelection }) => {
     setIsLoading(true) // Start loading
     try {
       const response = await axios.get(`${apiUrl}/${input}`, APIHeaders)
-      setSuggestions(response.data) // Assuming response.data is the suggestions array
+      if (response.data && response.data.isSuccess) {
+        setSuggestions(response.data.data) // Store entire suggestion objects
+      } else {
+        console.error('Error fetching suggestions:', response.data.message)
+      }
     } catch (error) {
       console.error('Error fetching suggestions:', error)
     } finally {
@@ -52,14 +56,14 @@ const Autocomplete = ({ onSelection }) => {
   }
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchInput(suggestion)
+    setSearchInput(suggestion.name)
     setSuggestions([])
-    setSelectedCityName(suggestion)
+    setSelectedSuggestion(suggestion)
     onSelection(suggestion)
   }
 
   return (
-    <SelectedCityNameContext.Provider value={selectedCityName}>
+    <SelectedSuggestionContext.Provider value={selectedSuggestion}>
       <div className="relative" ref={inputRef}>
         <Input
           type="text"
@@ -81,21 +85,39 @@ const Autocomplete = ({ onSelection }) => {
         ) : (
           suggestions.length > 0 && (
             <ul className="absolute bg-background w-3/4 border shadow-md mt-1 z-10">
-              {suggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  onClick={() => handleSuggestionClick(suggestion)}
-                  className="cursor-pointer p-2 text-secondary-foreground italic  hover:bg-secondary" // Original className preserved
-                >
-                  {suggestion}
-                </li>
-              ))}
+              {suggestions.map((suggestion, index) => {
+                // Remove "WOJEWÓDZTWO" from the province string
+                const provinceWithoutPrefix = suggestion.province.replace(
+                  /^województwo\s+/i,
+                  ''
+                )
+                // Use municipality if county is null
+                const location = suggestion.county || suggestion.municipality
+                // Build the location string with commas
+                const locationString = [
+                  suggestion.name,
+                  provinceWithoutPrefix,
+                  location,
+                ]
+                  .filter(Boolean)
+                  .join(', ')
+
+                return (
+                  <li
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="cursor-pointer p-2 text-secondary-foreground italic hover:bg-secondary"
+                  >
+                    {locationString}
+                  </li>
+                )
+              })}
             </ul>
           )
         )}
       </div>
-    </SelectedCityNameContext.Provider>
+    </SelectedSuggestionContext.Provider>
   )
 }
 
-export default Autocomplete
+export { Autocomplete, SelectedSuggestionContext }
