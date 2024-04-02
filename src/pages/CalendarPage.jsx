@@ -9,12 +9,16 @@ import {
 } from 'react-leaflet'
 import L from 'leaflet' // Leaflet for custom markers
 import axios from 'axios'
-import Autocomplete from '../components/CallendarContent/Autocomplete'
+import {
+  Autocomplete,
+  SelectedSuggestionContext,
+} from '../components/CallendarContent/Autocomplete'
 import OpenEventsTable from '../components/CallendarContent/OpenEventsTable'
 import PrivateEventsTable from '../components/CallendarContent/PrivateEventsTable'
 import FieldInfo from '../components/CallendarContent/FieldInfo'
 import SelectComponent from '../components/CallendarContent/SelectComponent'
 import { Button } from '@/components/ui/button'
+import APIHeaders from '../components/APIHeaders'
 
 const CallendarPage = () => {
   const initialPosition = [52.405453159532335, 16.92534423921864]
@@ -27,55 +31,63 @@ const CallendarPage = () => {
   const [selectedCity, setSelectedCity] = useState('')
   const [selectedDistance, setSelectedDistance] = useState('10000')
   const [radius, setRadius] = useState(null)
+  const [cityGeo, setCityGeo] = useState(null)
+  const [cityID, setCityID] = useState('text')
+  const formattedData = null
 
-  const handleAutocompleteSelection = (city) => {
-    setSelectedCity(city)
+  const handleAutocompleteSelection = (suggestion) => {
+    // Extract latitude, longitude, and ID from the suggestion object
+    const { latitude, longitude, id } = suggestion
+    // Now you can use latitude, longitude, and id as needed
+    console.log('Latitude:', latitude)
+    console.log('Longitude:', longitude)
+    console.log('ID:', id.value)
+    const geoValue = [suggestion.latitude, suggestion.longitude]
+    setCityGeo(geoValue)
+    setSelectedCity(suggestion.name)
+    setCityID(suggestion.id.value)
   }
 
   const handleSelectChange = (distance) => {
     setSelectedDistance(distance) // Update selected distance but not the radius yet
   }
 
-  // Function to handle the search click action
-  const useTestData = true // Toggle this to false for real API calls
-
-  const testCityData = {
-    name: 'Pamiątkowo',
-    geotag: [52.5542, 16.6827], // Example geotag
-  }
-
   const handleSearchClick = async () => {
     // Ensure there's a city selected before proceeding
     if (!selectedCity) {
-      alert('Please select a city first.')
+      alert('Wybierz miasto')
       return // Exit the function if no city is selected
     }
+    try {
+      // Make the API call using the selected city ID and desired radius
+      const id = cityID.toString() //Assuming selectedCity contains the ID
+      const radius = Number(selectedDistance) // Convert selectedDistance to a number if necessary
 
-    if (selectedCity === 'Pamiątkowo') {
-      // If "Pamiątkowo" is explicitly searched for, use the test data
-      const { name, geotag } = testCityData
-      setCityPosition(geotag) // Update city marker position
-      setMapCenter(geotag) // Center the map on the selected city
-      setRadius(Number(selectedDistance))
-      console.log(
-        `Test mode: Selected city - ${name}, Geotag - ${geotag.join(',')}`
+      const response = await axios.get(
+        `/api/Field/Fields?id=${cityID}&radius=${radius}`,
+        APIHeaders
       )
-    } else {
-      // Fetch real data using Axios
-      const apiUrl = `https://example.com/api/cities/${encodeURIComponent(
-        selectedCity
-      )}`
-      try {
-        const response = await axios.get(apiUrl)
-        const { name, geotag } = response.data // Ensure your API's response structure is correctly referenced
-        setSelectedCity(name)
-        setMapPosition(geotag.split(',').map(Number))
-        setRadius(Number(selectedDistance)) // Update the radius based on the selected distance
-        console.log(`Real mode: Selected city - ${name}, Geotag - ${geotag}`)
-      } catch (error) {
-        console.error('Failed to fetch city data:', error)
-      }
+
+      // Extract relevant data from the response
+      const formattedData = response.data.map((item) => ({
+        name: item.name,
+        city: item.city,
+        geo: [item.latitude, item.longitude],
+      }))
+
+      // Handle the search data (e.g., update markers on the map, display results, etc.)
+      console.log('Search data:', formattedData)
+    } catch (error) {
+      // Handle errors from the API call
+      console.error('Error searching:', error)
+      // Optionally, display an error message to the user
     }
+
+    setCityPosition(cityGeo)
+    setMapCenter(cityGeo)
+    setRadius(Number(selectedDistance))
+    console.log(`Selected city - ${selectedCity}, Geotag - ${cityGeo}`)
+    console.log(cityID)
   }
 
   function MapCenter({ center }) {
@@ -173,17 +185,22 @@ const CallendarPage = () => {
           </div>
 
           <ul className="text-white list-none mr-2 p-0 grid">
-            <li
-              onClick={() =>
-                handleListClick([52.5478589721108, 16.65486723010457])
-              }
-              className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary bg-primary cursor-pointer text-primary-foreground hover:text-secondary-foreground transition-all flex flex-col items-center justify-center h-16"
-            >
-              <span className="text-center font-bold">
-                Paintball Wielkopolska
-              </span>
-              <span className="text-center italic">Pamiątkowo</span>
-            </li>
+            {formattedData && formattedData.length > 0 ? (
+              formattedData.map((item, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleListClick(item.geo)}
+                  className="mb-2 p-2 active:bg-primary rounded hover:bg-secondary bg-primary cursor-pointer text-primary-foreground hover:text-secondary-foreground transition-all flex flex-col items-center justify-center h-16"
+                >
+                  <span className="text-center font-bold">{item.name}</span>
+                  <span className="text-center italic">{item.city}</span>
+                </li>
+              ))
+            ) : (
+              <li className="mb-2 p-2 text-center text-red-500">
+                Wybierz miasto
+              </li>
+            )}
           </ul>
         </div>
       </div>

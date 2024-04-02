@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext'
 import { Button } from '@/components/ui/button'
 import FormInput from '../components/FormInput'
 import '../index.css'
+import Cookies from 'js-cookie'
 
 const LoginPage = () => {
   const { isLoggedIn, login } = useContext(AuthContext)
@@ -16,7 +17,11 @@ const LoginPage = () => {
   const handleLogin = async () => {
     setLoading(true)
     setErrorRegister('')
-
+    Cookies.set('username', username, {
+      expires: 3,
+      secure: false,
+      sameSite: 'Strict',
+    })
     try {
       await login(username, password)
       navigate('/profile') // Redirect to dashboard on successful login
