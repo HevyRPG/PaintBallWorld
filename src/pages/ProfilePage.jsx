@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import axios from "axios";
 import APIKEYS from "../components/APIKEYS";
 import Cookies from "js-cookie";
+import PaginationComponent from "@/components/ProfilePageComponents/Pagination";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -208,12 +208,8 @@ const ProfilePage = () => {
           </section>
 
           <section className="flex gap-6">
-            <div className="flex flex-col">
-              <Calendar mode="single" className="rounded-md border shadow" />
-            </div>
-
-            <div className="w-full flex flex-col  text-secondary-foreground ">
-              <div className="shadow rounded-xl">
+            <div className="w-full flex flex-col  text-secondary-foreground">
+              <div className="shadow rounded-xl mb-8">
                 <div className="flex flex-col rounded-xl items-center bg-secondary justify-between px-6 py-5 font-semibold border">
                   <span className="text-secondary-foreground pb-8">
                     Najblizsze rozgrywki
@@ -223,15 +219,7 @@ const ProfilePage = () => {
                 </div>
               </div>
 
-              <div className=" shadow rounded-xl bg-secondary  mt-6">
-                <div className="flex flex-col rounded-xl  items-center justify-between px-6 py-5 font-semibold border">
-                  <span className="text-secondary-foreground pb-8">
-                    Historia rozgrywek
-                  </span>
-                  <span>Poznań 06.05.2024</span>
-                  <span>Warszawa 04.06.2024</span>
-                </div>
-              </div>
+              <PaginationComponent />
             </div>
           </section>
         </main>
