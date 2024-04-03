@@ -63,15 +63,6 @@ const ProfileSettings = () => {
                 />
               </div>
 
-              <div className="mb-2 sm:mb-6">
-                <FormInput
-                  label="Socialki"
-                  type="text"
-                  name="Socialki"
-                  placeholder="insta: super-gracz-16"
-                />
-              </div>
-
               <div className="mb-6 sm:mb-6 text-secondary">
                 <FormTextarea
                   label="Opis"

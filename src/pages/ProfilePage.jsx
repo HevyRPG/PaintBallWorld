@@ -182,22 +182,18 @@ const ProfilePage = () => {
               )}
             </div>
 
-            <div className="flex flex-col items-center text-center font-semibold pt-8 border  bg-secondary shadow rounded-xl md:w-3/4  text-card-foreground">
-              <span className="block text-accent-foreground  text-2xl font-bold mb-12  ">
+            <div className="flex flex-col text-center font-semibold py-8 border bg-secondary shadow rounded-xl md:w-3/4  text-card-foreground">
+              <span className="block text-accent-foreground text-2xl font-bold mb-8">
                 Statystyki
               </span>
-              <div className="grid grid-cols-4  gap-4">
+              <div className="grid grid-cols-3  gap-3">
                 <div>
                   <span className="block ">Ukończone rozgrywki</span>
                   <span className="block ">100</span>
                 </div>
                 <div>
                   <span className="block ">Odwiedzone pola</span>
-                  <span className="  ">50</span>
-                </div>
-                <div>
-                  <span className="block ">Łączny czas gry</span>
-                  <span className="  ">10 godzin</span>
+                  <span className="block  ">50</span>
                 </div>
                 <div>
                   <span className="block ">Wystawione opinie</span>
