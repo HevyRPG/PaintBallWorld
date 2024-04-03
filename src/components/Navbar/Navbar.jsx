@@ -33,8 +33,8 @@ const Navbar = () => {
     <nav className="bg-gray-900 shadow shadow-gray-900 w-full">
       <div className="container mx-auto flex items-center justify-between py-4 px-8 md:flex-row">
         <div className="flex-1 flex justify-start">
-          <Link to='/'>
-          <img className="w-12 h-12" src="./logosm.png" alt="Logo" />
+          <Link to="/">
+            <img className="w-12 h-12" src="./logosm.png" alt="Logo" />
           </Link>
         </div>
         <div className="flex-1 flex justify-center font-semibold">
