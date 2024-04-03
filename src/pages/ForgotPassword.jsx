@@ -11,8 +11,8 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "/api/Auth/ResetPasswordRequest",
-        JSON.stringify(email),
+        "/api/Auth/Login/ResetPasswordRequest",
+        { email: email },
         APIHeaders
       );
       setMessage(response.data.message);
@@ -40,12 +40,12 @@ const ForgotPassword = () => {
                 htmlFor="email"
                 className="block mb-2 text-sm font-medium text-secondary-foreground"
               >
-                Twój email
+                Twoja Nazwa
               </label>
               <input
-                type="text"
+                type="email"
                 value={email}
-                placeholder="name@email.com"
+                placeholder="Janek123"
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
@@ -83,7 +83,7 @@ const ForgotPassword = () => {
               Resetuj hasło
             </Button>
           </form>
-          {message && <p>{message}</p>}
+          Dupa {message && <p>{message}</p>}
         </div>
       </div>
     </>
