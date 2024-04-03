@@ -1,37 +1,38 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Calendar } from '@/components/ui/calendar'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
-import axios from 'axios'
-import APIKEYS from '../components/APIKEYS'
-import Cookies from 'js-cookie'
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import axios from "axios";
+import APIKEYS from "../components/APIKEYS";
+import Cookies from "js-cookie";
 
 const ProfilePage = () => {
-  const [userData, setUserData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const token = Cookies.get('authToken')
-  const role = Cookies.get('role')
-  const username = Cookies.get('username')
-  const isOwner = role === 'Owner'
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const token = Cookies.get("authToken");
+  const role = Cookies.get("role");
+  const username = Cookies.get("username");
+  const isOwner = role === "Owner";
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('api/User/User/profile', {
+        const response = await axios.get("api/User/User/profile", {
           headers: {
             ...APIKEYS.headers,
             Authorization: `Bearer ${token}`, // Append Authorization header
           },
-        })
-        setUserData(response.data)
-        setLoading(false) // Set loading to false once data is fetched
+        });
+        setUserData(response.data);
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
-        console.error('Error fetching user profile:', error)
+        console.error("Error fetching user profile:", error);
       }
-    }
+    };
 
-    fetchUserProfile()
-  }, [])
+    fetchUserProfile();
+  }, []);
 
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
@@ -94,7 +95,7 @@ const ProfilePage = () => {
                 </Button>
               )}
 
-              {role !== 'Owner' && (
+              {role !== "Owner" && (
                 <Button
                   variant="outline"
                   className="inline-flex px-3 py-6 border-primary rounded-md mb-3 mr-4"
@@ -153,7 +154,10 @@ const ProfilePage = () => {
               {/* Render user profile data */}
               {!loading && userData && (
                 <div>
-                  <img src="defavatar.png" className="mx-auto" />
+                  <Avatar>
+                    <AvatarImage src="defavatar.png" alt={username} />
+                    <AvatarFallback>Avatar</AvatarFallback>
+                  </Avatar>
                   <span className=" left-0 w-full text-primary text-xl font-bold italic">
                     {username}
                   </span>
@@ -161,7 +165,7 @@ const ProfilePage = () => {
                     {userData.firstName} {userData.lastName}
                   </span>
                   <span className="block">
-                    Date of Birth:{' '}
+                    Date of Birth:{" "}
                     {new Date(userData.dateOfBirth).toLocaleDateString()}
                   </span>
                   {userData.description && (
@@ -233,7 +237,7 @@ const ProfilePage = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;
