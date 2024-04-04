@@ -1,22 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { Calendar } from "@/components/ui/calendar";
-import { Button } from "@/components/ui/button";
-import OpenEventsTable from "@/components/CallendarContent/OpenEventsTable.jsx";
-import PrivateEventsTable from "@/components/CallendarContent/PrivateEventsTable.jsx";
-import PhotoGallery from "@/components/ui/PhotoGallery.jsx";
-import OwnerDialog from "@/components/OwnerDashboard/OwnerDialog.jsx";
-import AddFieldDialog from "@/components/ui/AddFieldDialog";
-import { pl } from "date-fns/locale";
+import React, { useState, useEffect, useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
+import { Calendar } from '@/components/ui/calendar'
+import { Button } from '@/components/ui/button'
+import OpenEventsTable from '@/components/CallendarContent/OpenEventsTable.jsx'
+import PrivateEventsTable from '@/components/CallendarContent/PrivateEventsTable.jsx'
+import PhotoGallery from '@/components/ui/PhotoGallery.jsx'
+import OwnerDialog from '@/components/OwnerDashboard/OwnerDialog.jsx'
+import AddFieldDialog from '@/components/ui/AddFieldDialog'
+import { pl } from 'date-fns/locale'
+import Cookies from 'js-cookie'
 
 const fieldsDictionary = [
-  { id: 1, name: "Wielkoposla Pole 1" },
-  { id: 2, name: "Warszawa Pole 2" },
-  { id: 3, name: "Ciechocinek Pole 3" },
-];
+  { id: 1, name: 'Wielkoposla Pole 1' },
+  { id: 2, name: 'Warszawa Pole 2' },
+  { id: 3, name: 'Ciechocinek Pole 3' },
+]
 
 const OwnerDashboard = () => {
-  const [date, setDate] = useState(new Date());
-  const [formattedDate, setFormattedDate] = useState("");
+  const [date, setDate] = useState(new Date())
+  const [formattedDate, setFormattedDate] = useState('')
+
+  const { isLoggedIn, logout } = useContext(AuthContext)
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!Cookies.get('role')) {
+      logout()
+      navigate('/')
+    }
+  }, [logout, navigate])
 
   // useEffect hook to log the date whenever it changes
   useEffect(() => {
@@ -24,15 +36,15 @@ const OwnerDashboard = () => {
       // Format the date to a string in YYYY-MM-DD format
       const newFormattedDate =
         date.getFullYear() +
-        "-" +
-        String(date.getMonth() + 1).padStart(2, "0") + // Month is 0-based
-        "-" +
-        String(date.getDate()).padStart(2, "0");
+        '-' +
+        String(date.getMonth() + 1).padStart(2, '0') + // Month is 0-based
+        '-' +
+        String(date.getDate()).padStart(2, '0')
 
       // Update the formattedDate state with the new value
-      setFormattedDate(newFormattedDate);
+      setFormattedDate(newFormattedDate)
     }
-  }, [date]);
+  }, [date])
 
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
@@ -91,7 +103,7 @@ const OwnerDashboard = () => {
           <section className="flex gap-5">
             <div className="mx-auto flex flex-wrap items-center justify-center border border-secondary  rounded-xl w-1/2">
               <h1 className="text-white text-xl font-bold italic mb-4 mt-4">
-                Rozgyrwki otwarte w dniu{" "}
+                Rozgyrwki otwarte w dniu{' '}
                 <span className="text-primary">{formattedDate}</span>
               </h1>
               <Button variant="default" size="lg" className="rounded ml-5">
@@ -102,7 +114,7 @@ const OwnerDashboard = () => {
             </div>
             <div className=" mx-auto flex flex-wrap items-center justify-center border border-secondary  rounded-xl w-1/2">
               <h1 className="text-white text-xl font-bold italic mb-4 mt-4">
-                Rezerwacje pola w dniu{" "}
+                Rezerwacje pola w dniu{' '}
                 <span className="text-primary">{formattedDate}</span>
               </h1>
               <Button variant="default" size="lg" className="rounded ml-5">
@@ -114,7 +126,7 @@ const OwnerDashboard = () => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OwnerDashboard;
+export default OwnerDashboard

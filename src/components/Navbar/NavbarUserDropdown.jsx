@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,16 +8,45 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { AuthContext } from "../../context/AuthContext";
+} from '@/components/ui/dropdown-menu'
+import { AuthContext } from '../../context/AuthContext'
+import Cookies from 'js-cookie'
+
 export function DropdownMenuDemo() {
-  const { logout } = useContext(AuthContext); // Use context to check if user is logged in
-  const navigate = useNavigate(); // Use the useNavigate hook
+  const { logout } = useContext(AuthContext) // Use context to check if user is logged in
+  const navigate = useNavigate() // Use the useNavigate hook
+  const role = Cookies.get('role')
+  const isOwner = role === 'Owner'
+  useEffect(() => {
+    // Check for the presence of required cookies when the component mounts
+    if (
+      !Cookies.get('role') ||
+      !Cookies.get('username') ||
+      !Cookies.get('authToken')
+    ) {
+      logout()
+      navigate('/')
+    }
+
+    // Set up an interval to periodically check for the cookies
+    const interval = setInterval(() => {
+      if (
+        !Cookies.get('role') ||
+        !Cookies.get('username') ||
+        !Cookies.get('authToken')
+      ) {
+        logout()
+        navigate('/')
+      }
+    }, 10000) // Check every 10 seconds
+
+    return () => clearInterval(interval)
+  }, [logout, navigate])
 
   const handleLogout = () => {
-    logout(); // Use logout function from context
-    navigate("/"); // Redirect to home page after logout
-  };
+    logout() // Use logout function from context
+    navigate('/') // Redirect to home page after logout
+  }
 
   return (
     <DropdownMenu>
@@ -37,12 +66,16 @@ export function DropdownMenuDemo() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Moje konto</DropdownMenuLabel>
-
-        <DropdownMenuSeparator />
-        {/* Jezeli user -> owner */}
-        <Link to="/dashboard">
-          <DropdownMenuItem className="text-primary">Dashboard</DropdownMenuItem>
-        </Link>
+        {isOwner && (
+          <>
+            <DropdownMenuSeparator />
+            <Link to="/dashboard">
+              <DropdownMenuItem className="text-primary">
+                Dashboard
+              </DropdownMenuItem>
+            </Link>
+          </>
+        )}
         <DropdownMenuSeparator />
         <Link to="/profile">
           <DropdownMenuItem>Profil</DropdownMenuItem>
@@ -56,5 +89,5 @@ export function DropdownMenuDemo() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

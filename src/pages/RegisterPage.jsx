@@ -26,12 +26,63 @@ const RegisterPage = () => {
   const [errorRegister, setErrorRegister] = useState('')
   const [loading, setLoading] = useState(false)
 
+  function translateErrorMessage(errorMessage) {
+    switch (errorMessage) {
+      case 'Passwords must be at least 8 characters.':
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej 8 znaków.'}
+            <br />
+          </>
+        )
+      case 'Passwords must have at least one non alphanumeric character.':
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej jeden znak niealfanumeryczny.'}
+            <br />
+          </>
+        )
+      case "Passwords must have at least one digit ('0'-'9').":
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej jedną cyfrę.'}
+            <br />
+          </>
+        )
+      case "Passwords must have at least one uppercase ('A'-'Z').":
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej jedną wielką literę.'}
+            <br />
+          </>
+        )
+      case `Username '${username}' is already taken.`:
+        return (
+          <>
+            {`Nazwa użytkownika '${username}' jest już zajęta.`}
+            <br />
+          </>
+        )
+      default:
+        return errorMessage
+    }
+  }
+
+  function validateUserEmail(email) {
+    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return generalEmailRegex.test(email)
+  }
+
+  function validateBusinessEmail(businessEmail) {
+    const businessEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return businessEmailRegex.test(businessEmail)
+  }
+
   const handleOwnerRegister = async (e) => {
     e.preventDefault()
     setLoading(true)
     setErrorRegister('')
 
-    // Validation for owner
     if (
       !username ||
       !email ||
@@ -47,6 +98,16 @@ const RegisterPage = () => {
     }
     if (password !== repeatPassword) {
       setErrorRegister('Hasła nie pasują do siebie.')
+      setLoading(false)
+      return
+    }
+    if (!validateUserEmail(email)) {
+      setErrorRegister('Niepoprawny adres e-mail.')
+      setLoading(false)
+      return
+    }
+    if (!validateBusinessEmail(businessEmail)) {
+      setErrorRegister('Niepoprawny służbowy adres e-mail.')
       setLoading(false)
       return
     }
@@ -88,27 +149,18 @@ const RegisterPage = () => {
     } catch (error) {
       console.error('Error registering user:', error)
       if (error.response && error.response.status === 400) {
-        // Extract error messages from the response
         const { data } = error.response
-        /* if (data && data.errors) {
-          const errorMessages = data.errors.map((error, index) => (
-            <React.Fragment key={index}>
-              {error.description}
-              <br />
-            </React.Fragment>
-          ))
-          setErrorRegister(errorMessages) DO WERYFIKACJI CZEMU NIE ŁAPIE*/
-        if (data && Array.isArray(data.errors)) {
-          const errorMessages = data.errors.map((error, index) => (
-            <React.Fragment key={index}>
-              {error.description}
-              <br />
-            </React.Fragment>
-          ))
-          setErrorRegister(errorMessages)
-        } else {
+
+        if (data && data.errors) {
+          const errorMessages = data.errors.map((error) =>
+            translateErrorMessage(error.description)
+          )
           setErrorRegister(
-            'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.'
+            <div>
+              {errorMessages.map((message, index) => (
+                <React.Fragment key={index}>{message}</React.Fragment>
+              ))}
+            </div>
           )
         }
       } else {
@@ -125,7 +177,6 @@ const RegisterPage = () => {
     setLoading(true)
     setErrorRegister('')
 
-    // Validation for regular user registration
     if (!username || !email || !password || !dateOfBirth) {
       setErrorRegister('Uzupełnij wszystkie wymagane pola (bez *).')
       setLoading(false)
@@ -133,6 +184,11 @@ const RegisterPage = () => {
     }
     if (password !== repeatPassword) {
       setErrorRegister('Hasła nie pasują do siebie.')
+      setLoading(false)
+      return
+    }
+    if (!validateUserEmail(email)) {
+      setErrorRegister('Niepoprawny adres e-mail.')
       setLoading(false)
       return
     }
@@ -151,22 +207,27 @@ const RegisterPage = () => {
         JSON.stringify(userData),
         APIHeaders
       )
+
       if (response.status === 200) {
         setErrorRegister('Zarejestrowano pomyślnie!')
       }
     } catch (error) {
       console.error('Error registering user:', error)
+
       if (error.response && error.response.status === 400) {
-        // Extract error messages from the response
         const { data } = error.response
+
         if (data && data.errors) {
-          const errorMessages = data.errors.map((error, index) => (
-            <React.Fragment key={index}>
-              {error.description}
-              <br />
-            </React.Fragment>
-          ))
-          setErrorRegister(errorMessages)
+          const errorMessages = data.errors.map((error) =>
+            translateErrorMessage(error.description)
+          )
+          setErrorRegister(
+            <div>
+              {errorMessages.map((message, index) => (
+                <React.Fragment key={index}>{message}</React.Fragment>
+              ))}
+            </div>
+          )
         } else {
           setErrorRegister(
             'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.'
@@ -189,35 +250,35 @@ const RegisterPage = () => {
         </h2>
         <form>
           <FormInput
-            label="Nazwa użytkownika*"
+            label="Nazwa użytkownika"
             type="text"
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <FormInput
-            label="Adres e-mail*"
+            label="Adres e-mail"
             type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <FormInput
-            label="Data urodzenia*"
+            label="Data urodzenia"
             type="date"
             name="dateOfBirth"
             value={dateOfBirth}
             onChange={(e) => setDateOfBirth(e.target.value)}
           />
           <FormInput
-            label="Hasło*"
+            label="Hasło"
             type="password"
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <FormInput
-            label="Powtórz hasło*"
+            label="Powtórz hasło"
             type="password"
             name="repetPassword"
             value={repeatPassword}
@@ -238,79 +299,79 @@ const RegisterPage = () => {
           {registerAsOwner && (
             <>
               <FormInput
-                label="Nazwa firmy"
+                label="Nazwa firmy**"
                 type="text"
                 name="companyName"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
               />
               <FormInput
-                label="Imię właściciela*"
+                label="Imię właściciela"
                 type="text"
                 name="ownerFirstName"
                 value={ownerFirstName}
                 onChange={(e) => setOwnerFirstName(e.target.value)}
               />
               <FormInput
-                label="Nazwisko właściciela*"
+                label="Nazwisko właściciela"
                 type="text"
                 name="ownerLastName"
                 value={ownerLastName}
                 onChange={(e) => setOwnerLastName(e.target.value)}
               />
               <FormInput
-                label="Służbowy adres e-mail (Kontaktowy)*"
+                label="Służbowy adres e-mail (Kontaktowy)"
                 type="email"
                 name="businessEmail"
                 value={businessEmail}
                 onChange={(e) => setBusinessEmail(e.target.value)}
               />
               <FormInput
-                label="NIP"
+                label="NIP**"
                 type="text"
                 name="nip"
                 value={nip}
                 onChange={(e) => setNip(e.target.value)}
               />
               <FormInput
-                label="Służbowy numer telefonu"
+                label="Służbowy numer telefonu**"
                 type="tel"
                 name="companyPhone"
                 value={companyPhone}
                 onChange={(e) => setCompanyPhone(e.target.value)}
               />
               <FormInput
-                label="Ulica"
+                label="Ulica**"
                 type="text"
                 name="companyStreet"
                 value={companyStreet}
                 onChange={(e) => setCompanyStreet(e.target.value)}
               />
               <FormInput
-                label="Numer domu"
+                label="Numer domu**"
                 type="text"
                 name="companyHouseNO"
                 value={companyHouseNO}
                 onChange={(e) => setCompanyHouseNO(e.target.value)}
               />
               <FormInput
-                label="Miasto"
+                label="Miasto**"
                 type="text"
                 name="companyCity"
                 value={companyCity}
                 onChange={(e) => setCompanyCity(e.target.value)}
               />
               <FormInput
-                label="Kod pocztowy"
+                label="Kod pocztowy**"
                 type="text"
                 name="companyPostalNumber"
                 value={companyPostalNumber}
                 onChange={(e) => setCompanyPostalNumber(e.target.value)}
               />
               <div className="mb-4">
-                <p className="mt-4 text-gray-300 text-sm">
-                  * Powyższe dane mają na celu szybszą weryfikację właściciela i
-                  nie są konieczne do potwierdzenia. W przypadku braku danych
+                <p className="mt-4 text-yellow-400 text-sm">
+                  ** Powyższe dane mają na celu szybszą weryfikację właściciela
+                  i nie są konieczne do potwierdzenia. W przypadku braku danych
                   proces weryfikacji może zostać wydłużony.
                 </p>
                 <p className="mt-4 text-gray-300 text-sm">
