@@ -26,12 +26,56 @@ const RegisterPage = () => {
   const [errorRegister, setErrorRegister] = useState('')
   const [loading, setLoading] = useState(false)
 
+  function translateErrorMessage(errorMessage) {
+    switch (errorMessage) {
+      case 'Passwords must be at least 8 characters.':
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej 8 znaków.'}
+            <br />
+          </>
+        )
+      case 'Passwords must have at least one non alphanumeric character.':
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej jeden znak niealfanumeryczny.'}
+            <br />
+          </>
+        )
+      case "Passwords must have at least one digit ('0'-'9').":
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej jedną cyfrę.'}
+            <br />
+          </>
+        )
+      case "Passwords must have at least one uppercase ('A'-'Z').":
+        return (
+          <>
+            {'Hasło musi zawierać co najmniej jedną wielką literę.'}
+            <br />
+          </>
+        )
+      default:
+        return errorMessage
+    }
+  }
+
+  function validateUserEmail(email) {
+    const generalEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return generalEmailRegex.test(email)
+  }
+
+  function validateBusinessEmail(email) {
+    const businessEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return businessEmailRegex.test(email)
+  }
+
   const handleOwnerRegister = async (e) => {
     e.preventDefault()
     setLoading(true)
     setErrorRegister('')
 
-    // Validation for owner
     if (
       !username ||
       !email ||
@@ -47,6 +91,16 @@ const RegisterPage = () => {
     }
     if (password !== repeatPassword) {
       setErrorRegister('Hasła nie pasują do siebie.')
+      setLoading(false)
+      return
+    }
+    if (!validateUserEmail(email)) {
+      setErrorRegister('Niepoprawny adres e-mail.')
+      setLoading(false)
+      return
+    }
+    if (!validateBusinessEmail(businessEmail)) {
+      setErrorRegister('Niepoprawny służbowy adres e-mail.')
       setLoading(false)
       return
     }
@@ -78,34 +132,26 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        '/api/Auth/Register/RegisterOwner',
-        JSON.stringify(ownerData),
+        '/api/Auth/Register/Register',
+        JSON.stringify(userData),
         APIHeaders
       )
+
       if (response.status === 200) {
         setErrorRegister('Zarejestrowano pomyślnie!')
       }
     } catch (error) {
       console.error('Error registering user:', error)
+
       if (error.response && error.response.status === 400) {
         // Extract error messages from the response
         const { data } = error.response
-        /* if (data && data.errors) {
-          const errorMessages = data.errors.map((error, index) => (
-            <React.Fragment key={index}>
-              {error.description}
-              <br />
-            </React.Fragment>
-          ))
-          setErrorRegister(errorMessages) DO WERYFIKACJI CZEMU NIE ŁAPIE*/
-        if (data && Array.isArray(data.errors)) {
-          const errorMessages = data.errors.map((error, index) => (
-            <React.Fragment key={index}>
-              {error.description}
-              <br />
-            </React.Fragment>
-          ))
-          setErrorRegister(errorMessages)
+
+        if (data && data.errors) {
+          const errorMessages = data.errors.map((error) =>
+            translateErrorMessage(error.description)
+          )
+          setErrorRegister(errorMessages.join('<br/>'))
         } else {
           setErrorRegister(
             'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.'
@@ -131,8 +177,18 @@ const RegisterPage = () => {
       setLoading(false)
       return
     }
+    if (!username || !email || !password || !dateOfBirth) {
+      setErrorRegister('Uzupełnij wszystkie wymagane pola (bez *).')
+      setLoading(false)
+      return
+    }
     if (password !== repeatPassword) {
       setErrorRegister('Hasła nie pasują do siebie.')
+      setLoading(false)
+      return
+    }
+    if (!validateUserEmail(email)) {
+      setErrorRegister('Niepoprawny adres e-mail.')
       setLoading(false)
       return
     }
@@ -151,22 +207,28 @@ const RegisterPage = () => {
         JSON.stringify(userData),
         APIHeaders
       )
+
       if (response.status === 200) {
         setErrorRegister('Zarejestrowano pomyślnie!')
       }
     } catch (error) {
       console.error('Error registering user:', error)
+
       if (error.response && error.response.status === 400) {
         // Extract error messages from the response
         const { data } = error.response
+
         if (data && data.errors) {
-          const errorMessages = data.errors.map((error, index) => (
-            <React.Fragment key={index}>
-              {error.description}
-              <br />
-            </React.Fragment>
-          ))
-          setErrorRegister(errorMessages)
+          const errorMessages = data.errors.map((error) =>
+            translateErrorMessage(error.description)
+          )
+          setErrorRegister(
+            <div>
+              {errorMessages.map((message, index) => (
+                <React.Fragment key={index}>{message}</React.Fragment>
+              ))}
+            </div>
+          )
         } else {
           setErrorRegister(
             'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.'
@@ -238,7 +300,7 @@ const RegisterPage = () => {
           {registerAsOwner && (
             <>
               <FormInput
-                label="Nazwa firmy"
+                label="Nazwa firmy**"
                 type="text"
                 name="companyName"
                 value={companyName}
@@ -266,51 +328,51 @@ const RegisterPage = () => {
                 onChange={(e) => setBusinessEmail(e.target.value)}
               />
               <FormInput
-                label="NIP"
+                label="NIP**"
                 type="text"
                 name="nip"
                 value={nip}
                 onChange={(e) => setNip(e.target.value)}
               />
               <FormInput
-                label="Służbowy numer telefonu"
+                label="Służbowy numer telefonu**"
                 type="tel"
                 name="companyPhone"
                 value={companyPhone}
                 onChange={(e) => setCompanyPhone(e.target.value)}
               />
               <FormInput
-                label="Ulica"
+                label="Ulica**"
                 type="text"
                 name="companyStreet"
                 value={companyStreet}
                 onChange={(e) => setCompanyStreet(e.target.value)}
               />
               <FormInput
-                label="Numer domu"
+                label="Numer domu**"
                 type="text"
                 name="companyHouseNO"
                 value={companyHouseNO}
                 onChange={(e) => setCompanyHouseNO(e.target.value)}
               />
               <FormInput
-                label="Miasto"
+                label="Miasto**"
                 type="text"
                 name="companyCity"
                 value={companyCity}
                 onChange={(e) => setCompanyCity(e.target.value)}
               />
               <FormInput
-                label="Kod pocztowy"
+                label="Kod pocztowy**"
                 type="text"
                 name="companyPostalNumber"
                 value={companyPostalNumber}
                 onChange={(e) => setCompanyPostalNumber(e.target.value)}
               />
               <div className="mb-4">
-                <p className="mt-4 text-gray-300 text-sm">
-                  * Powyższe dane mają na celu szybszą weryfikację właściciela i
-                  nie są konieczne do potwierdzenia. W przypadku braku danych
+                <p className="mt-4 text-yellow-400 text-sm">
+                  ** Powyższe dane mają na celu szybszą weryfikację właściciela
+                  i nie są konieczne do potwierdzenia. W przypadku braku danych
                   proces weryfikacji może zostać wydłużony.
                 </p>
                 <p className="mt-4 text-gray-300 text-sm">
