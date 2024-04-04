@@ -1,7 +1,7 @@
-import { Button } from "@radix-ui/themes";
-import FormInput from "../FormInput";
-import FormTextarea from "../FormTextarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from '@/components/ui/button'
+import FormInput from '../FormInput'
+import FormTextarea from '../FormTextarea'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 const ProfileSettings = () => {
   return (
@@ -84,7 +84,7 @@ const ProfileSettings = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ProfileSettings;
+export default ProfileSettings

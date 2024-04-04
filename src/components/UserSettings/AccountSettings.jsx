@@ -1,12 +1,14 @@
-import { Button } from "@radix-ui/themes";
-import FormInput from "../FormInput";
+import { Button } from '@/components/ui/button'
+import FormInput from '../FormInput'
 
 const AccountSettings = () => {
   return (
     <>
       <div className="p-2 md:p-4">
         <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg p-12">
-          <h2 className="text-3xl ml-2 font-bold sm:text-xl">Ustawienia konta</h2>
+          <h2 className="text-3xl ml-2 font-bold sm:text-xl">
+            Ustawienia konta
+          </h2>
 
           <div className="grid mx-auto mt-4">
             <div className="items-center mt-8 sm:mt-14 ">
@@ -61,14 +63,11 @@ const AccountSettings = () => {
               </div>
 
               <div className="bg-red border border-secondary text-center rounded-xl w-full p-6 flex flex-col mb-4">
-                <p>
-                  Chce usunac konto i wszystko co z nim związane.
-                </p>
+                <p>Chce usunac konto i wszystko co z nim związane.</p>
                 <p> ⚠️ TEGO NIE COFNIESZ!</p>
                 <Button
                   variant="default"
                   className="p-2 rounded bg-secondary text-white mt-4 self-end"
-                
                 >
                   Usuń konto
                 </Button>
@@ -78,7 +77,7 @@ const AccountSettings = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AccountSettings;
+export default AccountSettings

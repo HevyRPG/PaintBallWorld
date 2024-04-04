@@ -1,33 +1,33 @@
-import React, { useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext"; // Adjust the path as necessary
-import { Button } from "@/components/ui/button";
-import NavbarUserView from "./NavbarUserView";
+import React, { useContext } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../context/AuthContext' // Adjust the path as necessary
+import { Button } from '@/components/ui/button'
+import NavbarUserView from './NavbarUserView'
 
 const Navbar = () => {
-  const location = useLocation();
+  const location = useLocation()
 
-  const { isLoggedIn, logout } = useContext(AuthContext); // Use context to check if user is logged in
+  const { isLoggedIn, logout } = useContext(AuthContext) // Use context to check if user is logged in
 
   const isActive = (path) => {
     return location.pathname === path
-      ? "text-white font-bold"
-      : "text-primary hover:text-white";
-  };
+      ? 'text-white font-bold'
+      : 'text-primary hover:text-white'
+  }
 
   const navLinks = [
-    { path: "/", label: "Home" },
-    { path: "/calendar", label: "Terminarz" },
-    { path: "/about", label: "O nas" },
-  ];
+    { path: '/', label: 'Home' },
+    { path: '/calendar', label: 'Terminarz' },
+    { path: '/about', label: 'O nas' },
+  ]
 
   const renderNavLinks = () => {
     return navLinks.map(({ path, label }) => (
       <Link key={path} to={path} className={`mx-4 text-xl ${isActive(path)}`}>
         {label}
       </Link>
-    ));
-  };
+    ))
+  }
 
   return (
     <nav className="bg-gray-900 shadow shadow-gray-900 w-full">
@@ -63,7 +63,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

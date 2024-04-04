@@ -56,6 +56,13 @@ const RegisterPage = () => {
             <br />
           </>
         )
+      case `Username '${username}' is already taken.`:
+        return (
+          <>
+            {`Nazwa użytkownika '${username}' jest już zajęta.`}
+            <br />
+          </>
+        )
       default:
         return errorMessage
     }
@@ -66,9 +73,9 @@ const RegisterPage = () => {
     return generalEmailRegex.test(email)
   }
 
-  function validateBusinessEmail(email) {
+  function validateBusinessEmail(businessEmail) {
     const businessEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return businessEmailRegex.test(email)
+    return businessEmailRegex.test(businessEmail)
   }
 
   const handleOwnerRegister = async (e) => {
@@ -132,29 +139,28 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        '/api/Auth/Register/Register',
-        JSON.stringify(userData),
+        '/api/Auth/Register/RegisterOwner',
+        JSON.stringify(ownerData),
         APIHeaders
       )
-
       if (response.status === 200) {
         setErrorRegister('Zarejestrowano pomyślnie!')
       }
     } catch (error) {
       console.error('Error registering user:', error)
-
       if (error.response && error.response.status === 400) {
-        // Extract error messages from the response
         const { data } = error.response
 
         if (data && data.errors) {
           const errorMessages = data.errors.map((error) =>
             translateErrorMessage(error.description)
           )
-          setErrorRegister(errorMessages.join('<br/>'))
-        } else {
           setErrorRegister(
-            'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.'
+            <div>
+              {errorMessages.map((message, index) => (
+                <React.Fragment key={index}>{message}</React.Fragment>
+              ))}
+            </div>
           )
         }
       } else {
@@ -171,12 +177,6 @@ const RegisterPage = () => {
     setLoading(true)
     setErrorRegister('')
 
-    // Validation for regular user registration
-    if (!username || !email || !password || !dateOfBirth) {
-      setErrorRegister('Uzupełnij wszystkie wymagane pola (bez *).')
-      setLoading(false)
-      return
-    }
     if (!username || !email || !password || !dateOfBirth) {
       setErrorRegister('Uzupełnij wszystkie wymagane pola (bez *).')
       setLoading(false)
@@ -215,7 +215,6 @@ const RegisterPage = () => {
       console.error('Error registering user:', error)
 
       if (error.response && error.response.status === 400) {
-        // Extract error messages from the response
         const { data } = error.response
 
         if (data && data.errors) {
@@ -251,35 +250,35 @@ const RegisterPage = () => {
         </h2>
         <form>
           <FormInput
-            label="Nazwa użytkownika*"
+            label="Nazwa użytkownika"
             type="text"
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <FormInput
-            label="Adres e-mail*"
+            label="Adres e-mail"
             type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <FormInput
-            label="Data urodzenia*"
+            label="Data urodzenia"
             type="date"
             name="dateOfBirth"
             value={dateOfBirth}
             onChange={(e) => setDateOfBirth(e.target.value)}
           />
           <FormInput
-            label="Hasło*"
+            label="Hasło"
             type="password"
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <FormInput
-            label="Powtórz hasło*"
+            label="Powtórz hasło"
             type="password"
             name="repetPassword"
             value={repeatPassword}
@@ -307,21 +306,21 @@ const RegisterPage = () => {
                 onChange={(e) => setCompanyName(e.target.value)}
               />
               <FormInput
-                label="Imię właściciela*"
+                label="Imię właściciela"
                 type="text"
                 name="ownerFirstName"
                 value={ownerFirstName}
                 onChange={(e) => setOwnerFirstName(e.target.value)}
               />
               <FormInput
-                label="Nazwisko właściciela*"
+                label="Nazwisko właściciela"
                 type="text"
                 name="ownerLastName"
                 value={ownerLastName}
                 onChange={(e) => setOwnerLastName(e.target.value)}
               />
               <FormInput
-                label="Służbowy adres e-mail (Kontaktowy)*"
+                label="Służbowy adres e-mail (Kontaktowy)"
                 type="email"
                 name="businessEmail"
                 value={businessEmail}
