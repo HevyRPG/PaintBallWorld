@@ -7,7 +7,8 @@ import OpenEventsTable from '@/components/CallendarContent/OpenEventsTable.jsx'
 import PrivateEventsTable from '@/components/CallendarContent/PrivateEventsTable.jsx'
 import PhotoGallery from '@/components/ui/PhotoGallery.jsx'
 import OwnerDialog from '@/components/OwnerDashboard/OwnerDialog.jsx'
-import AddFieldDialog from '@/components/ui/AddFieldDialog'
+import AddFieldDialog from '@/components/OwnerDashboard/AddFieldDialog'
+
 import { pl } from 'date-fns/locale'
 import Cookies from 'js-cookie'
 

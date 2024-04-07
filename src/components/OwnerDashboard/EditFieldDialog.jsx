@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Button } from '@/components/ui/button'
@@ -14,7 +14,7 @@ import { AuthContext } from '@/context/AuthContext' // Ensure this path is corre
 import APIKEYS from '@/components/APIKEYS' // Ensure this path is correct
 import '@/index.css'
 
-const MultiPageDialog = () => {
+const MultiPageDialog = ({ fieldId }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [formState, setFormState] = useState({
     phone: '',
@@ -30,12 +30,51 @@ const MultiPageDialog = () => {
     minPlayers: '',
     maxPlayers: '',
     maxSimultaneousEvents: '',
-    sets: [{ ammo: 0, price: 0, description: '' }],
   })
   const [errorRegister, setErrorRegister] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const { isLoggedIn } = useContext(AuthContext) // Using AuthContext
+  useEffect(() => {
+    const fetchFieldData = async () => {
+      try {
+        setLoading(true)
+        const token = Cookies.get('authToken')
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+        const response = await axios.get(`/api/Field/Fields/${fieldId}`, config) // Replace {fieldId} with actual field ID
+        if (response.status === 200) {
+          const fieldData = response.data
+          setFormState({
+            ...formState,
+            phone: fieldData.phone,
+            street: fieldData.street,
+            houseNo: fieldData.houseNo,
+            city: fieldData.city,
+            postalCode: fieldData.postalCode,
+            coordinates: fieldData.coordinates,
+            fieldName: fieldData.fieldName,
+            area: fieldData.area,
+            regulations: fieldData.regulations, // Assuming regulations field is also a placeholder
+            Description: fieldData.Description,
+            minPlayers: fieldData.minPlayers,
+            maxPlayers: fieldData.maxPlayers,
+            maxSimultaneousEvents: fieldData.maxSimultaneousEvents,
+          })
+        }
+      } catch (error) {
+        setErrorRegister('Error fetching field data.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchFieldData()
+  }, [])
+
+  const { isLoggedIn } = useContext(AuthContext)
 
   const handleInputChange = (field, value, index) => {
     if (index !== undefined) {
@@ -55,22 +94,6 @@ const MultiPageDialog = () => {
     }
   }
 
-  const addNewSet = () => {
-    setFormState((prevState) => ({
-      ...prevState,
-      sets: [...prevState.sets, { ammo: 0, price: 0, description: '' }],
-    }))
-  }
-
-  const deleteLastSet = () => {
-    setFormState((prevState) => {
-      if (prevState.sets.length > 1) {
-        return { ...prevState, sets: prevState.sets.slice(0, -1) }
-      }
-      return prevState // Don't modify state if only one set exists
-    })
-  }
-
   const nextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1)
   }
@@ -86,12 +109,11 @@ const MultiPageDialog = () => {
     console.log(formData)
     // Retrieve the token from cookies
     const token = Cookies.get('authToken')
-    console.log(token)
 
     formData.append('address.PhoneNo', formState.phone)
     formData.append('address.Street', formState.street)
     formData.append('address.HouseNo', formState.houseNo)
-    formData.append('address.City', formState.city) // Removed the extra period after 'City'
+    formData.append('address.City', formState.city)
     formData.append('address.PostalNumber', formState.postalCode)
     formData.append('address.Coordinates', formState.coordinates)
 
@@ -108,9 +130,7 @@ const MultiPageDialog = () => {
     formData.append('maxPlayers', formState.maxPlayers)
     formData.append('maxSimultaneousEvents', formState.maxSimultaneousEvents)
     formData.append('fieldType', 'Paintball')
-    formData.append('Sets', JSON.stringify(formState.sets))
 
-    // Dynamically adjust headers to include the Authorization token
     const config = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -118,18 +138,8 @@ const MultiPageDialog = () => {
         Authorization: `Bearer ${token}`, // Append Authorization header
       },
     }
-    console.log('Logging config:', config)
+
     try {
-      /* const response = await axios.post('/api/Field/Fields/Create', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          PW_API_KEY: 'jTxdHH3hnSuGtDKAsT0ikOmI76AVfPVo1VHWnSzfVuo',
-          'CF-Access-Client-Id': 'a9304e041abe76649c56c1e31cdd57b1.access',
-          'CF-Access-Client-Secret':
-            'ac24e7280b8bbf48434640839b9ae632c6a0661bf8603b19c1b4771ba84f5bee',
-          Authorization: `Bearer ${token}`,
-        },
-      }) */
       const response = await axios.post(
         '/api/Field/Fields/Create',
         formData,
@@ -137,14 +147,14 @@ const MultiPageDialog = () => {
       )
 
       if (response.status === 200) {
-        setErrorRegister('Pole dodane pomyślnie! Możesz zamknąć to okno')
+        setErrorRegister('Zmieniono dane! Możesz zamknąć to okno.')
         // Reset form or navigate as needed
         setLoading(false)
       }
     } catch (error) {
       if (error.response) {
         const statusCode = error.response.status
-        const defaultMessage = 'An error occurred. Please try again.'
+        const defaultMessage = 'Wystąpił błąd. Powiadom administratora.'
         let message = defaultMessage
 
         if (error.response.data && error.response.data.errors) {
@@ -163,28 +173,26 @@ const MultiPageDialog = () => {
 
         switch (statusCode) {
           case 400:
-            setErrorRegister(`Bad Request: ${message}`)
+            setErrorRegister(`Uzupełnij wszystkie pola`)
             break
           case 401:
-            setErrorRegister(`Unauthorized: ${message}`)
+            setErrorRegister(`Nieautoryzowana próba. Powiadom administratora`)
             break
           case 500:
-            setErrorRegister(`Server Error: ${message}`)
+            setErrorRegister(`Wystąpił błąd. Spróbuj ponownie później.`)
             break
           default:
             // Handle other statuses
             setErrorRegister(message)
         }
-
-        console.error(`Error ${statusCode}:`, message)
       } else if (error.request) {
         // The request was made but no response was received
-        setErrorRegister('No response received. Check your network connection.')
-        console.error('Request made but no response received:', error.request)
+        setErrorRegister(
+          'Brak odpowiedzi z serwera. Skontaktuj się z administratorem'
+        )
       } else {
         // Something happened in setting up the request that triggered an Error
-        setErrorRegister('Error setting up the request.')
-        console.error('Error message:', error.message)
+        setErrorRegister('Wystąpił błąd. Spróbuj ponownie później')
       }
 
       setLoading(false)
@@ -192,6 +200,9 @@ const MultiPageDialog = () => {
   }
 
   const renderPage = () => {
+    if (errorRegister) {
+      return <p>Błąd podczas ładowania danych. Spróbuj ponownie później.</p>
+    }
     switch (currentPage) {
       case 1:
         return (
@@ -208,21 +219,12 @@ const MultiPageDialog = () => {
             handleInputChange={handleInputChange}
             prevPage={prevPage}
             nextPage={nextPage}
-          />
-        )
-      case 3:
-        return (
-          <Page3
-            formState={formState}
-            prevPage={prevPage}
             handleSubmit={handleSubmit}
-            handleInputChange={handleInputChange}
-            addNewSet={addNewSet}
-            deleteLastSet={deleteLastSet}
             loading={loading}
             errorRegister={errorRegister}
           />
         )
+
       default:
         return null
     }
@@ -240,38 +242,42 @@ const Page1 = ({ formState, handleInputChange, nextPage }) => {
           type="text"
           value={formState.phone}
           onChange={(e) => handleInputChange('phone', e.target.value)}
+          placeholder={formState.phone}
         />
         <FormInput
           label="Ulica"
           type="text"
           value={formState.street}
           onChange={(e) => handleInputChange('street', e.target.value)}
+          placeholder={formState.street}
         />
         <FormInput
           label="Numer domu"
           type="text"
           value={formState.houseNo}
           onChange={(e) => handleInputChange('houseNo', e.target.value)}
+          placeholder={formState.houseNo}
         />
         <FormInput
           label="Miasto"
           type="text"
           value={formState.city}
           onChange={(e) => handleInputChange('city', e.target.value)}
+          placeholder={formState.city}
         />
         <FormInput
           label="Kod pocztowy"
           type="text"
           value={formState.postalCode}
           onChange={(e) => handleInputChange('postalCode', e.target.value)}
-          placeholder="00-000"
+          placeholder={formState.postalCode}
         />
         <FormInput
           label="Geotag (współrzędne)"
           type="text"
           value={formState.coordinates}
           onChange={(e) => handleInputChange('coordinates', e.target.value)}
-          placeholder="52.23198970, 21.005957745"
+          placeholder={formState.coordinates}
         />
       </div>
       <Button variant="outline" onClick={nextPage}>
@@ -281,7 +287,14 @@ const Page1 = ({ formState, handleInputChange, nextPage }) => {
   )
 }
 
-const Page2 = ({ formState, handleInputChange, prevPage, nextPage }) => {
+const Page2 = ({
+  formState,
+  prevPage,
+  handleSubmit,
+  handleInputChange,
+  loading,
+  errorRegister,
+}) => {
   return (
     <div className="grid gap-2">
       <div className="grid grid-cols-2 items-center gap-4">
@@ -290,23 +303,26 @@ const Page2 = ({ formState, handleInputChange, prevPage, nextPage }) => {
           type="text"
           value={formState.fieldName}
           onChange={(e) => handleInputChange('fieldName', e.target.value)}
+          placeholder={formState.fieldName}
         />
         <FormInput
           label="Powierzchnia w m²"
           type="text"
           value={formState.area}
           onChange={(e) => handleInputChange('area', e.target.value)}
+          placeholder={formState.area}
         />
         <FormInput
           label="Regulamin"
           type="file"
           value={formState.regulations}
           onChange={(e) => handleInputChange('regulations', e.target.value)}
+          placeholder={formState.regulations}
         />
       </div>
       <label className="text-primary">Opis</label>
       <textarea
-        placeholder="Opis"
+        placeholder={formState.Description}
         rows="9"
         cols="40"
         className="text-black"
@@ -319,12 +335,14 @@ const Page2 = ({ formState, handleInputChange, prevPage, nextPage }) => {
           type="text"
           value={formState.minPlayers}
           onChange={(e) => handleInputChange('minPlayers', e.target.value)}
+          placeholder={formState.minPlayers}
         />
         <FormInput
           label="Maksymalna liczba graczy"
           type="text"
           value={formState.maxPlayers}
           onChange={(e) => handleInputChange('maxPlayers', e.target.value)}
+          placeholder={formState.maxPlayers}
         />
         <FormInput
           label="Ilość wydarzeń które mogą odbywać się jednocześnie"
@@ -333,71 +351,18 @@ const Page2 = ({ formState, handleInputChange, prevPage, nextPage }) => {
           onChange={(e) =>
             handleInputChange('maxSimultaneousEvents', e.target.value)
           }
+          placeholder={formState.maxSimultaneousEvents}
         />
-      </div>
-      <div className="grid gap-2">
-        <Button variant="outline" onClick={prevPage}>
-          Cofnij
-        </Button>
-        <Button variant="outline" onClick={nextPage}>
-          Dalej
-        </Button>
-      </div>
-    </div>
-  )
-}
-
-const Page3 = ({
-  formState,
-  prevPage,
-  handleSubmit,
-  handleInputChange,
-  addNewSet,
-  deleteLastSet,
-  loading,
-  errorRegister,
-}) => {
-  return (
-    <div className="grid gap-2">
-      <h1>Uzupełnij co najmniej jeden wariant</h1>
-      {formState.sets.map((set, index) => (
-        <div key={index} className="grid grid-cols-4 items-center gap-4">
-          <h2>Wariant {index + 1}</h2>
-          <FormInput
-            label="Ilość kulek"
-            type="text"
-            value={set.ammo}
-            onChange={(e) => handleInputChange('ammo', e.target.value, index)}
-          />
-          <FormInput
-            label="Cena"
-            type="text"
-            value={set.price}
-            onChange={(e) => handleInputChange('price', e.target.value, index)}
-          />
-          <FormInput
-            label="Opis"
-            type="text"
-            value={set.description}
-            onChange={(e) =>
-              handleInputChange('description', e.target.value, index)
-            }
-          />
-        </div>
-      ))}
-      <div className="flex justify-between mb-2">
-        <Button variant="secondary" onClick={addNewSet} className="">
-          Dodaj nowy wariant
-        </Button>
-        <Button variant="destructive" onClick={deleteLastSet} className="">
-          Usuń ostatni wariant
-        </Button>
       </div>
       <div>
         <Button variant="ghost" onClick={prevPage}>
           Cofnij
         </Button>
-        <Button variant="default" onClick={handleSubmit}>
+        <Button
+          variant="default"
+          onClick={handleSubmit}
+          className="hover:bg-green-500"
+        >
           Wyślij
         </Button>
       </div>
@@ -406,11 +371,10 @@ const Page3 = ({
           <div className="loader"></div>
         </div>
       )}
-      {/* Error message */}
       {errorRegister && (
         <p
           className={`mt-2 text-sm ${
-            errorRegister === 'Pole dodane pomyślnie! Możesz zamknąć to okno'
+            errorRegister === 'Zmieniono dane! Możesz zamknąć to okno.'
               ? 'text-green-500'
               : 'text-destructive'
           }`}
@@ -422,22 +386,22 @@ const Page3 = ({
   )
 }
 
-const AddFieldDialog = () => {
+const EditFieldDialog = ({ fieldId }) => {
   return (
     <Dialog>
       <DialogTrigger>
         <Button variant="outline" size="lg" className="rounded border-primary">
-          Dodaj Pole
+          Edytuj pole
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Dodaj pole</DialogTitle>
+          <DialogTitle>Edytuj pole</DialogTitle>
         </DialogHeader>
-        <MultiPageDialog />
+        <MultiPageDialog fieldId={fieldId} />
       </DialogContent>
     </Dialog>
   )
 }
 
-export default AddFieldDialog
+export default EditFieldDialog
