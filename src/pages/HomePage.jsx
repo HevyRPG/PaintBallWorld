@@ -22,7 +22,7 @@ const login_true = (
     <p className="text-xl italic  mb-8">
       Sprawdź, jakie pola są dostępne w Twojej okolicy!
     </p>
-    <Link to="/dashboard">
+    <Link to="/calendar">
       <Button variant="secondary" size="lg">
         Sprawdź dostępne pola
       </Button>
