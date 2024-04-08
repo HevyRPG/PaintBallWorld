@@ -1,7 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { AuthContext } from "@/context/AuthContext";
+
+const login_false = (
+  <>
+    <p className="text-xl italic  mb-8">
+      Wejdź do świata, w którym strategia, praca zespołowa i akcja łączą się w
+      ekscytującą przygodę z paintballem.
+    </p>
+    <Link to="/register">
+      <Button variant="secondary" size="lg">
+        Zacznij teraz
+      </Button>
+    </Link>
+  </>
+);
+
+const login_true = (
+  <>
+    <p className="text-xl italic  mb-8">
+      Sprawdź, jakie pola są dostępne w Twojej okolicy!
+    </p>
+    <Link to="/dashboard">
+      <Button variant="secondary" size="lg">
+        Sprawdź dostępne pola
+      </Button>
+    </Link>
+  </>
+);
+
 const HomePage = () => {
+  const { isLoggedIn } = useContext(AuthContext);
+
   return (
     <main className="mx-auto max-w-screen-2xl bg-background text-primary-foreground">
       {/* Sekcja główna */}
@@ -9,21 +40,13 @@ const HomePage = () => {
         <div className="sm:max-w-md md:max-w-md 2xl:max-w-3xl   mx-auto">
           <img src="logosm.png" alt="logo" />
           <h1 className="text-6xl text-secondary-foreground font-bold mb-4">
-            Witamy na{" "}
+            Witamy na
             <span className="italic font-bold text-primary">
               PaintballWorld
             </span>
             !
           </h1>
-          <p className="text-xl italic  mb-8">
-            Wejdź do świata, w którym strategia, praca zespołowa i akcja łączą
-            się w ekscytującą przygodę z paintballem.
-          </p>
-          <Link to="/register">
-            <Button variant="secondary" size="lg">
-              Zacznij teraz
-            </Button>
-          </Link>
+          {!isLoggedIn ? login_false : login_true}
         </div>
       </section>
 
@@ -68,15 +91,7 @@ const HomePage = () => {
       <section className="text-center py-20 bg-background text-accent-foreground">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl font-bold mb-6">Gotowy, aby zacząć?</h2>
-          <p className="text-xl mb-8">
-            Zarejestruj się dzisiaj i rozpocznij swoją przygodę z paintballem
-            razem z nami.
-          </p>
-          <Link to="/register">
-            <Button variant="default" size="lg">
-              Zacznij teraz
-            </Button>
-          </Link>
+          {!isLoggedIn ? login_false : login_true}
         </div>
       </section>
     </main>
