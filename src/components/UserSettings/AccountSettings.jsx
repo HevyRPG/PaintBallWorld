@@ -1,7 +1,23 @@
-import { Button } from '@/components/ui/button'
-import FormInput from '../FormInput'
+import React from "react";
+import { Button } from "@/components/ui/button";
+import FormInput from "../FormInput";
+import {
+  changeEmail,
+  changePassword,
+  deleteAccount,
+} from "@/UserSettings/AccountSettingsMethods";
 
 const AccountSettings = () => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const handleDeleteAccount = () => {
+    if (confirmDelete) {
+      deleteAccount();
+    } else {
+      setConfirmDelete(true);
+    }
+  };
+
   return (
     <>
       <div className="p-2 md:p-4">
@@ -24,7 +40,7 @@ const AccountSettings = () => {
                   <Button
                     variant="default"
                     className="p-2 rounded bg-primary text-white  self-end"
-                    // Dodaję klasę self-end, która wyrównuje przycisk do prawej strony
+                    onClick={() => changeEmail("nowy@email.com")}
                   >
                     Zapisz email
                   </Button>
@@ -35,39 +51,40 @@ const AccountSettings = () => {
                 <FormInput
                   label="Zmień Hasło"
                   type="password"
-                  name="password"
+                  name="oldPassword"
                   placeholder="stare haslo"
                   className="mb-4"
                 />
                 <FormInput
                   label="Zmień Hasło"
                   type="password"
-                  name="password"
+                  name="newPassword"
                   placeholder="nowe hasło"
                   className="mb-4"
                 />
                 <FormInput
-                  label="Zmień Hasło"
+                  label="Potwierdź Hasło"
                   type="password"
-                  name="password"
+                  name="confirmPassword"
                   placeholder="potwierdź nowe hasło"
                   className="mb-4"
                 />
                 <Button
                   variant="default"
                   className="p-2 rounded bg-primary text-white  self-end"
-                  // Dodaję klasę self-end, która wyrównuje przycisk do prawej strony
+                  onClick={() => changePassword("stareHaslo", "noweHaslo")}
                 >
                   Zmień hasło
                 </Button>
               </div>
 
               <div className="bg-red border border-secondary text-center rounded-xl w-full p-6 flex flex-col mb-4">
-                <p>Chce usunac konto i wszystko co z nim związane.</p>
+                <p>Chcę usunąć konto i wszystko co z nim związane.</p>
                 <p> ⚠️ TEGO NIE COFNIESZ!</p>
                 <Button
                   variant="default"
                   className="p-2 rounded bg-secondary text-white mt-4 self-end"
+                  onClick={handleDeleteAccount}
                 >
                   Usuń konto
                 </Button>
@@ -77,7 +94,7 @@ const AccountSettings = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AccountSettings
+export default AccountSettings;
