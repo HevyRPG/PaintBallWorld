@@ -1,12 +1,13 @@
-import React from 'react'
-
+import React, { useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
 const Footer = () => {
   const goToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
-    })
-  }
+      behavior: "smooth",
+    });
+  };
+  const { isLoggedIn } = useContext(AuthContext);
 
   return (
     <footer className="bg-gray-900">
@@ -54,7 +55,7 @@ const Footer = () => {
                 className="text-secondary-foreground transition hover:text-gray-700/75"
                 href="/about"
               >
-                About
+                O nas
               </a>
             </li>
 
@@ -75,15 +76,16 @@ const Footer = () => {
                 Terminarz
               </a>
             </li>
-
-            <li>
-              <a
-                className="text-secondary-foreground transition hover:text-gray-700/75 "
-                href="/login"
-              >
-                Login
-              </a>
-            </li>
+            {!isLoggedIn && (
+              <li>
+                <a
+                  className="text-secondary-foreground transition hover:text-gray-700/75 "
+                  href="/login"
+                >
+                  Login
+                </a>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -92,7 +94,7 @@ const Footer = () => {
         </p>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
