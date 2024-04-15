@@ -44,18 +44,14 @@ export const changePassword = async (oldPassword, newPassword) => {
 
 export const deleteAccount = async (password) => {
   try {
-    // Sprawdź hasło
     const passwordValid = await checkPassword(password);
     if (passwordValid) {
-      // Usunięcie konta
       const response = await fetch("/api/delete-account", {
         method: "DELETE",
-        headers: {
-          // Dodaj tutaj nagłówki autoryzacyjne, jeśli są wymagane
-        },
+        headers: {},
       });
       const data = await response.json();
-      console.log(data); // Przetwarzanie odpowiedzi serwera
+      console.log(data);
     } else {
       console.error("Niepoprawne hasło");
     }
