@@ -1,7 +1,40 @@
-import { Button } from '@/components/ui/button'
-import FormInput from '../FormInput'
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import FormInput from "../FormInput";
+import {
+  changeEmail,
+  changePassword,
+  deleteAccount,
+} from "../UserSettings/AccountSettingsMethods";
 
 const AccountSettings = () => {
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
+  const [email, setEmail] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  const [passwordDelete, setPasswordDelete] = useState("");
+
+  const handleDeleteAccount = () => {
+    setShowPasswordInput(true);
+  };
+
+  const handleConfirmDelete = (password) => {
+    console.log('test')
+    deleteAccount(password);
+  };
+
+  const handleChangePassword = () => {
+    if (newPassword === confirmNewPassword) {
+      setPasswordsMatch(true);
+      changePassword(oldPassword, newPassword);
+    } else {
+      setPasswordsMatch(false);
+    }
+  };
+
   return (
     <>
       <div className="p-2 md:p-4">
@@ -20,11 +53,13 @@ const AccountSettings = () => {
                     name="email"
                     placeholder="email@gmail.com"
                     className="mb-4"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <Button
                     variant="default"
                     className="p-2 rounded bg-primary text-white  self-end"
-                    // Dodaję klasę self-end, która wyrównuje przycisk do prawej strony
+                    onClick={() => changeEmail(email)}
                   >
                     Zapisz email
                   </Button>
@@ -33,51 +68,83 @@ const AccountSettings = () => {
 
               <div className="bg-secondary border border-secondary  rounded-xl w-full p-6 flex flex-col mb-12">
                 <FormInput
-                  label="Zmień Hasło"
+                  label="Stare Hasło"
                   type="password"
-                  name="password"
+                  name="oldPassword"
                   placeholder="stare haslo"
                   className="mb-4"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
                 />
                 <FormInput
-                  label="Zmień Hasło"
+                  label="Nowe Hasło"
                   type="password"
-                  name="password"
+                  name="newPassword"
                   placeholder="nowe hasło"
                   className="mb-4"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                 />
                 <FormInput
-                  label="Zmień Hasło"
+                  label="Potwierdź Nowe Hasło"
                   type="password"
-                  name="password"
+                  name="confirmNewPassword"
                   placeholder="potwierdź nowe hasło"
                   className="mb-4"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
+                {!passwordsMatch && (
+                  <p className="text-red-500">Hasła nie są takie same.</p>
+                )}
                 <Button
                   variant="default"
                   className="p-2 rounded bg-primary text-white  self-end"
-                  // Dodaję klasę self-end, która wyrównuje przycisk do prawej strony
+                  onClick={handleChangePassword}
                 >
                   Zmień hasło
                 </Button>
               </div>
 
               <div className="bg-red border border-secondary text-center rounded-xl w-full p-6 flex flex-col mb-4">
-                <p>Chce usunac konto i wszystko co z nim związane.</p>
+                <p>Chcę usunąć konto i wszystko co z nim związane.</p>
                 <p> ⚠️ TEGO NIE COFNIESZ!</p>
                 <Button
                   variant="default"
                   className="p-2 rounded bg-secondary text-white mt-4 self-end"
+                  onClick={handleDeleteAccount}
                 >
                   Usuń konto
                 </Button>
+                {showPasswordInput && (
+                  <>
+                    <p className="flex my-2">Podaj swoje hasło:</p>
+                    <div className=" flex flex-col">
+                      <FormInput
+                        type="password"
+                        name="passwordToDelete"
+                        placeholder="Twoje hasło"
+                        className="mb-8 flex"
+                        value={passwordDelete}
+                        onChange={(e) => setPasswordDelete(e.target.value)}
+                      />
+                      <Button
+                        variant="default"
+                        className="p-2 rounded bg-primary self-end"
+                        onClick={() => handleConfirmDelete(passwordDelete)}
+                      >
+                        Potwierdź usunięcie konta
+                      </Button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AccountSettings
+export default AccountSettings;
