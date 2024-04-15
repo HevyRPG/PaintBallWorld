@@ -1,9 +1,44 @@
-import { Button } from '@/components/ui/button'
-import FormInput from '../FormInput'
-import FormTextarea from '../FormTextarea'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import FormInput from "../FormInput";
+import FormTextarea from "../FormTextarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfileSettings = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSave = async () => {
+    const userData = {
+      firstName,
+      lastName,
+      phone,
+      description,
+    };
+
+    try {
+      const response = await fetch("/api/user/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Błąd podczas aktualizacji danych użytkownika.");
+      }
+
+      // Tutaj możemy obsłużyć odpowiedź z serwera, jeśli to konieczne
+
+      console.log("Dane użytkownika zostały zaktualizowane pomyślnie.");
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <>
       <div className="p-2 md:p-4">
@@ -41,6 +76,8 @@ const ProfileSettings = () => {
                     type="text"
                     name="imie"
                     placeholder="Jan"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                   />
                 </div>
 
@@ -50,6 +87,8 @@ const ProfileSettings = () => {
                     type="text"
                     name="Nazwisko"
                     placeholder="Nowak"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </div>
               </div>
@@ -60,6 +99,8 @@ const ProfileSettings = () => {
                   type="tel"
                   name="Telefon"
                   placeholder="435-654-669"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
 
@@ -68,6 +109,8 @@ const ProfileSettings = () => {
                   label="Opis"
                   placeholder="Lorem Ipsum"
                   name="Opis"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
 
@@ -75,6 +118,7 @@ const ProfileSettings = () => {
                 <Button
                   variant="default"
                   className="p-2 rounded bg-primary text-white"
+                  onClick={handleSave}
                 >
                   Save
                 </Button>
@@ -84,7 +128,7 @@ const ProfileSettings = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ProfileSettings
+export default ProfileSettings;
