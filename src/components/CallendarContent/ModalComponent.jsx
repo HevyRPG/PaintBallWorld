@@ -83,24 +83,29 @@ const customStyles = {
 };
 
 const ModalComponent = ({ isOpen, closeModal }) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
+  function afterOpenModal() {
+    subtitle.style.color = "#eee";
+  }
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={closeModal}
+      onAfterOpen={afterOpenModal}
       style={customStyles}
       contentLabel="Example Modal"
     >
       <div style={customStyles.header}>
         <div style={customStyles.title}>Paintball Warszawa</div>
-        <button style={customStyles.button} onClick={closeModal}>
-          Close
-        </button>
+
+        <Button
+          variant="ghost"
+          className="border"
+          size="sm"
+          onClick={closeModal}
+        >
+          Cofnij
+        </Button>
       </div>
       <div style={customStyles.footer}>
         <div style={customStyles.selectWrapper}>
