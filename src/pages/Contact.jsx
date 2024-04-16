@@ -1,7 +1,13 @@
-import { Button } from '@/components/ui/button'
-import FormInput from '../components/FormInput'
-import FormTextarea from '../components/FormTextarea'
-import { Form } from 'react-router-dom'
+import { Button } from "@/components/ui/button";
+import FormInput from "../components/FormInput";
+import FormTextarea from "../components/FormTextarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ContactPage = () => {
   return (
@@ -48,13 +54,18 @@ const ContactPage = () => {
           <form className="md:col-span-8 p-10 flex flex-col">
             <FormInput label="Imię" name="firstName" type="text" />
             <FormInput label="Nazwisko" name="lastName" type="text" />
-            <FormInput
-              label="Temat (np. Błąd, Sugestia)"
-              name="subject"
-              type="text"
-            />
+            <p className="text-primary">Temat (np. Błąd, Sugestia)</p>
+            <Select>
+              <SelectTrigger className="w-full p-2 text-secondary bg-white border rounded mb-4 mt-1">
+                <SelectValue placeholder="Temat" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pzs">Problemy ze stroną</SelectItem>
+                <SelectItem value="pzf">Problemy z formularzem</SelectItem>
+                <SelectItem value="inn">Inne</SelectItem>
+              </SelectContent>
+            </Select>
             <FormTextarea label="Opis" name="message" />
-            {/* Button container */}
             <div className="mt-4 self-end">
               <Button variant="default" type="submit">
                 Wyślij
@@ -64,7 +75,7 @@ const ContactPage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ContactPage
+export default ContactPage;

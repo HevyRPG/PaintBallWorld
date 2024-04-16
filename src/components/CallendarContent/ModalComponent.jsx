@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 
 Modal.setAppElement("#root");
 
@@ -79,14 +79,11 @@ const customStyles = {
     color: "#007bff",
     textDecoration: "none",
     cursor: "pointer",
-
   },
 };
 
 const ModalComponent = ({ isOpen, closeModal }) => {
   const [isChecked, setIsChecked] = useState(false);
-
- 
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -107,7 +104,7 @@ const ModalComponent = ({ isOpen, closeModal }) => {
       </div>
       <div style={customStyles.footer}>
         <div style={customStyles.selectWrapper}>
-          <Select >
+          <Select>
             <SelectTrigger className="w-3/4">
               <SelectValue placeholder="Wybierz pakiet" />
             </SelectTrigger>
@@ -118,12 +115,10 @@ const ModalComponent = ({ isOpen, closeModal }) => {
             </SelectContent>
           </Select>
 
-          <div style={customStyles.price}>
-            100 zł
-          </div>
+          <div style={customStyles.price}>100 zł</div>
           <Button variant="default" size="lg">
-                  Zapisz się
-            </Button>
+            Zapisz się
+          </Button>
         </div>
         <div style={customStyles.descriptionWrapper}>
           <div style={customStyles.description}>
@@ -136,7 +131,6 @@ const ModalComponent = ({ isOpen, closeModal }) => {
           <div style={customStyles.checkbox}>
             <p className="pt-6">Regulamin</p>
           </div>
-
         </div>
       </div>
     </Modal>

@@ -82,7 +82,7 @@ const Footer = () => {
                   className="text-secondary-foreground transition hover:text-gray-700/75 "
                   href="/login"
                 >
-                  Login
+                  Logowanie
                 </a>
               </li>
             )}
