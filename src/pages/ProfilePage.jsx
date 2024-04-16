@@ -120,10 +120,10 @@ const ProfilePage = () => {
               {/* Render user profile data */}
               {!loading && userData && (
                 <div>
-                  <Avatar>
-                    <AvatarImage src="defavatar.png" alt={username} />
-                    <AvatarFallback>Avatar</AvatarFallback>
-                  </Avatar>
+                <img
+                  src="https://avatar.iran.liara.run/public/36"
+                  className="max-h-24 max-w-24 mx-auto"
+                />
                   <span className=" left-0 w-full text-primary text-xl font-bold italic">
                     {username}
                   </span>

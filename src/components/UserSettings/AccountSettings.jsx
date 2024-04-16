@@ -22,7 +22,6 @@ const AccountSettings = () => {
   };
 
   const handleConfirmDelete = (password) => {
-    console.log('test')
     deleteAccount(password);
   };
 

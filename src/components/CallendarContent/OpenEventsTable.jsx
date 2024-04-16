@@ -10,7 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-// Placeholder Skeleton component. Replace or modify according to your actual implementation.
+import ModalComponent from "./ModalComponent";
+
 
 const OpenEventsTable = ({ fieldID }) => {
   const [events, setEvents] = useState([])
@@ -18,6 +19,16 @@ const OpenEventsTable = ({ fieldID }) => {
   const [sortDirection, setSortDirection] = useState('asc')
   const [sortBy, setSortBy] = useState('date')
   const [isLoading, setIsLoading] = useState(false)
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     if (!fieldID) {
@@ -233,7 +244,7 @@ const OpenEventsTable = ({ fieldID }) => {
               <TableCell className="text-center">{event.hour}</TableCell>
               <TableCell className="text-center">{`${event.attendees}/${event.maxAttendees}`}</TableCell>
               <TableCell className="text-center">
-                <Button variant="default" size="lg">
+                <Button variant="default" size="lg" onClick={openModal}>
                   Zapisz się
                 </Button>
               </TableCell>
@@ -241,6 +252,7 @@ const OpenEventsTable = ({ fieldID }) => {
           ))}
         </TableBody>
       </Table>
+      <ModalComponent isOpen={modalIsOpen} closeModal={closeModal} />
     </div>
   )
 }
