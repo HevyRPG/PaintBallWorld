@@ -47,10 +47,11 @@ const ProfileSettings = () => {
 
           <div className="grid max-w-2xl mx-auto mt-8">
             <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
-              <Avatar>
-                <AvatarImage src="defavatar.png" alt="photo" />
-                <AvatarFallback>Avatar</AvatarFallback>
-              </Avatar>
+            <img
+                className="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
+                src="https://avatar.iran.liara.run/public/36"
+                alt="Bordered avatar"
+              />
 
               <div className="flex flex-col space-y-5 sm:ml-8">
                 <Button
