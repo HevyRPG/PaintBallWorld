@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     try {
       const response = await axios.post(
-        '/api/Auth/Login/Login',
+        '/api/Auth/Login',
         { username, password }, // This is the correct place for the payload
         APIHeaders // Directly use APIHeaders here as the configuration
       )
