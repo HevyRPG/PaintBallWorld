@@ -1,6 +1,8 @@
-import { Button } from '@/components/ui/button'
-import FormInput from '../FormInput'
-import FormTextarea from '../FormTextarea'
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import FormInput from "../FormInput";
+import FormTextarea from "../FormTextarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfileSettings = () => {
   return (
