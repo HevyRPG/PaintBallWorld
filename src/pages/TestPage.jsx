@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react'
 
-import AddSetDialog from '@/components/OwnerDashboard/AddSetDialog'
+import Scheduler from '@/components/OwnerDashboard/Scheduler'
 
 function TestPage() {
   return (
     <div>
-      <AddSetDialog />
+      <Scheduler />
     </div>
   )
 }
