@@ -104,7 +104,7 @@ const AddPhotoDialog = ({ fieldId }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="outline" size="lg" className="rounded border-primary">
+        <Button variant="default" size="lg" className="rounded border-primary">
           Dodaj zdjęcie
         </Button>
       </DialogTrigger>

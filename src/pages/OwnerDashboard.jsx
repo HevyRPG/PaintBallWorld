@@ -6,17 +6,15 @@ import { Button } from '@/components/ui/button'
 import OpenEventsTable from '@/components/CallendarContent/OpenEventsTable.jsx'
 import PrivateEventsTable from '@/components/CallendarContent/PrivateEventsTable.jsx'
 import PhotoGallery from '@/components/ui/PhotoGallery.jsx'
-import OwnerDialog from '@/components/OwnerDashboard/OwnerDialog.jsx'
 import AddFieldDialog from '@/components/OwnerDashboard/AddFieldDialog'
-
+import EditFieldDialog from '../components/OwnerDashboard/EditFieldDialog'
+import DeleteFieldDialog from '../components/OwnerDashboard/DeleteFieldDialog'
+import AddPhotoDialog from '../components/OwnerDashboard/AddPhotoDialog'
+import DeletePhotoDialog from '../components/OwnerDashboard/DeletePhotoDialog'
 import { pl } from 'date-fns/locale'
 import Cookies from 'js-cookie'
-
-const fieldsDictionary = [
-  { id: 1, name: 'Wielkoposla Pole 1' },
-  { id: 2, name: 'Warszawa Pole 2' },
-  { id: 3, name: 'Ciechocinek Pole 3' },
-]
+import AllSetsDialog from '../components/OwnerDashboard/AllSetsDialog'
+import AddSetDialog from '../components/OwnerDashboard/AddSetDialog'
 
 const OwnerDashboard = () => {
   const [date, setDate] = useState(new Date())
@@ -56,72 +54,75 @@ const OwnerDashboard = () => {
               <h1 className="text-4xl font-semibold text-primary mb-2">
                 Dashboard
               </h1>
-              <h2 className="text-secondary-foreground ml-0.5">
-                Zarządzaj polem
-              </h2>
             </div>
           </div>
-          <section className="flex gap-6">
-            <div className="relative py-4 border border-secondary text-secondary-foreground shadow rounded-xl w-2/3 flex items-center justify-center">
-              <AddFieldDialog />
+          <section className="flex flex-col md:flex-row gap-6 min-w-full">
+            <div className="relative p-4 border border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center m-auto">
+              <h1 className="text-xl font-semibold mb-4">Zarządzaj Polem</h1>
+              <div className="flex gap-2">
+                <AddFieldDialog />
+                <EditFieldDialog fieldId="" />
+                <DeleteFieldDialog fieldId="" />
+              </div>
             </div>
-
-            <div className="flex flex-col items-center text-center font-semibold pt- pb-3 pr-3 border border-secondary shadow rounded-xl md:w-1/3 text-card-foreground overflow-y-auto max-h-32">
-              <span className="block text-accent-foreground text-xl pt-3 font-bold mb-3 bg-background w-full sticky top-0">
-                Twoje pola:
-              </span>
-              <div className="grid grid-cols-1 gap-2 pr-3 pl-3 w-full">
-                {fieldsDictionary.map((field, index) => (
-                  <OwnerDialog
-                    key={index}
-                    fieldName={field.name}
-                    fieldId={field.id}
-                  />
-                ))}
+            <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">
+              <h1 className="text-xl font-semibold mb-4">
+                Zarządzaj Zestawami i Zdjęciami
+              </h1>
+              <div className="flex gap-2">
+                <AllSetsDialog fieldId="" />
+                <AddSetDialog fieldId="" />
+                <AddPhotoDialog fieldId="" />
+                <DeletePhotoDialog fieldId="" />
               </div>
             </div>
           </section>
-          <section className="flex gap-5">
-            <div className="mx-auto flex flex-wrap items-center justify-center bg-background rounded w-1/3">
-              <h1 className="font-semibold text-xl mb-2">
-                Wybierz <span className="text-primary italic">datę</span> aby
-                wyświetlić rozgrywki w wybranym terminie
-              </h1>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={2}
-                fixedWeeks
-                locale={pl}
-                className="border rounded-xl"
-              />
+          <section className="flex flex-col md:flex-row gap-6">
+            <div className="w-full md:w-1/2">
+              <div className="bg-background rounded-xl p-6">
+                <h1 className="text-xl font-semibold mb-4">
+                  Wybierz datę, aby wyświetlić rozgrywki
+                </h1>
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  numberOfMonths={2}
+                  fixedWeeks
+                  locale={pl}
+                  className="border w-[500px] rounded-xl"
+                />
+              </div>
             </div>
             <div className="w-auto">
+              <h1 className="text-xl font-semibold mb-4">Galeria</h1>
               <PhotoGallery fieldID="TESTGAL" width={500} height={300} />
             </div>
           </section>
-          <section className="flex gap-5">
-            <div className="mx-auto flex flex-wrap items-center justify-center border border-secondary  rounded-xl w-1/2">
-              <h1 className="text-white text-xl font-bold italic mb-4 mt-4">
-                Rozgyrwki otwarte w dniu{' '}
-                <span className="text-primary">{formattedDate}</span>
-              </h1>
-              <Button variant="default" size="lg" className="rounded ml-5">
-                Dodaj
-              </Button>
-
-              <OpenEventsTable fieldID="123" />
+          <section className="flex flex-col md:flex-row gap-6">
+            <div className="w-full md:w-1/2">
+              <div className="bg-background rounded-xl border p-6">
+                <h1 className="text-2xl font-bold mb-4">
+                  Rozgrywki otwarte w dniu{' '}
+                  <span className="text-primary italic">{formattedDate}</span>
+                </h1>
+                <Button variant="default" size="lg" className="rounded">
+                  Dodaj
+                </Button>
+                <OpenEventsTable fieldID="123" />
+              </div>
             </div>
-            <div className=" mx-auto flex flex-wrap items-center justify-center border border-secondary  rounded-xl w-1/2">
-              <h1 className="text-white text-xl font-bold italic mb-4 mt-4">
-                Rezerwacje pola w dniu{' '}
-                <span className="text-primary">{formattedDate}</span>
-              </h1>
-              <Button variant="default" size="lg" className="rounded ml-5">
-                Dodaj
-              </Button>
-              <PrivateEventsTable fieldID="123" />
+            <div className="w-full md:w-1/2">
+              <div className="bg-background rounded-xl border p-6">
+                <h1 className="text-2xl font-bold mb-4">
+                  Rezerwacje pola w dniu{' '}
+                  <span className="text-primary italic">{formattedDate}</span>
+                </h1>
+                <Button variant="default" size="lg" className="rounded">
+                  Dodaj
+                </Button>
+                <PrivateEventsTable fieldID="123" />
+              </div>
             </div>
           </section>
         </main>

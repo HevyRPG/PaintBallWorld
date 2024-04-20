@@ -13,18 +13,18 @@ import FormInput from '../FormInput'
 const Scheduler = ({ fieldId }) => {
   const [formData, setFormData] = useState({
     eventType: 'open',
-    selectedDays: [],
-    isRecurrent: false,
-    finalDate: '',
-    name: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    description: '',
-    timeValue: '',
-    isMultiple: false,
-    isWeekly: false,
-    isAutomatic: false,
+    selectedDays: [], // tu sie dni wpierdalają
+    isRecurrent: false, // to chyba to samo co isWeekly
+    finalDate: '', //data, finalna data do kiedy ma się powtarzać
+    name: '', //string
+    date: '', //data
+    startTime: '', //date
+    endTime: '', //data
+    description: '', //text
+    timeValue: '', // int raczej
+    isMultiple: false, // czy kilka dni w tygodniu (np. kilikasz poniedziałek, wtorek itp.)
+    isWeekly: false, // czy co tydzień się powtarza
+    isAutomatic: false, // czy ma tworzyć wydarzenia na podstawie godzin otwarcia / timeValue
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

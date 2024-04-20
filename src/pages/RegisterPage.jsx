@@ -139,7 +139,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        '/api/Auth/Register/RegisterOwner',
+        '/api/Auth/RegisterOwner',
         JSON.stringify(ownerData),
         APIHeaders
       )
@@ -203,7 +203,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        '/api/Auth/Register/Register',
+        '/api/Auth/Register',
         JSON.stringify(userData),
         APIHeaders
       )

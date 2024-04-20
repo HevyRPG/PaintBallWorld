@@ -140,8 +140,8 @@ const MultiPageDialog = ({ fieldId }) => {
     }
 
     try {
-      const response = await axios.post(
-        '/api/Field/Fields/Create',
+      const response = await axios.put(
+        `/api/Field/Fields/${fieldId}`,
         formData,
         config
       )

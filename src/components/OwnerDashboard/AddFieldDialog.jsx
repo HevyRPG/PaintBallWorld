@@ -100,11 +100,7 @@ const MultiPageDialog = () => {
     }
     console.log('Logging config:', config)
     try {
-      const response = await axios.post(
-        '/api/Field/Fields/Create',
-        formData,
-        config
-      )
+      const response = await axios.post('/api/Field/Fields', formData, config)
 
       if (response.status === 200) {
         setErrorRegister('Pole dodane pomyślnie! Możesz zamknąć to okno')
@@ -336,11 +332,11 @@ const AddFieldDialog = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="outline" size="lg" className="rounded border-primary">
+        <Button variant="default" size="lg" className="rounded border-primary">
           Dodaj Pole
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="min-w-max border-primary">
         <DialogHeader>
           <DialogTitle>Dodaj pole</DialogTitle>
         </DialogHeader>
