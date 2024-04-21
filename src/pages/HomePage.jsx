@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { AuthContext } from "@/context/AuthContext";
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { AuthContext } from '@/context/AuthContext'
 
 const login_false = (
   <>
@@ -15,7 +15,7 @@ const login_false = (
       </Button>
     </Link>
   </>
-);
+)
 
 const login_true = (
   <>
@@ -28,10 +28,10 @@ const login_true = (
       </Button>
     </Link>
   </>
-);
+)
 
 const HomePage = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext)
 
   return (
     <main className="mx-auto max-w-screen-2xl bg-background text-primary-foreground">
@@ -40,7 +40,7 @@ const HomePage = () => {
         <div className="sm:max-w-md md:max-w-md 2xl:max-w-3xl   mx-auto">
           <img src="logosm.png" alt="logo" />
           <h1 className="text-6xl text-secondary-foreground font-bold mb-4">
-            Witamy na
+            Witamy na{' '}
             <span className="italic font-bold text-primary">
               PaintballWorld
             </span>
@@ -95,7 +95,7 @@ const HomePage = () => {
         </div>
       </section>
     </main>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
