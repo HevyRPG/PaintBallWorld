@@ -88,7 +88,7 @@ const ModalComponent = ({ isOpen, closeModal }) => {
   }
 
   return (
-    <Modal
+    <Modal  portalClassName="modal-portal"
       isOpen={isOpen}
       onRequestClose={closeModal}
       onAfterOpen={afterOpenModal}

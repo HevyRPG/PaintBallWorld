@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import FormInput from "../FormInput";
+import { changePassword } from "../UserSettings/AccountSettingsMethods";
+import { AuthContext } from "../../context/AuthContext";
 import {
-  changeEmail,
-  changePassword,
-  deleteAccount,
-} from "../UserSettings/AccountSettingsMethods";
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
 const AccountSettings = () => {
   const [showPasswordInput, setShowPasswordInput] = useState(false);
@@ -14,15 +22,14 @@ const AccountSettings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-
-  const [passwordDelete, setPasswordDelete] = useState("");
+  const { deleteAccount } = useContext(AuthContext);
 
   const handleDeleteAccount = () => {
     setShowPasswordInput(true);
   };
 
-  const handleConfirmDelete = (password) => {
-    deleteAccount(password);
+  const handleConfirmDelete = () => {
+    deleteAccount();
   };
 
   const handleChangePassword = () => {
@@ -58,7 +65,7 @@ const AccountSettings = () => {
                   <Button
                     variant="default"
                     className="p-2 rounded bg-primary text-white  self-end"
-                    onClick={() => changeEmail(email)}
+                    //onClick={() => changeEmail(email)}
                   >
                     Zapisz email
                   </Button>
@@ -107,36 +114,36 @@ const AccountSettings = () => {
 
               <div className="bg-red border border-secondary text-center rounded-xl w-full p-6 flex flex-col mb-4">
                 <p>Chcę usunąć konto i wszystko co z nim związane.</p>
-                <p> ⚠️ TEGO NIE COFNIESZ!</p>
-                <Button
-                  variant="default"
-                  className="p-2 rounded bg-secondary text-white mt-4 self-end"
-                  onClick={handleDeleteAccount}
-                >
-                  Usuń konto
-                </Button>
-                {showPasswordInput && (
-                  <>
-                    <p className="flex my-2">Podaj swoje hasło:</p>
-                    <div className=" flex flex-col">
-                      <FormInput
-                        type="password"
-                        name="passwordToDelete"
-                        placeholder="Twoje hasło"
-                        className="mb-8 flex"
-                        value={passwordDelete}
-                        onChange={(e) => setPasswordDelete(e.target.value)}
-                      />
-                      <Button
-                        variant="default"
-                        className="p-2 rounded bg-primary self-end"
-                        onClick={() => handleConfirmDelete(passwordDelete)}
-                      >
-                        Potwierdź usunięcie konta
-                      </Button>
-                    </div>
-                  </>
-                )}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="default"
+                      className="p-2 rounded bg-secondary text-white mt-4 self-end"
+                      onClick={handleDeleteAccount}
+                    >
+                      Usuń konto
+                    </Button>
+                  </AlertDialogTrigger>
+
+                  {showPasswordInput && (
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Czy jesteś pewien?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          To działanie jest nieodwracalne.
+                           Czy na pewno chcesz
+                          usunąć swoje konto?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Anuluj</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleConfirmDelete}>
+                          Potwierdź
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  )}
+                </AlertDialog>
               </div>
             </div>
           </div>

@@ -1,78 +1,45 @@
-export const changeEmail = async (newEmail) => {
+import axios from "axios";
+import Cookies from "js-cookie";
+import APIKEYS from "../APIKEYS";
+import APIHeaders from "../APIHeaders";
+
+export const fetchUserProfile = async () => {
+  const token = Cookies.get("authToken");
   try {
-    const response = await fetch("/api/change-email", {
-      method: "POST",
+    const response = await axios.get(
+      "/api/User/User/profile",
+       {
       headers: {
-        "Content-Type": "application/json",
+        ...APIKEYS.headers,
+        Authorization: `Bearer ${token}`, // Append Authorization header
       },
-      body: JSON.stringify({ email: newEmail }),
-    });
-    const data = await response.json();
+      }
+    );
+  
+    return response.data;
   } catch (error) {
-    console.error("Błąd podczas zmiany adresu e-mail:", error);
+    console.error("Błąd podczas pobierania profilu użytkownika:", error);
+    throw error; // Rzuć błąd, aby mógł być obsłużony w komponencie wywołującym funkcję
   }
 };
 
 export const changePassword = async (oldPassword, newPassword) => {
   try {
-    const response = await fetch("/api/change-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ oldPassword, newPassword }),
-    });
-    const data = await response.json();
-  } catch (error) {
-    console.error("Błąd podczas zmiany hasła:", error);
-  }
-};
+    const token = Cookies.get("authToken");
+    console.log(oldPassword, newPassword);
 
-// export const deleteAccount = async () => {
-//   try {
-//     const response = await fetch("/api/delete-account", {
-//       method: "DELETE",
-//       headers: {
-//         // Dodaj tutaj nagłówki autoryzacyjne, jeśli są wymagane
-//       },
-//     });
-//     const data = await response.json();
-//   } catch (error) {
-//     console.error("Błąd podczas usuwania konta:", error);
-//   }
-// };
-
-export const deleteAccount = async (password) => {
-  try {
-    const passwordValid = await checkPassword(password);
-    if (passwordValid) {
-      const response = await fetch("/api/delete-account", {
-        method: "DELETE",
-        headers: {},
-      });
-      const data = await response.json();
-      console.log(data);
-    } else {
-      console.error("Niepoprawne hasło");
-    }
+    const response = await axios.post(
+      "/api/Auth/Login/ChangePassword",
+      { oldPassword, newPassword },
+      {
+        headers: {
+          ...APIKEYS.headers,
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    //console.log("Hasło zostało zmienione pomyślnie.");
   } catch (error) {
-    console.error("Błąd podczas usuwania konta:", error);
-  }
-};
-
-const checkPassword = async (password) => {
-  try {
-    const response = await fetch("/api/check-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password }),
-    });
-    const data = await response.json();
-    return data.valid;
-  } catch (error) {
-    console.error("Błąd podczas sprawdzania hasła:", error);
-    return false;
+    //console.error("Błąd podczas zmiany hasła:", error);
   }
 };
