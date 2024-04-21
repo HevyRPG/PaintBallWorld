@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import APIHeaders from '../components/APIHeaders' // Importing your APIHeaders
+import APIKEYS from '../components/APIKEYS'
 
 export const AuthContext = createContext()
 
@@ -56,8 +57,30 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false)
   }
 
+  const deleteAccount = async () => {
+    try {
+      const token = Cookies.get('authToken');
+      const username = Cookies.get('username');
+      const user = username + ":D"
+
+      await axios.delete('/api/Auth/Login//DeleteAccount', {
+        dto: { user },
+        headers: {
+          ...APIKEYS.headers,
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log('Konto zostało pomyślnie usunięte.');
+      logout(); // Wylogowanie użytkownika po usunięciu konta
+    } catch (error) {
+      console.error('Błąd podczas usuwania konta:', error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, isChecking }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, isChecking, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   )

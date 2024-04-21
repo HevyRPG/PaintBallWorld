@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import FormInput from "../FormInput";
 import {
   changeEmail,
   changePassword,
-  deleteAccount,
 } from "../UserSettings/AccountSettingsMethods";
+import { AuthContext } from "../../context/AuthContext";
 
 const AccountSettings = () => {
   const [showPasswordInput, setShowPasswordInput] = useState(false);
@@ -14,15 +14,15 @@ const AccountSettings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const { deleteAccount  } = useContext(AuthContext)
 
-  const [passwordDelete, setPasswordDelete] = useState("");
 
   const handleDeleteAccount = () => {
     setShowPasswordInput(true);
   };
 
-  const handleConfirmDelete = (password) => {
-    deleteAccount(password);
+  const handleConfirmDelete = () => {
+    deleteAccount();
   };
 
   const handleChangePassword = () => {
@@ -117,20 +117,11 @@ const AccountSettings = () => {
                 </Button>
                 {showPasswordInput && (
                   <>
-                    <p className="flex my-2">Podaj swoje hasło:</p>
-                    <div className=" flex flex-col">
-                      <FormInput
-                        type="password"
-                        name="passwordToDelete"
-                        placeholder="Twoje hasło"
-                        className="mb-8 flex"
-                        value={passwordDelete}
-                        onChange={(e) => setPasswordDelete(e.target.value)}
-                      />
+                    <div className="flex flex-col mt-8">
                       <Button
                         variant="default"
                         className="p-2 rounded bg-primary self-end"
-                        onClick={() => handleConfirmDelete(passwordDelete)}
+                        onClick={handleConfirmDelete}
                       >
                         Potwierdź usunięcie konta
                       </Button>

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import FormInput from "../FormInput";
 import FormTextarea from "../FormTextarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { fetchUserProfile } from "./AccountSettingsMethods";
+import axios from "axios";
 
 const ProfileSettings = () => {
   const [firstName, setFirstName] = useState("");
@@ -10,28 +11,48 @@ const ProfileSettings = () => {
   const [phone, setPhone] = useState("");
   const [description, setDescription] = useState("");
 
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchUserProfile();
+        setProfile(data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log("test:");
+  console.log(profile);
+
   const handleSave = async () => {
-    const userData = {
+    const updatedData = {
       firstName,
       lastName,
       phone,
       description,
+
+      ...(profile && {
+        firstName: firstName || profile.firstName,
+        lastName: lastName || profile.lastName,
+        phone: phone || profile.phone,
+        description: description || profile.description,
+      }),
     };
 
     try {
-      const response = await fetch("/api/user/profile", {
+      const response = await axios.put("/api/User/User/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
       });
-
-      if (!response.ok) {
-        throw new Error("Błąd podczas aktualizacji danych użytkownika.");
-      }
-
-      // Tutaj możemy obsłużyć odpowiedź z serwera, jeśli to konieczne
 
       console.log("Dane użytkownika zostały zaktualizowane pomyślnie.");
     } catch (error) {
@@ -47,7 +68,7 @@ const ProfileSettings = () => {
 
           <div className="grid max-w-2xl mx-auto mt-8">
             <div className="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
-            <img
+              <img
                 className="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
                 src="https://avatar.iran.liara.run/public/36"
                 alt="Bordered avatar"
