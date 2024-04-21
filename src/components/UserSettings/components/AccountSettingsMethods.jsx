@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import APIKEYS from "../APIKEYS";
-import APIHeaders from "../APIHeaders";
+import APIKEYS from "../../APIKEYS";
+
 
 export const fetchUserProfile = async () => {
   const token = Cookies.get("authToken");
@@ -26,10 +26,9 @@ export const fetchUserProfile = async () => {
 export const changePassword = async (oldPassword, newPassword) => {
   try {
     const token = Cookies.get("authToken");
-    console.log(oldPassword, newPassword);
 
-    const response = await axios.post(
-      "/api/Auth/Login/ChangePassword",
+    const response = await axios.put(
+      "/api/Auth/ResetPassword",
       { oldPassword, newPassword },
       {
         headers: {
@@ -38,8 +37,9 @@ export const changePassword = async (oldPassword, newPassword) => {
         },
       }
     );
-    //console.log("Hasło zostało zmienione pomyślnie.");
+    return { success: true };
   } catch (error) {
-    //console.error("Błąd podczas zmiany hasła:", error);
+    const errorMessage = error.response?.data?.message || "Błąd podczas zmiany hasła";
+    throw new Error(errorMessage);
   }
 };

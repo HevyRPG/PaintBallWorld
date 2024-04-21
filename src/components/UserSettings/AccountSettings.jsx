@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import FormInput from "../FormInput";
-import { changePassword } from "../UserSettings/AccountSettingsMethods";
+import { changePassword } from "./components/AccountSettingsMethods";
 import { AuthContext } from "../../context/AuthContext";
 import {
   AlertDialog,
@@ -16,13 +16,16 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const AccountSettings = () => {
+  const { deleteAccount } = useContext(AuthContext);
+
   const [showPasswordInput, setShowPasswordInput] = useState(false);
-  const [email, setEmail] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const { deleteAccount } = useContext(AuthContext);
+
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleDeleteAccount = () => {
     setShowPasswordInput(true);
@@ -32,12 +35,22 @@ const AccountSettings = () => {
     deleteAccount();
   };
 
-  const handleChangePassword = () => {
-    if (newPassword === confirmNewPassword) {
-      setPasswordsMatch(true);
-      changePassword(oldPassword, newPassword);
-    } else {
+  const handleChangePassword = async () => {
+    setSuccessMessage(null); 
+
+    if (newPassword !== confirmNewPassword) {
       setPasswordsMatch(false);
+      return;
+    }
+
+    setPasswordsMatch(true);
+    setErrorMessage(null);
+
+    try {
+      await changePassword(oldPassword, newPassword);
+      setSuccessMessage("Hasło zostało zmienione!");
+    } catch (error) {
+      setErrorMessage(error.message);
     }
   };
 
@@ -59,8 +72,6 @@ const AccountSettings = () => {
                     name="email"
                     placeholder="email@gmail.com"
                     className="mb-4"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <Button
                     variant="default"
@@ -103,6 +114,13 @@ const AccountSettings = () => {
                 {!passwordsMatch && (
                   <p className="text-red-500">Hasła nie są takie same.</p>
                 )}
+                {errorMessage && (
+                  <div className="text-red-500">{errorMessage}</div>
+                )}
+
+                {successMessage && !errorMessage && (
+                  <div className="text-green-500">{successMessage}</div>
+                )}
                 <Button
                   variant="default"
                   className="p-2 rounded bg-primary text-white  self-end"
@@ -130,8 +148,7 @@ const AccountSettings = () => {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Czy jesteś pewien?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          To działanie jest nieodwracalne.
-                           Czy na pewno chcesz
+                          To działanie jest nieodwracalne. Czy na pewno chcesz
                           usunąć swoje konto?
                         </AlertDialogDescription>
                       </AlertDialogHeader>

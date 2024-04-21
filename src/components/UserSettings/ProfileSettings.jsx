@@ -5,7 +5,7 @@ import APIKEYS from "../APIKEYS";
 import FormInput from "../FormInput";
 import FormTextarea from "../FormTextarea";
 import { Button } from "@/components/ui/button";
-import { fetchUserProfile } from "./AccountSettingsMethods";
+import { fetchUserProfile } from "./components/AccountSettingsMethods";
 import { format, parseISO } from "date-fns";
 import { formatPhone, handlePhoneChange } from "./utils/phoneUtils"; // Import nowego pliku
 import { ProfilePicture } from "./components/ProfilePicture";
