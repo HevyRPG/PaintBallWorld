@@ -15,13 +15,23 @@ import { pl } from 'date-fns/locale'
 import Cookies from 'js-cookie'
 import AllSetsDialog from '../components/OwnerDashboard/AllSetsDialog'
 import AddSetDialog from '../components/OwnerDashboard/AddSetDialog'
+import axios from 'axios'
+import APIKEYS from '../components/APIKEYS'
 
 const OwnerDashboard = () => {
   const [date, setDate] = useState(new Date())
   const [formattedDate, setFormattedDate] = useState('')
-
+  const [fieldid, setFieldId] = useState('')
   const { isLoggedIn, logout } = useContext(AuthContext)
   const navigate = useNavigate()
+  const token = Cookies.get('authToken')
+  const config = {
+    headers: {
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
   useEffect(() => {
     if (!Cookies.get('role')) {
       logout()
@@ -29,22 +39,32 @@ const OwnerDashboard = () => {
     }
   }, [logout, navigate])
 
-  // useEffect hook to log the date whenever it changes
   useEffect(() => {
     if (date) {
-      // Format the date to a string in YYYY-MM-DD format
       const newFormattedDate =
         date.getFullYear() +
         '-' +
-        String(date.getMonth() + 1).padStart(2, '0') + // Month is 0-based
+        String(date.getMonth() + 1).padStart(2, '0') +
         '-' +
         String(date.getDate()).padStart(2, '0')
 
-      // Update the formattedDate state with the new value
       setFormattedDate(newFormattedDate)
     }
   }, [date])
 
+  useEffect(() => {
+    const fetchID = async () => {
+      try {
+        const response = await axios.get('/api/Owner/Profile', config)
+        setFieldId(response.data.fieldId)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchID()
+  }, [])
+  console.log(fieldid)
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
       <div className="flex-grow text-gray-200">
@@ -60,71 +80,77 @@ const OwnerDashboard = () => {
             <div className="relative p-4 border border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center m-auto">
               <h1 className="text-xl font-semibold mb-4">Zarządzaj Polem</h1>
               <div className="flex gap-2">
-                <AddFieldDialog />
-                <EditFieldDialog fieldId="" />
-                <DeleteFieldDialog fieldId="" />
+                {fieldid == null && <AddFieldDialog />}
+                {fieldid !== null && <EditFieldDialog fieldId={fieldid} />}
+                {fieldid !== null && <DeleteFieldDialog fieldId={fieldid} />}
               </div>
             </div>
-            <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">
-              <h1 className="text-xl font-semibold mb-4">
-                Zarządzaj Zestawami i Zdjęciami
-              </h1>
-              <div className="flex gap-2">
-                <AllSetsDialog fieldId="" />
-                <AddSetDialog fieldId="" />
-                <AddPhotoDialog fieldId="" />
-                <DeletePhotoDialog fieldId="" />
-              </div>
-            </div>
-          </section>
-          <section className="flex flex-col md:flex-row gap-6">
-            <div className="w-full md:w-1/2">
-              <div className="bg-background rounded-xl p-6">
+            {fieldid !== null && (
+              <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">
                 <h1 className="text-xl font-semibold mb-4">
-                  Wybierz datę, aby wyświetlić rozgrywki
+                  Zarządzaj Zestawami i Zdjęciami
                 </h1>
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  numberOfMonths={2}
-                  fixedWeeks
-                  locale={pl}
-                  className="border w-[500px] rounded-xl"
-                />
+                <div className="flex gap-2">
+                  <AllSetsDialog fieldId={fieldid} />
+                  <AddSetDialog fieldId={fieldid} />
+                  <AddPhotoDialog fieldId={fieldid} />
+                  <DeletePhotoDialog fieldId={fieldid} />
+                </div>
               </div>
-            </div>
-            <div className="w-auto">
-              <h1 className="text-xl font-semibold mb-4">Galeria</h1>
-              <PhotoGallery fieldID="TESTGAL" width={500} height={300} />
-            </div>
+            )}
           </section>
-          <section className="flex flex-col md:flex-row gap-6">
-            <div className="w-full md:w-1/2">
-              <div className="bg-background rounded-xl border p-6">
-                <h1 className="text-2xl font-bold mb-4">
-                  Rozgrywki otwarte w dniu{' '}
-                  <span className="text-primary italic">{formattedDate}</span>
-                </h1>
-                <Button variant="default" size="lg" className="rounded">
-                  Dodaj
-                </Button>
-                <OpenEventsTable fieldID="123" />
+          {fieldid !== null && (
+            <section className="flex flex-col md:flex-row gap-6">
+              <div className="w-full md:w-1/2">
+                <div className="bg-background rounded-xl p-6">
+                  <h1 className="text-xl font-semibold mb-4">
+                    Wybierz datę, aby wyświetlić rozgrywki
+                  </h1>
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    numberOfMonths={2}
+                    fixedWeeks
+                    locale={pl}
+                    className="border w-[500px] rounded-xl"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="w-full md:w-1/2">
-              <div className="bg-background rounded-xl border p-6">
-                <h1 className="text-2xl font-bold mb-4">
-                  Rezerwacje pola w dniu{' '}
-                  <span className="text-primary italic">{formattedDate}</span>
-                </h1>
-                <Button variant="default" size="lg" className="rounded">
-                  Dodaj
-                </Button>
-                <PrivateEventsTable fieldID="123" />
+              <div className="w-auto">
+                <h1 className="text-xl font-semibold mb-4">Galeria</h1>
+                <PhotoGallery fieldID={fieldid} width={500} height={300} />
               </div>
-            </div>
-          </section>
+            </section>
+          )}
+          {fieldid !== null && (
+            <section className="flex flex-col md:flex-row gap-6">
+              <div className="w-full md:w-1/2">
+                <div className="bg-background rounded-xl border p-6">
+                  <h1 className="text-2xl font-bold mb-4">
+                    Rozgrywki otwarte w dniu{' '}
+                    <span className="text-primary italic">{formattedDate}</span>
+                  </h1>
+                  <Button variant="default" size="lg" className="rounded">
+                    Dodaj
+                  </Button>
+                  <OpenEventsTable fieldID="123" />
+                </div>
+              </div>
+              <div className="w-full md:w-1/2">
+                <div className="bg-background rounded-xl border p-6">
+                  <h1 className="text-2xl font-bold mb-4">
+                    Rezerwacje pola w dniu{' '}
+                    <span className="text-primary italic">{formattedDate}</span>
+                  </h1>
+                  <Button variant="default" size="lg" className="rounded">
+                    Dodaj
+                  </Button>
+                  <PrivateEventsTable fieldID="123" />
+                </div>
+              </div>
+            </section>
+          )}
         </main>
       </div>
     </div>
