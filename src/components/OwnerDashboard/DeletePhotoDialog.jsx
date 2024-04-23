@@ -19,11 +19,16 @@ const PhotoDeleteButton = ({ photoId, onDelete }) => {
     headers: {
       'Content-Type': 'multipart/form-data',
       ...APIKEYS.headers,
-      Authorization: `Bearer ${token}`, // Append Authorization header
+      Authorization: `Bearer ${token}`,
     },
   }
 
   const handleDelete = async () => {
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this photo?'
+    )
+    if (!confirmation) return
+
     setLoading(true)
     try {
       await axios.delete(`/api/Field/FieldManagement/photos/${photoId}`, config)
@@ -36,20 +41,34 @@ const PhotoDeleteButton = ({ photoId, onDelete }) => {
   }
 
   return (
-    <Button variant="destructive" onClick={handleDelete} disabled={loading}>
+    <Button
+      variant="destructive"
+      size="lg"
+      onClick={handleDelete}
+      disabled={loading}
+    >
       Usuń
     </Button>
   )
 }
 
 const PhotoList = ({ fieldId }) => {
+  const token = Cookies.get('authToken')
   const [photos, setPhotos] = useState([])
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  }
 
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
         const response = await axios.get(
-          `/api/Field/FieldManagement/photos/${fieldId}`
+          `/api/Field/FieldManagement/photos/${fieldId}`,
+          config
         )
         setPhotos(response.data)
       } catch (error) {
@@ -60,7 +79,7 @@ const PhotoList = ({ fieldId }) => {
   }, [fieldId])
 
   const handleDelete = (deletedPhotoId) => {
-    setPhotos(photos.filter((photo) => photo.id !== deletedPhotoId))
+    setPhotos(photos.filter((photo) => photo.id.value !== deletedPhotoId))
   }
 
   return (
@@ -68,13 +87,16 @@ const PhotoList = ({ fieldId }) => {
       <h2>Zdjęcia</h2>
       <div>
         {photos.map((photo) => (
-          <div key={photo.id}>
+          <div key={photo.id.value} className="flex items-center space-x-4">
             <img
               src={photo.url}
-              alt={`Photo ${photo.id}`}
-              style={{ maxWidth: '200px', maxHeight: '200px' }}
+              alt={`Photo ${photo.id.value}`}
+              className="max-w-xs max-h-xs m-2"
             />
-            <PhotoDeleteButton photoId={photo.id} onDelete={handleDelete} />
+            <PhotoDeleteButton
+              photoId={photo.id.value}
+              onDelete={handleDelete}
+            />
           </div>
         ))}
       </div>

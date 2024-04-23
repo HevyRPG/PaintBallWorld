@@ -75,13 +75,12 @@ const MultiPageDialog = () => {
     formData.append('address.HouseNo', formState.houseNo)
     formData.append('address.City', formState.city) // Removed the extra period after 'City'
     formData.append('address.PostalNumber', formState.postalCode)
-    formData.append('address.Coordinates', formState.coordinates)
+    formData.append('address.Country', 'Poland')
+    formData.append('address.location.Latitude', formState.Latitude)
+    formData.append('address.location.Longitude', formState.Longitude)
 
     formData.append('name', formState.fieldName)
     formData.append('area', formState.area)
-
-    // Ensure 'formState.regulations' contains a File object.
-    // If 'formState.regulations' is coming from a file input, it should be a File object.
     if (formState.regulations instanceof File)
       formData.append('regulations', formState.regulations)
 
@@ -99,6 +98,7 @@ const MultiPageDialog = () => {
       },
     }
     console.log('Logging config:', config)
+    console.log('Logging formdata:', formData)
     try {
       const response = await axios.post('/api/Field/Fields', formData, config)
 
@@ -221,11 +221,18 @@ const Page1 = ({ formState, handleInputChange, nextPage }) => {
           placeholder="00-000"
         />
         <FormInput
-          label="Geotag (współrzędne)"
+          label="Szerokość geograficzna (Latitude)"
           type="text"
-          value={formState.coordinates}
-          onChange={(e) => handleInputChange('coordinates', e.target.value)}
-          placeholder="52.23198970, 21.005957745"
+          value={formState.Latitude}
+          onChange={(e) => handleInputChange('Latitude', e.target.value)}
+          placeholder="52,23198970"
+        />
+        <FormInput
+          label="Długość geograficzna (Longitude)"
+          type="text"
+          value={formState.Longitude}
+          onChange={(e) => handleInputChange('Longitude', e.target.value)}
+          placeholder="21,005957745"
         />
       </div>
       <Button variant="outline" onClick={nextPage}>

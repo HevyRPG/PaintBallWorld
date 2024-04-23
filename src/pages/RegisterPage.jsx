@@ -130,8 +130,11 @@ const RegisterPage = () => {
           houseNo: companyHouseNO,
           city: companyCity,
           postalNumber: companyPostalNumber,
-          country: 'string',
-          coordinates: 'string',
+          country: 'Poland',
+          // location: {
+          //   Latitude: '1',
+          //   Longitude: '1',
+          // },
         },
       },
     }

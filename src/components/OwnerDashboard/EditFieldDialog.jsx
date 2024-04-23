@@ -41,6 +41,7 @@ const MultiPageDialog = ({ fieldId }) => {
         const token = Cookies.get('authToken')
         const config = {
           headers: {
+            ...APIKEYS.headers,
             Authorization: `Bearer ${token}`,
           },
         }

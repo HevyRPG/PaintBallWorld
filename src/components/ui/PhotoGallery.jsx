@@ -53,9 +53,10 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
       } else {
         try {
           const response = await axios.get(
-            `api/Field/FieldManagement/photos/${fieldID}`,
+            `/api/Field/FieldManagement/photos/${fieldID}`,
             APIHeaders
           )
+          console.log(fieldID)
           const formattedImages = response.data.map((image) => ({
             original: image.url, // Assuming `url` is the property name in your response
             thumbnail: image.url,
@@ -77,24 +78,27 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
   }, [fieldID]) // Re-run effect whenever fieldID changes
 
   return (
-    <ImageGallery
-      items={images}
-      className="image-gallery"
-      {...defaultPhotoGalleryProps} // Spread the photoGalleryProps
-      renderItem={(item) => (
-        <div className="image-gallery-image">
-          <img
-            src={item.original}
-            alt={item.originalAlt}
-            style={{
-              width: `${width}px`, // Set width from props
-              height: `${height}px`, // Set height from props
-              objectFit: 'fill', // Stretch the image to fit container
-            }}
-          />
-        </div>
-      )}
-    />
+    <>
+      {images.length === 0 && <p>Brak zdjęć :(</p>}
+      <ImageGallery
+        items={images}
+        className="image-gallery"
+        {...defaultPhotoGalleryProps} // Spread the photoGalleryProps
+        renderItem={(item) => (
+          <div className="image-gallery-image">
+            <img
+              src={item.original}
+              alt={item.originalAlt}
+              style={{
+                width: `${width}px`, // Set width from props
+                height: `${height}px`, // Set height from props
+                objectFit: 'fill', // Stretch the image to fit container
+              }}
+            />
+          </div>
+        )}
+      />
+    </>
   )
 }
 
