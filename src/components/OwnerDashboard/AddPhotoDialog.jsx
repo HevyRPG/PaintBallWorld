@@ -47,27 +47,25 @@ const PhotoDialog = ({ fieldId }) => {
 
   const uploadPhoto = async () => {
     if (!selectedFile) {
-      setError('Please select a file.')
+      setError('Proszę wybrać zdjęcie.')
       return
     }
     setLoading(true)
     const formData = new FormData()
-    formData.append('photo', selectedFile)
+    formData.append('photos', selectedFile)
     try {
       // Use the provided fieldId in the API endpoint
       const response = await axios.post(
         `/api/Field/FieldManagement/photos/${fieldId}`,
-        formData
+        formData,
+        config
       )
       console.log('Photo uploaded successfully:', response.data)
-      // You can handle success behavior here, such as closing the dialog
+      if (response.status == 200) {
+        setError('Dodano zdjęcie!')
+      }
     } catch (error) {
       console.error('Error uploading photo:', error)
-      if (error.response) {
-        setError('Error uploading photo: ' + error.response.data.message)
-      } else {
-        setError('Error uploading photo. Please try again later.')
-      }
     } finally {
       setLoading(false)
     }
@@ -95,7 +93,15 @@ const PhotoDialog = ({ fieldId }) => {
           </Button>
         </div>
       )}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && (
+        <p
+          className={
+            error === 'Dodano zdjęcie!' ? 'text-green-500' : 'text-red-500'
+          }
+        >
+          {error}
+        </p>
+      )}
     </div>
   )
 }

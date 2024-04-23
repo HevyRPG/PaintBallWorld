@@ -9,29 +9,46 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import FormInput from '@/components/FormInput' // Assuming correct path to FormInput component
+import APIKEYS from '@/components/APIKEYS'
+import Cookies from 'js-cookie'
 
 const AddSetDialog = ({ fieldId }) => {
-  const [set, setSet] = useState({
-    ammo: 0,
-    price: 0,
-    description: '',
-  })
+  const token = Cookies.get('authToken')
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [defaultSet, setDefaultSet] = useState([
+    {
+      ammo: 0,
+      price: 0,
+      description: '',
+    },
+  ])
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  }
 
   const handleChange = (field, value) => {
-    setSet((prevSet) => ({
-      ...prevSet,
-      [field]: value,
-    }))
+    setDefaultSet([
+      {
+        ...defaultSet[0],
+        [field]: value,
+      },
+    ])
   }
 
   const handleAddSet = async () => {
     setLoading(true)
     try {
-      await axios.post(`/api/Field/Sets/${fieldId}`, set)
-      console.log('Set added successfully')
+      await axios.post(`/api/Field/Sets/${fieldId}`, defaultSet, config)
+      setError('Dodano zestaw!')
     } catch (error) {
       console.error('Error adding set:', error)
+      setError('Wystąpił błąd. Spróbuj ponownie później.')
     } finally {
       setLoading(false)
     }
@@ -49,26 +66,35 @@ const AddSetDialog = ({ fieldId }) => {
           <DialogTitle>Dodaj zestaw</DialogTitle>
         </DialogHeader>
         <FormInput
-          label="Ammo"
+          label="Ilość kulek"
           type="number"
-          value={set.ammo}
+          value={defaultSet[0].ammo}
           onChange={(e) => handleChange('ammo', e.target.value)}
         />
         <FormInput
-          label="Price"
+          label="Cena w zł"
           type="number"
-          value={set.price}
+          value={defaultSet[0].price}
           onChange={(e) => handleChange('price', e.target.value)}
         />
         <FormInput
-          label="Description"
+          label="Opis pakietu"
           type="text"
-          value={set.description}
+          value={defaultSet[0].description}
           onChange={(e) => handleChange('description', e.target.value)}
         />
         <Button onClick={handleAddSet} disabled={loading}>
           Dodaj
         </Button>
+        {error && (
+          <p
+            className={
+              error === 'Dodano zestaw!' ? 'text-green-500' : 'text-red-500'
+            }
+          >
+            {error}
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   )
