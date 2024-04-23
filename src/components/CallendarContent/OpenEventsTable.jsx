@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import ModalComponent from "./ModalComponent";
+import OpenModalComponent from "./modals/OpenModalComponent";
 
 
 const OpenEventsTable = ({ fieldID }) => {
@@ -252,7 +252,7 @@ const OpenEventsTable = ({ fieldID }) => {
           ))}
         </TableBody>
       </Table>
-      <ModalComponent isOpen={modalIsOpen} closeModal={closeModal} />
+      <OpenModalComponent isOpen={modalIsOpen} closeModal={closeModal} />
     </div>
   )
 }
