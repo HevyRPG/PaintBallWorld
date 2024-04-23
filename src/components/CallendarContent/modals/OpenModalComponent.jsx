@@ -21,22 +21,23 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "50vw",
     height: "50vh",
-    backgroundColor: "hsl(var(--secondary-foreground))",
-    color: "hsl(var(--primary-foreground))",
+    backgroundColor: "hsl(var(--primary-foreground))",
     padding: "20px",
     borderRadius: "8px",
     boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
     overflow: "auto",
+
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
+    
   },
   title: {
-    fontSize: "24px",
-    color: "#333",
+    fontSize: "26px",
+    color: "#fff",
     marginBottom: "20px",
   },
   button: {
@@ -59,7 +60,7 @@ const customStyles = {
   },
   description: {
     fontSize: "16px",
-    color: "#333",
+    color: "#fff",
   },
   selectWrapper: {
     width: "50%",
@@ -82,26 +83,21 @@ const customStyles = {
   },
 };
 
-const ModalComponent = ({ isOpen, closeModal }) => {
-  function afterOpenModal() {
-    subtitle.style.color = "#eee";
-  }
-
+const OpenModalComponent = ({ isOpen, closeModal }) => {
   return (
-    <Modal  portalClassName="modal-portal"
+    <Modal
+      portalClassName="modal-portal"
       isOpen={isOpen}
       onRequestClose={closeModal}
-      onAfterOpen={afterOpenModal}
       style={customStyles}
-      contentLabel="Example Modal"
+      contentLabel="Zapisywanie na rozgrywkę"
     >
       <div style={customStyles.header}>
         <div style={customStyles.title}>Paintball Warszawa</div>
 
         <Button
           variant="ghost"
-          className="border"
-          size="sm"
+          className="border-2"
           onClick={closeModal}
         >
           Cofnij
@@ -142,4 +138,4 @@ const ModalComponent = ({ isOpen, closeModal }) => {
   );
 };
 
-export default ModalComponent;
+export default OpenModalComponent;
