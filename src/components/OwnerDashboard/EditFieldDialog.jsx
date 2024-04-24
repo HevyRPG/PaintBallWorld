@@ -45,7 +45,7 @@ const MultiPageDialog = ({ fieldId }) => {
             Authorization: `Bearer ${token}`,
           },
         }
-        const response = await axios.get(`/api/Field/Fields/${fieldId}`, config) // Replace {fieldId} with actual field ID
+        const response = await axios.get(`/api/Field/Fields/${fieldId}`, config)
         if (response.status === 200) {
           const fieldData = response.data
           setFormState({
@@ -58,7 +58,7 @@ const MultiPageDialog = ({ fieldId }) => {
             coordinates: fieldData.coordinates,
             fieldName: fieldData.fieldName,
             area: fieldData.area,
-            regulations: fieldData.regulations, // Assuming regulations field is also a placeholder
+            regulations: fieldData.regulations,
             Description: fieldData.Description,
             minPlayers: fieldData.minPlayers,
             maxPlayers: fieldData.maxPlayers,

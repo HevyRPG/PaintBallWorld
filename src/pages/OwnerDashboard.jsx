@@ -17,6 +17,7 @@ import AllSetsDialog from '../components/OwnerDashboard/AllSetsDialog'
 import AddSetDialog from '../components/OwnerDashboard/AddSetDialog'
 import axios from 'axios'
 import APIKEYS from '../components/APIKEYS'
+import Scheduler from '@/components/OwnerDashboard/Scheduler'
 
 const OwnerDashboard = () => {
   const [date, setDate] = useState(new Date())
@@ -124,32 +125,40 @@ const OwnerDashboard = () => {
             </section>
           )}
           {fieldid !== null && (
-            <section className="flex flex-col md:flex-row gap-6">
-              <div className="w-full md:w-1/2">
-                <div className="bg-background rounded-xl border p-6">
-                  <h1 className="text-2xl font-bold mb-4">
-                    Rozgrywki otwarte w dniu{' '}
-                    <span className="text-primary italic">{formattedDate}</span>
-                  </h1>
-                  <Button variant="default" size="lg" className="rounded">
-                    Dodaj
-                  </Button>
-                  <OpenEventsTable fieldID="123" />
-                </div>
+            <>
+              <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">
+                <h1 className="text-2xl font-semibold mb-4 justify-center">
+                  Planowanie wydarzeń
+                </h1>
+                <Scheduler fieldId={fieldid} />
               </div>
-              <div className="w-full md:w-1/2">
-                <div className="bg-background rounded-xl border p-6">
-                  <h1 className="text-2xl font-bold mb-4">
-                    Rezerwacje pola w dniu{' '}
-                    <span className="text-primary italic">{formattedDate}</span>
-                  </h1>
-                  <Button variant="default" size="lg" className="rounded">
-                    Dodaj
-                  </Button>
-                  <PrivateEventsTable fieldID="123" />
+              <section className="flex flex-col md:flex-row gap-6">
+                <div className="w-full md:w-1/2">
+                  <div className="bg-background rounded-xl border p-6">
+                    <h1 className="text-2xl font-bold mb-4">
+                      Rozgrywki otwarte w dniu{' '}
+                      <span className="text-primary italic">
+                        {formattedDate}
+                      </span>
+                    </h1>
+
+                    <OpenEventsTable fieldID="123" />
+                  </div>
                 </div>
-              </div>
-            </section>
+                <div className="w-full md:w-1/2">
+                  <div className="bg-background rounded-xl border p-6">
+                    <h1 className="text-2xl font-bold mb-4">
+                      Rezerwacje pola w dniu{' '}
+                      <span className="text-primary italic">
+                        {formattedDate}
+                      </span>
+                    </h1>
+
+                    <PrivateEventsTable fieldID="123" />
+                  </div>
+                </div>
+              </section>
+            </>
           )}
         </main>
       </div>
