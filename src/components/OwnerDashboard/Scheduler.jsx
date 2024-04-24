@@ -9,6 +9,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import FormInput from '../FormInput'
+import APIKEYS from '../APIKEYS'
+import Cookies from 'js-cookie'
 
 const Scheduler = ({ fieldId }) => {
   const [formData, setFormData] = useState({
@@ -28,6 +30,7 @@ const Scheduler = ({ fieldId }) => {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const token = Cookies.get('authToken')
 
   const handleInputChange = (field, value) => {
     setFormData({ ...formData, [field]: value })
@@ -75,10 +78,19 @@ const Scheduler = ({ fieldId }) => {
     setError('')
     console.log(formData)
 
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...APIKEYS.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+
     try {
       const response = await axios.post(
-        `/api/Field/Scheduler/${fieldId}`,
-        formData
+        `/api/Field/Schedule/${fieldId}`,
+        formData,
+        config
       )
       console.log('Event created successfully:', response.data)
       // Optionally, you can handle success behavior here
@@ -99,7 +111,7 @@ const Scheduler = ({ fieldId }) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Event</DialogTitle>
+          <DialogTitle>Dodaj wydarzenie</DialogTitle>
         </DialogHeader>
         <div>
           <FormInput

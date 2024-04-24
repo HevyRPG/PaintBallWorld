@@ -25,7 +25,7 @@ const PhotoDeleteButton = ({ photoId, onDelete }) => {
 
   const handleDelete = async () => {
     const confirmation = window.confirm(
-      'Are you sure you want to delete this photo?'
+      'Czy na pewno chcesz usunąć to zdjęcie?'
     )
     if (!confirmation) return
 

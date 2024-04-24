@@ -79,7 +79,7 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
 
   return (
     <>
-      {images.length === 0 && <p>Brak zdjęć :(</p>}
+      {images.length === 0 && <p className="text-pink-400">Brak zdjęć :(</p>}
       <ImageGallery
         items={images}
         className="image-gallery"
