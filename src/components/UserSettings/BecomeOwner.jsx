@@ -73,8 +73,9 @@ const BecomeOwner = () => {
     try {
       setLoading(true)
       setErrorRegister('')
+      const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.put(
-        '/api/Auth/RegisterOwner',
+        `${apiUrl}/api/Auth/RegisterOwner`,
         becomeOwnerData,
         config
       )

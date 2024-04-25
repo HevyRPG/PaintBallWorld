@@ -44,7 +44,7 @@ const CallendarPage = () => {
     geoTag: '',
     description: '',
   })
-
+  const apiUrl = import.meta.env.VITE_API_URL
   // Function to format address
   const formatAddress = (address) => {
     const { street, houseNo, city } = address
@@ -87,7 +87,7 @@ const CallendarPage = () => {
       const radius = Number(selectedDistance) // Convert selectedDistance to a number if necessary
 
       const response = await axios.get(
-        `/api/Field/Fields?id=${cityID}&radius=${radius}`,
+        `${apiUrl}/api/Field/Fields?id=${cityID}&radius=${radius}`,
         APIHeaders
       )
 
@@ -136,7 +136,7 @@ const CallendarPage = () => {
   const fetchFieldInfo = async (fieldID) => {
     try {
       const response = await axios.get(
-        `/api/Field/Fields/${fieldID}`,
+        `${apiUrl}/api/Field/Fields/${fieldID}`,
         APIHeaders
       )
       const { name, owner, address, description } = response.data

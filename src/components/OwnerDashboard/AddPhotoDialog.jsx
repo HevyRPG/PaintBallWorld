@@ -55,8 +55,9 @@ const PhotoDialog = ({ fieldId }) => {
     formData.append('photos', selectedFile)
     try {
       // Use the provided fieldId in the API endpoint
+      const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.post(
-        `/api/Field/FieldManagement/photos/${fieldId}`,
+        `${apiUrl}/api/Field/FieldManagement/photos/${fieldId}`,
         formData,
         config
       )

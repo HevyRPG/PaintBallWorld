@@ -100,7 +100,12 @@ const MultiPageDialog = () => {
     console.log('Logging config:', config)
     console.log('Logging formdata:', formData)
     try {
-      const response = await axios.post('/api/Field/Fields', formData, config)
+      const apiUrl = import.meta.env.VITE_API_URL
+      const response = await axios.post(
+        `${apiUrl}/api/Field/Fields`,
+        formData,
+        config
+      )
 
       if (response.status === 200) {
         setErrorRegister('Pole dodane pomyślnie! Możesz zamknąć to okno')

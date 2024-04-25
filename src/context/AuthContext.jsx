@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       const token = Cookies.get('authToken')
       const username = Cookies.get('username')
 
-      await axios.delete('/api/Auth/Login', {
+      await axios.delete(`${apiUrl}/api/Auth/Login`, {
         headers: {
           ...APIKEYS.headers,
           Authorization: `Bearer ${token}`, // Append Authorization header

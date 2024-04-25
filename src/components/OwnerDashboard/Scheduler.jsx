@@ -87,8 +87,9 @@ const Scheduler = ({ fieldId }) => {
     }
 
     try {
+      const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.post(
-        `/api/Field/Schedule/${fieldId}`,
+        `${apiUrl}/api/Field/Schedule/${fieldId}`,
         formData,
         config
       )

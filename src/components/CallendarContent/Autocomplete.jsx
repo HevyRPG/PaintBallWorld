@@ -13,8 +13,7 @@ const Autocomplete = ({ onSelection }) => {
   const [selectedSuggestion, setSelectedSuggestion] = useState(null)
   const [isLoading, setIsLoading] = useState(false) // Track loading state
 
-  const apiUrl = '/api/Default/Localization'
-
+  const apiUrl = import.meta.env.VITE_API_URL
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -32,7 +31,10 @@ const Autocomplete = ({ onSelection }) => {
   const fetchSuggestions = async (input) => {
     setIsLoading(true) // Start loading
     try {
-      const response = await axios.get(`${apiUrl}/${input}`, APIHeaders)
+      const response = await axios.get(
+        `${apiUrl}/api/Default/Localization/${input}`,
+        APIHeaders
+      )
       if (response.data && response.data.isSuccess) {
         setSuggestions(response.data.data) // Store entire suggestion objects
       } else {

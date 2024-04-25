@@ -44,7 +44,12 @@ const AddSetDialog = ({ fieldId }) => {
   const handleAddSet = async () => {
     setLoading(true)
     try {
-      await axios.post(`/api/Field/Sets/${fieldId}`, defaultSet, config)
+      const apiUrl = import.meta.env.VITE_API_URL
+      await axios.post(
+        `${apiUrl}/api/Field/Sets/${fieldId}`,
+        defaultSet,
+        config
+      )
       setError('Dodano zestaw!')
     } catch (error) {
       console.error('Error adding set:', error)
