@@ -56,7 +56,8 @@ const OwnerDashboard = () => {
   useEffect(() => {
     const fetchID = async () => {
       try {
-        const response = await axios.get('/api/Owner/Profile', config)
+        const apiUrl = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${apiUrl}/api/Owner/Profile`, config)
         setFieldId(response.data.fieldId)
       } catch (error) {
         console.error('Error fetching data:', error)

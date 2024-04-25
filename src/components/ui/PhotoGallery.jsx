@@ -52,8 +52,9 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
         ])
       } else {
         try {
+          const apiUrl = import.meta.env.VITE_API_URL
           const response = await axios.get(
-            `/api/Field/FieldManagement/photos/${fieldID}`,
+            `${apiUrl}/api/Field/FieldManagement/photos/${fieldID}`,
             APIHeaders
           )
           console.log(fieldID)

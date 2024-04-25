@@ -4,10 +4,9 @@ const APIHeaders = {
   withCredentials: false,
   headers: {
     'Content-Type': 'application/json',
-    PW_API_KEY: 'jTxdHH3hnSuGtDKAsT0ikOmI76AVfPVo1VHWnSzfVuo',
-    'CF-Access-Client-Id': 'a9304e041abe76649c56c1e31cdd57b1.access',
-    'CF-Access-Client-Secret':
-      'ac24e7280b8bbf48434640839b9ae632c6a0661bf8603b19c1b4771ba84f5bee',
+    PW_API_KEY: import.meta.env.VITE_PW_API_KEY,
+    'CF-Access-Client-Id': import.meta.env.VITE_CF_CLIENT_ID,
+    'CF-Access-Client-Secret': import.meta.env.VITE_CF_CLIENT_SECRET,
   },
 }
 

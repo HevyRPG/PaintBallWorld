@@ -141,8 +141,9 @@ const MultiPageDialog = ({ fieldId }) => {
     }
 
     try {
+      const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.put(
-        `/api/Field/Fields/${fieldId}`,
+        `${apiUrl}/api/Field/Fields/${fieldId}`,
         formData,
         config
       )

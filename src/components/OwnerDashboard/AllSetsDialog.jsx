@@ -29,7 +29,11 @@ const AllSetsDialog = ({ fieldId }) => {
     const fetchSets = async () => {
       setLoading(true)
       try {
-        const response = await axios.get(`/api/Field/Sets/${fieldId}`, config)
+        const apiUrl = import.meta.env.VITE_API_URL
+        const response = await axios.get(
+          `${apiUrl}/api/Field/Sets/${fieldId}`,
+          config
+        )
         setSets(response.data)
       } catch (error) {
         console.error('Error fetching sets:', error)

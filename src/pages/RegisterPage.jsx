@@ -25,7 +25,7 @@ const RegisterPage = () => {
 
   const [errorRegister, setErrorRegister] = useState('')
   const [loading, setLoading] = useState(false)
-
+  const apiUrl = import.meta.env.VITE_API_URL
   function translateErrorMessage(errorMessage) {
     switch (errorMessage) {
       case 'Passwords must be at least 8 characters.':
@@ -142,7 +142,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        '/api/Auth/RegisterOwner',
+        `${apiUrl}/api/Auth/RegisterOwner`,
         JSON.stringify(ownerData),
         APIHeaders
       )
@@ -206,7 +206,7 @@ const RegisterPage = () => {
 
     try {
       const response = await axios.post(
-        '/api/Auth/Register',
+        `${apiUrl}/api/Auth/Register`,
         JSON.stringify(userData),
         APIHeaders
       )

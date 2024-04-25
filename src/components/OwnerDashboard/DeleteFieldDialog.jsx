@@ -25,7 +25,8 @@ const FieldDeleteButton = ({ fieldId, onDelete }) => {
   const handleDelete = async () => {
     setLoading(true)
     try {
-      await axios.delete(`/api/Field/Fields/${fieldId}`, config)
+      const apiUrl = import.meta.env.VITE_API_URL
+      await axios.delete(`${apiUrl}/api/Field/Fields/${fieldId}`, config)
       onDelete(fieldId)
     } catch (error) {
       console.error('Error deleting field:', error)

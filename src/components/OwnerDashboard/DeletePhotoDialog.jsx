@@ -31,7 +31,11 @@ const PhotoDeleteButton = ({ photoId, onDelete }) => {
 
     setLoading(true)
     try {
-      await axios.delete(`/api/Field/FieldManagement/photos/${photoId}`, config)
+      const apiUrl = import.meta.env.VITE_API_URL
+      await axios.delete(
+        `${apiUrl}/api/Field/FieldManagement/photos/${photoId}`,
+        config
+      )
       onDelete(photoId)
     } catch (error) {
       console.error('Error deleting photo:', error)

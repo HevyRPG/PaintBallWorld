@@ -22,7 +22,8 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('/api/User/User/profile', {
+        const apiUrl = import.meta.env.VITE_API_URL
+        const response = await axios.get(`${apiUrl}/api/User/User/profile`, {
           headers: {
             ...APIKEYS.headers,
             Authorization: `Bearer ${token}`, // Append Authorization header
@@ -120,10 +121,10 @@ const ProfilePage = () => {
               {/* Render user profile data */}
               {!loading && userData && (
                 <div>
-                <img
-                  src="https://avatar.iran.liara.run/public/36"
-                  className="max-h-24 max-w-24 mx-auto"
-                />
+                  <img
+                    src="https://avatar.iran.liara.run/public/36"
+                    className="max-h-24 max-w-24 mx-auto"
+                  />
                   <span className=" left-0 w-full text-primary text-xl font-bold italic">
                     {username}
                   </span>

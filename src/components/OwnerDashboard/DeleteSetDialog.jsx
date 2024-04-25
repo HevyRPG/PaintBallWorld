@@ -25,7 +25,11 @@ const DeleteSetDialog = ({ fieldId, set }) => {
   const handleDeleteSet = async () => {
     setLoading(true)
     try {
-      await axios.delete(`/api/Field/Sets/${fieldId}/${set.id}`, config)
+      const apiUrl = import.meta.env.VITE_API_URL
+      await axios.delete(
+        `${apiUrl}/api/Field/Sets/${fieldId}/${set.id}`,
+        config
+      )
       console.log('Set deleted successfully')
     } catch (error) {
       console.error('Error deleting set:', error)
