@@ -24,6 +24,7 @@ const Scheduler = ({ fieldId }) => {
     endTime: '', //data
     description: '', //text
     timeValue: '', // int raczej
+    //maxPlayers: '', TO POTEM!!!!!!!!!!!!!!!!!!
     isMultiple: false, // czy kilka dni w tygodniu (np. kilikasz poniedziałek, wtorek itp.)
     isWeekly: false, // czy co tydzień się powtarza
     isAutomatic: false, // czy ma tworzyć wydarzenia na podstawie godzin otwarcia / timeValue
@@ -70,7 +71,15 @@ const Scheduler = ({ fieldId }) => {
     // Calculate the number of events based on time difference and timeValue
     const eventCount = timeDiffInHours / formData.timeValue
 
-    return Math.ceil(eventCount)
+    Math.ceil(eventCount)
+    let displayCount
+
+    if (isNaN(eventCount) || !isFinite(eventCount)) {
+      displayCount = 0
+    } else {
+      displayCount = eventCount
+    }
+    return Math.floor(displayCount)
   }
 
   const handleSubmit = async () => {
@@ -89,12 +98,14 @@ const Scheduler = ({ fieldId }) => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.post(
-        `${apiUrl}/api/Field/Schedule/${fieldId}`,
+        `${apiUrl}/api/Schedule/Schedule/${fieldId}`,
         formData,
         config
       )
       console.log('Event created successfully:', response.data)
-      // Optionally, you can handle success behavior here
+      if (response.status === 200) {
+        setError('Dodano pomyślnie!')
+      }
     } catch (error) {
       console.error('Error creating event:', error)
       setError('An error occurred while creating the event. Please try again.')
@@ -197,6 +208,16 @@ const Scheduler = ({ fieldId }) => {
                   onChange={(e) => handleInputChange('date', e.target.value)}
                 />
               )}
+              {formData.isWeekly && (
+                <FormInput
+                  label="Do kiedy ma się powtarzać?"
+                  type="date"
+                  value={formData.finalDate}
+                  onChange={(e) =>
+                    handleInputChange('finalDate', e.target.value)
+                  }
+                />
+              )}
               <FormInput
                 label="Godzina rozpoczęcia"
                 type="time"
@@ -212,10 +233,8 @@ const Scheduler = ({ fieldId }) => {
               <FormInput
                 label="Nazwa wydarzenia"
                 type="text"
-                value={formData.description}
-                onChange={(e) =>
-                  handleInputChange('description', e.target.value)
-                }
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
               />
               <FormInput
                 label="Opis"
@@ -225,14 +244,14 @@ const Scheduler = ({ fieldId }) => {
                   handleInputChange('description', e.target.value)
                 }
               />
-              <FormInput
+              {/* <FormInput
                 label="Maksymalna liczba uczestników"
                 type="number"
-                value={formData.description}
+                value={formData.maxPlayers}
                 onChange={(e) =>
-                  handleInputChange('description', e.target.value)
+                  handleInputChange('maxPlayers', e.target.value)
                 }
-              />
+              /> */}
             </>
           )}
           {formData.eventType === 'private' && (
@@ -318,7 +337,16 @@ const Scheduler = ({ fieldId }) => {
                   onChange={(e) => handleInputChange('date', e.target.value)}
                 />
               )}
-
+              {formData.isWeekly && (
+                <FormInput
+                  label="Do kiedy ma się powtarzać?"
+                  type="date"
+                  value={formData.finalDate}
+                  onChange={(e) =>
+                    handleInputChange('finalDate', e.target.value)
+                  }
+                />
+              )}
               <FormInput
                 label={
                   formData.isAutomatic
@@ -347,6 +375,14 @@ const Scheduler = ({ fieldId }) => {
                   handleInputChange('description', e.target.value)
                 }
               />
+              {/* <FormInput
+                label="Maksymalna liczba uczestników"
+                type="number"
+                value={formData.maxPlayers}
+                onChange={(e) =>
+                  handleInputChange('maxPlayers', e.target.value)
+                }
+              /> */}
               {formData.isAutomatic && (
                 <>
                   <FormInput
@@ -365,10 +401,21 @@ const Scheduler = ({ fieldId }) => {
               )}
             </>
           )}
-          {error && <p className="text-red-500">{error}</p>}
+
           <Button variant="default" onClick={handleSubmit} disabled={loading}>
             Dodaj
           </Button>
+          {error && (
+            <p
+              className={`mt-2 text-sm ${
+                error === 'Dodano pomyślnie!'
+                  ? 'text-green-500'
+                  : 'text-destructive'
+              }`}
+            >
+              {error}
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>
