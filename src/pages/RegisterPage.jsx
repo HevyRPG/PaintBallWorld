@@ -78,6 +78,16 @@ const RegisterPage = () => {
     return businessEmailRegex.test(businessEmail)
   }
 
+  function validatePhoneNumber(companyPhone) {
+    const companyPhoneRegex = /^\+?[0-9\s-]{3,}$/
+    return companyPhoneRegex.test(companyPhone)
+  }
+
+  function validateNIP(nip) {
+    const nipRegex = /^[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$/
+    return nipRegex.test(nip)
+  }
+
   const handleOwnerRegister = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -111,7 +121,16 @@ const RegisterPage = () => {
       setLoading(false)
       return
     }
-
+    if (!validatePhoneNumber(companyPhone)) {
+      setErrorRegister('Niepoprawny numer telefonu.')
+      setLoading(false)
+      return
+    }
+    if (!validateNIP(nip)) {
+      setErrorRegister('Niepoprawny numer NIP.')
+      setLoading(false)
+      return
+    }
     const formattedDateOfBirth = `${dateOfBirth}T00:00:00`
     const ownerData = {
       email: email,

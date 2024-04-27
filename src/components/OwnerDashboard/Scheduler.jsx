@@ -15,19 +15,19 @@ import Cookies from 'js-cookie'
 const Scheduler = ({ fieldId }) => {
   const [formData, setFormData] = useState({
     eventType: 'open',
-    selectedDays: [], // tu sie dni wpierdalają
-    isRecurrent: false, // to chyba to samo co isWeekly
-    finalDate: '', //data, finalna data do kiedy ma się powtarzać
-    name: '', //string
-    date: '', //data
-    startTime: '', //date
-    endTime: '', //data
-    description: '', //text
-    timeValue: '', // int raczej
-    //maxPlayers: '', TO POTEM!!!!!!!!!!!!!!!!!!
-    isMultiple: false, // czy kilka dni w tygodniu (np. kilikasz poniedziałek, wtorek itp.)
-    isWeekly: false, // czy co tydzień się powtarza
-    isAutomatic: false, // czy ma tworzyć wydarzenia na podstawie godzin otwarcia / timeValue
+    selectedDays: [],
+    isRecurrent: false,
+    finalDate: '',
+    name: '',
+    date: '',
+    startTime: '',
+    endTime: '',
+    description: '',
+    timeValue: '',
+    maxPlayers: '',
+    isMultiple: false,
+    isWeekly: false,
+    isAutomatic: false,
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -58,17 +58,13 @@ const Scheduler = ({ fieldId }) => {
     }
   }
   const calculateEventCount = () => {
-    // Convert start and end time to Date objects
     const startTime = new Date(`2024-01-01T${formData.startTime}`)
     const endTime = new Date(`2024-01-01T${formData.endTime}`)
 
-    // Calculate the time difference in milliseconds
     const timeDiff = endTime - startTime
 
-    // Convert time difference to hours
     const timeDiffInHours = timeDiff / (1000 * 60 * 60)
 
-    // Calculate the number of events based on time difference and timeValue
     const eventCount = timeDiffInHours / formData.timeValue
 
     Math.ceil(eventCount)
@@ -86,6 +82,16 @@ const Scheduler = ({ fieldId }) => {
     setLoading(true)
     setError('')
     console.log(formData)
+    if (formData.maxPlayers < 1) {
+      setError('Błędna liczba graczy')
+      setLoading(false)
+      return
+    }
+    if (formData.timeValue < 0) {
+      setError('Błędna wartość czasu')
+      setLoading(false)
+      return
+    }
 
     const config = {
       headers: {
@@ -244,14 +250,14 @@ const Scheduler = ({ fieldId }) => {
                   handleInputChange('description', e.target.value)
                 }
               />
-              {/* <FormInput
+              <FormInput
                 label="Maksymalna liczba uczestników"
                 type="number"
                 value={formData.maxPlayers}
                 onChange={(e) =>
                   handleInputChange('maxPlayers', e.target.value)
                 }
-              /> */}
+              />
             </>
           )}
           {formData.eventType === 'private' && (
@@ -375,14 +381,14 @@ const Scheduler = ({ fieldId }) => {
                   handleInputChange('description', e.target.value)
                 }
               />
-              {/* <FormInput
+              <FormInput
                 label="Maksymalna liczba uczestników"
                 type="number"
                 value={formData.maxPlayers}
                 onChange={(e) =>
                   handleInputChange('maxPlayers', e.target.value)
                 }
-              /> */}
+              />
               {formData.isAutomatic && (
                 <>
                   <FormInput
