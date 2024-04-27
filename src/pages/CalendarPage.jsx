@@ -26,7 +26,7 @@ const CallendarPage = () => {
   const [cityPosition, setCityPosition] = useState(initialPosition)
   const [fieldMarkers, setFieldMarkers] = useState([])
   const [events, setEvents] = useState([])
-  const initialFieldID = ''
+  const initialFieldID = null
   const [selectedCity, setSelectedCity] = useState('')
   const [selectedDistance, setSelectedDistance] = useState('10')
   const [radius, setRadius] = useState(null)
@@ -276,24 +276,28 @@ const CallendarPage = () => {
           fieldID={fieldID}
         />
       </div>
-      <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center border justify-center  ">
-        <div className="w-full ">
-          <h1 className="text-white text-xl font-bold italic mb-4 ">
-            Najbliższe rozgrywki otwarte na{' '}
-            <span className="text-primary">{fieldName}</span>
-          </h1>
-          <OpenEventsTable fieldID={fieldID} />
-        </div>
-      </div>
-      <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center border justify-center ">
-        <div className="w-full">
-          <h1 className="text-white text-xl font-bold italic mb-4">
-            Najbliższe wolne terminy na zamówienie pola na{' '}
-            <span className="text-primary">{fieldName}</span>
-          </h1>
-          <PrivateEventsTable fieldID={fieldID} />
-        </div>
-      </div>
+      {fieldID !== null && (
+        <>
+          <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center border justify-center  ">
+            <div className="w-full ">
+              <h1 className="text-white text-xl font-bold italic mb-4 ">
+                Najbliższe rozgrywki otwarte na{' '}
+                <span className="text-primary">{fieldName}</span>
+              </h1>
+              <OpenEventsTable fieldID={fieldID} />
+            </div>
+          </div>
+          <div className="container mx-auto mt-8 mb-4 max-w-screen-2xl bg-bgs flex flex-wrap items-center border justify-center ">
+            <div className="w-full">
+              <h1 className="text-white text-xl font-bold italic mb-4">
+                Najbliższe wolne terminy na zamówienie pola na{' '}
+                <span className="text-primary">{fieldName}</span>
+              </h1>
+              <PrivateEventsTable fieldID={fieldID} />
+            </div>
+          </div>
+        </>
+      )}
     </>
   )
 }
