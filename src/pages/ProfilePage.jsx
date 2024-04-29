@@ -140,7 +140,7 @@ const ProfilePage = () => {
                       Phone Number: {userData.phoneNo}
                     </span>
                   )}
-                  {userData.description.length > 15 ? (
+                  {userData?.description?.length > 15 ? (
                     <div>
                       <Dialog>
                         <DialogTrigger asChild>
