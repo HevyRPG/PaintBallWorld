@@ -1,50 +1,50 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import axios from 'axios'
-import APIKEYS from '../components/APIKEYS'
-import Cookies from 'js-cookie'
-import PaginationComponent from '@/components/ProfilePageComponents/Pagination'
-import { AuthContext } from '../context/AuthContext'
+import React, { useState, useEffect, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import axios from "axios";
+import APIKEYS from "../components/APIKEYS";
+import Cookies from "js-cookie";
+import PaginationComponent from "@/components/ProfilePageComponents/Pagination";
+import { AuthContext } from "../context/AuthContext";
 
 const ProfilePage = () => {
-  const [userData, setUserData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const token = Cookies.get('authToken')
-  const role = Cookies.get('role')
-  const username = Cookies.get('username')
-  const isOwner = role === 'Owner'
-  const { isLoggedIn, logout } = useContext(AuthContext)
-  const navigate = useNavigate()
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const token = Cookies.get("authToken");
+  const role = Cookies.get("role");
+  const username = Cookies.get("username");
+  const isOwner = role === "Owner";
+  const { isLoggedIn, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL
+        const apiUrl = import.meta.env.VITE_API_URL;
         const response = await axios.get(`${apiUrl}/api/User/User/profile`, {
           headers: {
             ...APIKEYS.headers,
             Authorization: `Bearer ${token}`, // Append Authorization header
           },
-        })
-        setUserData(response.data)
-        setLoading(false) // Set loading to false once data is fetched
+        });
+        setUserData(response.data);
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
-        console.error('Error fetching user profile:', error)
+        console.error("Error fetching user profile:", error);
       }
-    }
+    };
 
-    fetchUserProfile()
-  }, [])
+    fetchUserProfile();
+  }, []);
 
   useEffect(() => {
-    if (!Cookies.get('role')) {
-      logout()
-      navigate('/')
+    if (!Cookies.get("role")) {
+      logout();
+      navigate("/");
     }
-  }, [logout, navigate])
+  }, [logout, navigate]);
 
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
@@ -132,18 +132,31 @@ const ProfilePage = () => {
                     {userData.firstName} {userData.lastName}
                   </span>
                   <span className="block">
-                    Date of Birth:{' '}
+                    Date of Birth:{" "}
                     {new Date(userData.dateOfBirth).toLocaleDateString()}
                   </span>
-                  {userData.description && (
-                    <span className="block">
-                      Description: {userData.description}
-                    </span>
-                  )}
                   {userData.phoneNo && (
                     <span className="block">
                       Phone Number: {userData.phoneNo}
                     </span>
+                  )}
+                  {userData.description.length > 15 ? (
+                    <div>
+                      <span>Description:{userData.description.slice(0, 15)}...</span>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <div className="mt-2">
+                            <Button variant="default">Pokaż pełny opis</Button>
+                          </div>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <h2>Pełny opis</h2>
+                          <p>{userData.description}</p>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  ) : (
+                    <span>Description: {userData.description}</span>
                   )}
                 </div>
               )}
@@ -188,7 +201,7 @@ const ProfilePage = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;
