@@ -142,11 +142,10 @@ const ProfilePage = () => {
                   )}
                   {userData.description.length > 15 ? (
                     <div>
-                      <span>Description:{userData.description.slice(0, 15)}...</span>
                       <Dialog>
                         <DialogTrigger asChild>
                           <div className="mt-2">
-                            <Button variant="default">Pokaż pełny opis</Button>
+                            <Button variant="default">Pokaż opis</Button>
                           </div>
                         </DialogTrigger>
                         <DialogContent>
