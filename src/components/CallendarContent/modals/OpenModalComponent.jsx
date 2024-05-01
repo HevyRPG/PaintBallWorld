@@ -136,6 +136,7 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
 
   const handleModalClose = () => {
     setSelectedPackage(null);
+    setIsCheckboxChecked(false);
     setLoading(true);
     closeModal();
   };
