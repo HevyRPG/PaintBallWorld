@@ -23,6 +23,7 @@ const OpenEventsTable = ({ fieldID }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [modalIsOpen, setIsOpen] = useState(false)
   const token = Cookies.get('authToken')
+
   const config = {
     headers: {
       ...APIKEYS.headers,
@@ -46,9 +47,9 @@ const OpenEventsTable = ({ fieldID }) => {
     }
 
     setIsLoading(true) // Set loading state to true before fetching data
-
+    const apiUrl = import.meta.env.VITE_API_URL
     axios
-      .get(`/api/Event/PublicEvent/${fieldID}`, config) // Use Axios to make GET request
+      .get(`${apiUrl}/api/Event/PublicEvent/${fieldID}`, config) // Use Axios to make GET request
       .then((response) => {
         setEvents(response.data)
         setSortedEvents(response.data)
