@@ -12,7 +12,7 @@ import {
 import AttendanceInfoDialog from './AttendanceInfoDialog' // Import the AttendanceInfoDialog component
 import { Button } from '@/components/ui/button'
 
-const OwnerEventsData = () => {
+const OwnerEventsData = ({ fieldId, selectedDate }) => {
   const [privateEvents, setPrivateEvents] = useState([])
   const [openEvents, setOpenEvents] = useState([])
   const [selectedPrivateEventId, setSelectedPrivateEventId] = useState(null)
@@ -28,77 +28,24 @@ const OwnerEventsData = () => {
         const privateEventsData = [
           {
             id: 'p1',
-            date: '2024-03-01',
+            date: '2024-05-01',
             hour: '14:00',
             uptime: '2 hours',
             attendees: 10,
           },
           {
             id: 'p2',
-            date: '2024-03-02',
+            date: '2024-05-03',
             hour: '16:00',
             uptime: '3 hours',
             attendees: 12,
           },
-          {
-            id: 'p1',
-            date: '2024-03-01',
-            hour: '14:00',
-            uptime: '2 hours',
-            attendees: 10,
-          },
-          {
-            id: 'p2',
-            date: '2024-03-02',
-            hour: '16:00',
-            uptime: '3 hours',
-            attendees: 12,
-          },
-          {
-            id: 'p1',
-            date: '2024-03-01',
-            hour: '14:00',
-            uptime: '2 hours',
-            attendees: 10,
-          },
-          {
-            id: 'p2',
-            date: '2024-03-02',
-            hour: '16:00',
-            uptime: '3 hours',
-            attendees: 12,
-          },
-          {
-            id: 'p1',
-            date: '2024-03-01',
-            hour: '14:00',
-            uptime: '2 hours',
-            attendees: 10,
-          },
-          {
-            id: 'p2',
-            date: '2024-03-02',
-            hour: '16:00',
-            uptime: '3 hours',
-            attendees: 12,
-          },
-          {
-            id: 'p1',
-            date: '2024-03-01',
-            hour: '14:00',
-            uptime: '2 hours',
-            attendees: 10,
-          },
-          {
-            id: 'p2',
-            date: '2024-03-02',
-            hour: '16:00',
-            uptime: '3 hours',
-            attendees: 12,
-          },
-          // Add more private events data as needed
         ]
-        setPrivateEvents(privateEventsData)
+        // Filter private events based on selected date
+        const filteredPrivateEvents = privateEventsData.filter(
+          (event) => event.date === selectedDate
+        )
+        setPrivateEvents(filteredPrivateEvents)
         setIsLoadingPrivate(false)
       } catch (error) {
         console.error('Error fetching private events:', error)
@@ -114,7 +61,7 @@ const OwnerEventsData = () => {
           {
             id: 'o1',
             name: 'Mock Event 1',
-            date: '2024-02-14',
+            date: '2024-05-01',
             hour: '16:00',
             attendees: 20,
             maxAttendees: 30,
@@ -122,78 +69,17 @@ const OwnerEventsData = () => {
           {
             id: 'o2',
             name: 'Mock Event 2',
-            date: '2024-02-15',
+            date: '2024-05-03',
             hour: '18:00',
             attendees: 15,
             maxAttendees: 25,
           },
-          {
-            id: 'o1',
-            name: 'Mock Event 1',
-            date: '2024-02-14',
-            hour: '16:00',
-            attendees: 20,
-            maxAttendees: 30,
-          },
-          {
-            id: 'o2',
-            name: 'Mock Event 2',
-            date: '2024-02-15',
-            hour: '18:00',
-            attendees: 15,
-            maxAttendees: 25,
-          },
-          {
-            id: 'o1',
-            name: 'Mock Event 1',
-            date: '2024-02-14',
-            hour: '16:00',
-            attendees: 20,
-            maxAttendees: 30,
-          },
-          {
-            id: 'o2',
-            name: 'Mock Event 2',
-            date: '2024-02-15',
-            hour: '18:00',
-            attendees: 15,
-            maxAttendees: 25,
-          },
-          {
-            id: 'o1',
-            name: 'Mock Event 1',
-            date: '2024-02-14',
-            hour: '16:00',
-            attendees: 20,
-            maxAttendees: 30,
-          },
-          {
-            id: 'o2',
-            name: 'Mock Event 2',
-            date: '2024-02-15',
-            hour: '18:00',
-            attendees: 15,
-            maxAttendees: 25,
-          },
-          {
-            id: 'o1',
-            name: 'Mock Event 1',
-            date: '2024-02-14',
-            hour: '16:00',
-            attendees: 20,
-            maxAttendees: 30,
-          },
-          {
-            id: 'o2',
-            name: 'Mock Event 2',
-            date: '2024-02-15',
-            hour: '18:00',
-            attendees: 15,
-            maxAttendees: 25,
-          },
-          // Add more open events data as needed
         ]
-        setOpenEvents(openEventsData)
+        // Filter open events based on selected date
+        const filteredOpenEvents = openEventsData.filter(
+          (event) => event.date === selectedDate
+        )
+        setOpenEvents(filteredOpenEvents)
         setIsLoadingOpen(false)
       } catch (error) {
         console.error('Error fetching open events:', error)
@@ -204,7 +90,7 @@ const OwnerEventsData = () => {
     // Call fetch functions
     fetchPrivateEvents()
     fetchOpenEvents()
-  }, [])
+  }, [selectedDate])
 
   const handlePrivateEventClick = (eventId) => {
     setSelectedPrivateEventId(eventId)

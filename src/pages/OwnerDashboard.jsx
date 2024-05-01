@@ -2,10 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { Calendar } from '@/components/ui/calendar'
-import { Button } from '@/components/ui/button'
-import OpenEventsTable from '@/components/CallendarContent/OpenEventsTable.jsx'
-import PrivateEventsTable from '@/components/CallendarContent/PrivateEventsTable.jsx'
-import PhotoGallery from '@/components/ui/PhotoGallery.jsx'
+import PhotoGallery from '@/components/ui/PhotoGallery'
 import AddFieldDialog from '@/components/OwnerDashboard/AddFieldDialog'
 import EditFieldDialog from '../components/OwnerDashboard/EditFieldDialog'
 import DeleteFieldDialog from '../components/OwnerDashboard/DeleteFieldDialog'
@@ -21,9 +18,8 @@ import Scheduler from '@/components/OwnerDashboard/Scheduler'
 import OwnerEventsData from '../components/OwnerDashboard/OwnerEventsData'
 
 const OwnerDashboard = () => {
-  const [date, setDate] = useState(new Date())
-  const [formattedDate, setFormattedDate] = useState('')
-  const [fieldid, setFieldId] = useState('')
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [fieldId, setFieldId] = useState('')
   const { isLoggedIn, logout } = useContext(AuthContext)
   const navigate = useNavigate()
   const token = Cookies.get('authToken')
@@ -42,20 +38,7 @@ const OwnerDashboard = () => {
   }, [logout, navigate])
 
   useEffect(() => {
-    if (date) {
-      const newFormattedDate =
-        date.getFullYear() +
-        '-' +
-        String(date.getMonth() + 1).padStart(2, '0') +
-        '-' +
-        String(date.getDate()).padStart(2, '0')
-
-      setFormattedDate(newFormattedDate)
-    }
-  }, [date])
-
-  useEffect(() => {
-    const fetchID = async () => {
+    const fetchFieldId = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL
         const response = await axios.get(`${apiUrl}/api/Owner/Profile`, config)
@@ -65,9 +48,9 @@ const OwnerDashboard = () => {
       }
     }
 
-    fetchID()
+    fetchFieldId()
   }, [])
-  console.log(fieldid)
+
   return (
     <div className="container bg-background m-8 rounded-xl mx-auto max-w-screen-2xl">
       <div className="flex-grow text-gray-200">
@@ -80,29 +63,32 @@ const OwnerDashboard = () => {
             </div>
           </div>
           <section className="flex flex-col md:flex-row gap-6 min-w-full">
+            {/* Manage Field Section */}
             <div className="relative p-4 border border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center m-auto">
               <h1 className="text-xl font-semibold mb-4">Zarządzaj Polem</h1>
               <div className="flex gap-2">
-                {fieldid == null && <AddFieldDialog />}
-                {fieldid !== null && <EditFieldDialog fieldId={fieldid} />}
-                {fieldid !== null && <DeleteFieldDialog fieldId={fieldid} />}
+                {fieldId == null && <AddFieldDialog />}
+                {fieldId !== null && <EditFieldDialog fieldId={fieldId} />}
+                {fieldId !== null && <DeleteFieldDialog fieldId={fieldId} />}
               </div>
             </div>
-            {fieldid !== null && (
+            {/* Manage Sets and Photos Section */}
+            {fieldId !== null && (
               <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">
                 <h1 className="text-xl font-semibold mb-4">
                   Zarządzaj Zestawami i Zdjęciami
                 </h1>
                 <div className="flex gap-2">
-                  <AllSetsDialog fieldId={fieldid} />
-                  <AddSetDialog fieldId={fieldid} />
-                  <AddPhotoDialog fieldId={fieldid} />
-                  <DeletePhotoDialog fieldId={fieldid} />
+                  <AllSetsDialog fieldId={fieldId} />
+                  <AddSetDialog fieldId={fieldId} />
+                  <AddPhotoDialog fieldId={fieldId} />
+                  <DeletePhotoDialog fieldId={fieldId} />
                 </div>
               </div>
             )}
           </section>
-          {fieldid !== null && (
+          {/* Calendar and Photo Gallery Section */}
+          {fieldId !== null && (
             <section className="flex flex-col md:flex-row gap-6">
               <div className="w-full md:w-1/2">
                 <div className="bg-background rounded-xl p-6">
@@ -111,8 +97,8 @@ const OwnerDashboard = () => {
                   </h1>
                   <Calendar
                     mode="single"
-                    selected={date}
-                    onSelect={setDate}
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
                     numberOfMonths={2}
                     fixedWeeks
                     locale={pl}
@@ -122,21 +108,25 @@ const OwnerDashboard = () => {
               </div>
               <div className="w-auto">
                 <h1 className="text-xl font-semibold mb-4">Galeria</h1>
-                <PhotoGallery fieldID={fieldid} width={500} height={300} />
+                <PhotoGallery fieldID={fieldId} width={500} height={300} />
               </div>
             </section>
           )}
-          {fieldid !== null && (
+          {/* Event Planning Section */}
+          {fieldId !== null && (
             <>
               <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">
                 <h1 className="text-2xl font-semibold mb-4 justify-center">
                   Planowanie wydarzeń
                 </h1>
-                <Scheduler fieldId={fieldid} />
+                <Scheduler fieldId={fieldId} />
               </div>
               <section className="w-full min-h-96 border rounded-xl flex justify-center">
                 <div className="w-full min-w-screen-xl">
-                  <OwnerEventsData fieldId={fieldid} />
+                  <OwnerEventsData
+                    fieldId={fieldId}
+                    selectedDate={selectedDate}
+                  />
                 </div>
               </section>
             </>

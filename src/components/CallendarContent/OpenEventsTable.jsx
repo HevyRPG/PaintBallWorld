@@ -10,8 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import OpenModalComponent from "./modals/OpenModalComponent";
-
+import OpenModalComponent from './modals/OpenModalComponent'
+import axios from 'axios' // Import Axios
+import APIKEYS from '../APIKEYS'
+import Cookies from 'js-cookie'
 
 const OpenEventsTable = ({ fieldID }) => {
   const [events, setEvents] = useState([])
@@ -19,16 +21,22 @@ const OpenEventsTable = ({ fieldID }) => {
   const [sortDirection, setSortDirection] = useState('asc')
   const [sortBy, setSortBy] = useState('date')
   const [isLoading, setIsLoading] = useState(false)
-
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false)
+  const token = Cookies.get('authToken')
+  const config = {
+    headers: {
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  }
 
   const openModal = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
 
   const closeModal = () => {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
 
   useEffect(() => {
     if (!fieldID) {
@@ -39,94 +47,17 @@ const OpenEventsTable = ({ fieldID }) => {
 
     setIsLoading(true) // Set loading state to true before fetching data
 
-    const mockApiResponse = [
-      {
-        id: 1,
-        name: 'Mock Event 1',
-        date: '2024-02-14',
-        hour: '16:00',
-        attendees: 20,
-        maxAttendees: 30,
-      },
-      {
-        id: 2,
-        name: 'Mock Event 2',
-        date: '2024-02-15',
-        hour: '18:00',
-        attendees: 15,
-        maxAttendees: 25,
-      },
-      {
-        id: 3,
-        name: 'Mock Event 3',
-        date: '2024-02-16',
-        hour: '20:00',
-        attendees: 25,
-        maxAttendees: 35,
-      },
-      {
-        id: 4,
-        name: 'Mock Event 3',
-        date: '2024-02-16',
-        hour: '20:00',
-        attendees: 25,
-        maxAttendees: 35,
-      },
-      {
-        id: 5,
-        name: 'Mock Event 3',
-        date: '2024-02-16',
-        hour: '20:00',
-        attendees: 25,
-        maxAttendees: 35,
-      },
-      {
-        id: 7,
-        name: 'Mock Event 3',
-        date: '2024-02-16',
-        hour: '20:00',
-        attendees: 25,
-        maxAttendees: 35,
-      },
-      {
-        id: 8,
-        name: 'Mock Event 3',
-        date: '2024-02-16',
-        hour: '20:00',
-        attendees: 25,
-        maxAttendees: 35,
-      },
-      {
-        id: 9,
-        name: 'Mock Event 3',
-        date: '2024-02-16',
-        hour: '20:00',
-        attendees: 25,
-        maxAttendees: 35,
-      },
-      {
-        id: 10,
-        name: 'Mock Event 3',
-        date: '2024-02-16',
-        hour: '20:00',
-        attendees: 25,
-        maxAttendees: 35,
-      },
-      // Add more mock events as needed
-    ]
-
-    // Simulate fetching delay
-    setTimeout(() => {
-      if (fieldID === '123') {
-        setEvents(mockApiResponse)
-        setSortedEvents(mockApiResponse)
-      } else {
-        // Handle other fieldID values or set empty data
-        setEvents([])
-        setSortedEvents([])
-      }
-      setIsLoading(false) // Set loading state to false after fetching data
-    }, 1000)
+    axios
+      .get(`/api/Event/PublicEvent/${fieldID}`, config) // Use Axios to make GET request
+      .then((response) => {
+        setEvents(response.data)
+        setSortedEvents(response.data)
+        setIsLoading(false) // Set loading state to false after fetching data
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error)
+        setIsLoading(false) // Set loading state to false on error
+      })
   }, [fieldID])
 
   const handleSort = (sortKey) => {
@@ -238,11 +169,15 @@ const OpenEventsTable = ({ fieldID }) => {
         </TableHeader>
         <TableBody>
           {sortedEvents.map((event) => (
-            <TableRow key={event.id} className="hover:bg-secondary">
+            <TableRow key={event.eventId.value} className="hover:bg-secondary">
               <TableCell className="text-center">{event.name}</TableCell>
-              <TableCell className="text-center">{event.date}</TableCell>
-              <TableCell className="text-center">{event.hour}</TableCell>
-              <TableCell className="text-center">{`${event.attendees}/${event.maxAttendees}`}</TableCell>
+              <TableCell className="text-center">
+                {event.date.split('T')[0]}
+              </TableCell>
+              <TableCell className="text-center">
+                {event.date.split('T')[1]}
+              </TableCell>
+              <TableCell className="text-center">{`${event.signedPlayers}/${event.maxPlayers}`}</TableCell>
               <TableCell className="text-center">
                 <Button variant="default" size="lg" onClick={openModal}>
                   Zapisz się
