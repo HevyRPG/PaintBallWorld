@@ -26,7 +26,7 @@ const MultiPageDialog = ({ fieldId }) => {
     longitude: '',
     fieldName: '',
     area: '',
-    regulations: '',
+    regulations: null,
     description: '',
     minPlayers: '',
     maxPlayers: '',
@@ -59,8 +59,13 @@ const MultiPageDialog = ({ fieldId }) => {
         houseNo: fieldData.address.houseNo,
         city: fieldData.address.city,
         postalCode: fieldData.address.postalNumber,
-        latitude: fieldData.address.location.latitude,
-        longitude: fieldData.address.location.longitude,
+        latitude: fieldData.address.location.latitude
+          .toString()
+          .replace('.', ','),
+        longitude: fieldData.address.location.longitude
+          .toString()
+          .replace('.', ','),
+
         area: fieldData.area,
         name: fieldData.name,
         regulations: fieldData.regulations,
@@ -83,6 +88,10 @@ const MultiPageDialog = ({ fieldId }) => {
   }, [fieldId])
 
   const handleInputChange = (field, value, index) => {
+    if (field === 'latitude' || field === 'longitude') {
+      value = value.replace('.', ',')
+    }
+
     if (index !== undefined) {
       // Handling changes in the sets array
       setFormState((prevState) => ({
@@ -111,6 +120,10 @@ const MultiPageDialog = ({ fieldId }) => {
   }
 
   const prevPage = () => {
+    setFormState((prevState) => ({
+      ...prevState,
+      regulations: null,
+    }))
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
   }
 
@@ -177,7 +190,7 @@ const MultiPageDialog = ({ fieldId }) => {
       )
 
       if (response.status === 200) {
-        setErrorRegister('Pole dodane pomyślnie! Możesz zamknąć to okno')
+        setErrorRegister('Zmieniono dane! Możesz zamknąć to okno')
         // Reset form or navigate as needed
         setLoading(false)
       }
@@ -409,7 +422,7 @@ const Page2 = ({
       {errorRegister && (
         <p
           className={`mt-2 text-sm ${
-            errorRegister === 'Pole dodane pomyślnie! Możesz zamknąć to okno'
+            errorRegister === 'Zmieniono dane! Możesz zamknąć to okno'
               ? 'text-green-500'
               : 'text-destructive'
           }`}

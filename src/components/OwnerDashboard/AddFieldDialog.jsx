@@ -38,6 +38,9 @@ const MultiPageDialog = () => {
   const { isLoggedIn } = useContext(AuthContext)
 
   const handleInputChange = (field, value, index) => {
+    if (field === 'Latitude' || field === 'Longitude') {
+      value = value.replace('.', ',')
+    }
     if (index !== undefined) {
       // Handling changes in the sets array
       setFormState((prevState) => ({
@@ -60,6 +63,10 @@ const MultiPageDialog = () => {
   }
 
   const prevPage = () => {
+    setFormState((prevState) => ({
+      ...prevState,
+      regulations: null,
+    }))
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
   }
 

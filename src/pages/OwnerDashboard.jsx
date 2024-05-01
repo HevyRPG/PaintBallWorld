@@ -18,6 +18,7 @@ import AddSetDialog from '../components/OwnerDashboard/AddSetDialog'
 import axios from 'axios'
 import APIKEYS from '../components/APIKEYS'
 import Scheduler from '@/components/OwnerDashboard/Scheduler'
+import OwnerEventsData from '../components/OwnerDashboard/OwnerEventsData'
 
 const OwnerDashboard = () => {
   const [date, setDate] = useState(new Date())
@@ -133,30 +134,9 @@ const OwnerDashboard = () => {
                 </h1>
                 <Scheduler fieldId={fieldid} />
               </div>
-              <section className="flex flex-col md:flex-row gap-6">
-                <div className="w-full md:w-1/2">
-                  <div className="bg-background rounded-xl border p-6">
-                    <h1 className="text-2xl font-bold mb-4">
-                      Rozgrywki otwarte w dniu{' '}
-                      <span className="text-primary italic">
-                        {formattedDate}
-                      </span>
-                    </h1>
-
-                    <OpenEventsTable fieldID="123" />
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2">
-                  <div className="bg-background rounded-xl border p-6">
-                    <h1 className="text-2xl font-bold mb-4">
-                      Rezerwacje pola w dniu{' '}
-                      <span className="text-primary italic">
-                        {formattedDate}
-                      </span>
-                    </h1>
-
-                    <PrivateEventsTable fieldID="123" />
-                  </div>
+              <section className="w-full min-h-96 border rounded-xl flex justify-center">
+                <div className="w-full min-w-screen-xl">
+                  <OwnerEventsData fieldId={fieldid} />
                 </div>
               </section>
             </>

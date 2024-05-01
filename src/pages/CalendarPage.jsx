@@ -149,6 +149,7 @@ const CallendarPage = () => {
         geoTag: formattedGeoTag,
         description,
       })
+      console.log(fieldInfo)
     } catch (error) {
       console.error('Error fetching field information:', error)
     }

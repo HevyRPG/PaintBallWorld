@@ -26,11 +26,11 @@ const FieldInfo = ({ name, owner, address, description, geoTag, fieldID }) => {
         {address !== null && (
           <h1 className="text-white text-lg mb-1">{address}</h1>
         )}
-        {geoTag == !null && (
+        {geoTag !== null && (
           <h1 className="text-gray-400 text-lg mb-1">{geoTag}</h1>
         )}
         {description && (
-          <p className="text-secondary-foreground mt-3">{description}</p>
+          <p className="text-secondary-foreground italic mt-3">{description}</p>
         )}
       </div>
 
