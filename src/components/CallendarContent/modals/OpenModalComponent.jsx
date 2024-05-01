@@ -90,7 +90,7 @@ const customStyles = {
   },
 };
 
-const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
+const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId, eventName }) => {
   const [packageOptions, setPackageOptions] = useState([]);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -168,7 +168,7 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
       contentLabel="Zapisywanie na rozgrywkę"
     >
       <div style={customStyles.header}>
-        <div style={customStyles.title}>Paintball Warszawa</div>
+        <div style={customStyles.title}>{eventName}</div>
 
         <Button variant="ghost" className="border-2" onClick={handleModalClose}>
           Cofnij
