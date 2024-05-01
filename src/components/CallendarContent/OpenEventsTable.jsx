@@ -25,6 +25,7 @@ const OpenEventsTable = ({ fieldID }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedEventName, setSelectedEventName] = useState(null);
   const token = Cookies.get("authToken");
 
   const config = {
@@ -34,8 +35,9 @@ const OpenEventsTable = ({ fieldID }) => {
     },
   };
 
-  const openModal = (eventId) => {
+  const openModal = (eventId, eventName) => {
     setSelectedEventId(eventId);
+    setSelectedEventName(eventName);
     setIsOpen(true);
   };
 
@@ -203,7 +205,7 @@ const OpenEventsTable = ({ fieldID }) => {
                 <Button
                   variant="default"
                   size="lg"
-                  onClick={() => openModal(event.eventId.value)}
+                  onClick={() => openModal(event.eventId.value, event.name)}
                 >
                   Zapisz się
                 </Button>
@@ -220,6 +222,7 @@ const OpenEventsTable = ({ fieldID }) => {
         closeModal={closeModal}
         fieldID={fieldID}
         eventId={selectedEventId}
+        eventName={selectedEventName}
       />
     </div>
   );
