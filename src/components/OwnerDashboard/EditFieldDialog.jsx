@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Button } from '@/components/ui/button'
@@ -10,8 +10,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import FormInput from '@/components/FormInput'
-import { AuthContext } from '@/context/AuthContext' // Ensure this path is correct
-import APIKEYS from '@/components/APIKEYS' // Ensure this path is correct
+import { AuthContext } from '@/context/AuthContext'
+import APIKEYS from '@/components/APIKEYS'
 import '@/index.css'
 
 const MultiPageDialog = ({ fieldId }) => {
@@ -22,11 +22,12 @@ const MultiPageDialog = ({ fieldId }) => {
     houseNo: '',
     city: '',
     postalCode: '',
-    coordinates: '',
+    latitude: '',
+    longitude: '',
     fieldName: '',
     area: '',
-    regulations: '',
-    Description: '',
+    regulations: null,
+    description: '',
     minPlayers: '',
     maxPlayers: '',
     maxSimultaneousEvents: '',
@@ -34,50 +35,63 @@ const MultiPageDialog = ({ fieldId }) => {
   const [errorRegister, setErrorRegister] = useState('')
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    const fetchFieldData = async () => {
-      try {
-        setLoading(true)
-        const token = Cookies.get('authToken')
-        const config = {
-          headers: {
-            ...APIKEYS.headers,
-            Authorization: `Bearer ${token}`,
-          },
-        }
-        const response = await axios.get(`/api/Field/Fields/${fieldId}`, config)
-        if (response.status === 200) {
-          const fieldData = response.data
-          setFormState({
-            ...formState,
-            phone: fieldData.phone,
-            street: fieldData.street,
-            houseNo: fieldData.houseNo,
-            city: fieldData.city,
-            postalCode: fieldData.postalCode,
-            coordinates: fieldData.coordinates,
-            fieldName: fieldData.fieldName,
-            area: fieldData.area,
-            regulations: fieldData.regulations,
-            Description: fieldData.Description,
-            minPlayers: fieldData.minPlayers,
-            maxPlayers: fieldData.maxPlayers,
-            maxSimultaneousEvents: fieldData.maxSimultaneousEvents,
-          })
-        }
-      } catch (error) {
-        setErrorRegister('Error fetching field data.')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchFieldData()
-  }, [])
-
   const { isLoggedIn } = useContext(AuthContext)
 
+  const fetchFieldData = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL
+      const token = Cookies.get('authToken')
+      const response = await axios.get(
+        `${apiUrl}/api/Field/Fields/${fieldId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            ...APIKEYS.headers,
+          },
+        }
+      )
+      const fieldData = response.data
+
+      // Map the fetched field data to match the formState structure
+      const mappedData = {
+        phone: fieldData.address.phoneNo,
+        street: fieldData.address.street,
+        houseNo: fieldData.address.houseNo,
+        city: fieldData.address.city,
+        postalCode: fieldData.address.postalNumber,
+        latitude: fieldData.address.location.latitude
+          .toString()
+          .replace('.', ','),
+        longitude: fieldData.address.location.longitude
+          .toString()
+          .replace('.', ','),
+
+        area: fieldData.area,
+        name: fieldData.name,
+        regulations: fieldData.regulations,
+        description: fieldData.description,
+        minPlayers: fieldData.minPlayers,
+        maxPlayers: fieldData.maxPlayers,
+        maxSimultaneousEvents: fieldData.maxSimultaneousEvents,
+      }
+
+      setFormState(mappedData)
+    } catch (error) {
+      console.error('Error fetching field data:', error)
+      // Handle error if needed
+    }
+  }
+
+  useEffect(() => {
+    fetchFieldData()
+    console.log(formState)
+  }, [fieldId])
+
   const handleInputChange = (field, value, index) => {
+    if (field === 'latitude' || field === 'longitude') {
+      value = value.replace('.', ',')
+    }
+
     if (index !== undefined) {
       // Handling changes in the sets array
       setFormState((prevState) => ({
@@ -85,6 +99,12 @@ const MultiPageDialog = ({ fieldId }) => {
         sets: prevState.sets.map((set, i) =>
           i === index ? { ...set, [field]: value } : set
         ),
+      }))
+    } else if (field === 'regulations' && value instanceof File) {
+      // If regulations field is a file
+      setFormState((prevState) => ({
+        ...prevState,
+        [field]: value,
       }))
     } else {
       // Handling changes in top-level form state properties
@@ -100,6 +120,10 @@ const MultiPageDialog = ({ fieldId }) => {
   }
 
   const prevPage = () => {
+    setFormState((prevState) => ({
+      ...prevState,
+      regulations: null,
+    }))
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
   }
 
@@ -114,23 +138,39 @@ const MultiPageDialog = ({ fieldId }) => {
     formData.append('address.PhoneNo', formState.phone)
     formData.append('address.Street', formState.street)
     formData.append('address.HouseNo', formState.houseNo)
-    formData.append('address.City', formState.city)
+    formData.append('address.City', formState.city) // Removed the extra period after 'City'
     formData.append('address.PostalNumber', formState.postalCode)
-    formData.append('address.Coordinates', formState.coordinates)
+    formData.append('address.Country', 'Poland')
+    formData.append('address.location.Latitude', formState.latitude)
+    formData.append('address.location.Longitude', formState.longitude)
 
-    formData.append('name', formState.fieldName)
+    formData.append('name', formState.name)
     formData.append('area', formState.area)
-
-    // Ensure 'formState.regulations' contains a File object.
-    // If 'formState.regulations' is coming from a file input, it should be a File object.
     if (formState.regulations instanceof File)
       formData.append('regulations', formState.regulations)
 
-    formData.append('description', formState.Description)
+    formData.append('description', formState.description)
     formData.append('minPlayers', formState.minPlayers)
     formData.append('maxPlayers', formState.maxPlayers)
     formData.append('maxSimultaneousEvents', formState.maxSimultaneousEvents)
     formData.append('fieldType', 'Paintball')
+
+    const phoneRegex = /^\+?[0-9\s-]{3,}$/
+
+    const postalCodeRegex = /^\d{2}-\d{3}$/
+
+    // Validate phone number
+    if (formState.phone && !phoneRegex.test(formState.phone)) {
+      setErrorRegister('Wprowadź poprawny numer telefonu (9 cyfr).')
+      setLoading(false)
+      return
+    }
+
+    if (!postalCodeRegex.test(formState.postalCode)) {
+      setErrorRegister('Wprowadź poprawny kod pocztowy (XX-XXX).')
+      setLoading(false)
+      return
+    }
 
     const config = {
       headers: {
@@ -139,7 +179,8 @@ const MultiPageDialog = ({ fieldId }) => {
         Authorization: `Bearer ${token}`, // Append Authorization header
       },
     }
-
+    console.log('Logging config:', config)
+    console.log('Logging formdata:', formData)
     try {
       const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.put(
@@ -149,14 +190,14 @@ const MultiPageDialog = ({ fieldId }) => {
       )
 
       if (response.status === 200) {
-        setErrorRegister('Zmieniono dane! Możesz zamknąć to okno.')
+        setErrorRegister('Zmieniono dane! Możesz zamknąć to okno')
         // Reset form or navigate as needed
         setLoading(false)
       }
     } catch (error) {
       if (error.response) {
         const statusCode = error.response.status
-        const defaultMessage = 'Wystąpił błąd. Powiadom administratora.'
+        const defaultMessage = 'Wystąpił błąd. Spróbuj ponownie później'
         let message = defaultMessage
 
         if (error.response.data && error.response.data.errors) {
@@ -175,10 +216,10 @@ const MultiPageDialog = ({ fieldId }) => {
 
         switch (statusCode) {
           case 400:
-            setErrorRegister(`Uzupełnij wszystkie pola`)
+            setErrorRegister(`Zweryfikuj poprawność danych.`)
             break
           case 401:
-            setErrorRegister(`Nieautoryzowana próba. Powiadom administratora`)
+            setErrorRegister(`Nieautoryzowany request. Powiadom administratora`)
             break
           case 500:
             setErrorRegister(`Wystąpił błąd. Spróbuj ponownie później.`)
@@ -190,11 +231,11 @@ const MultiPageDialog = ({ fieldId }) => {
       } else if (error.request) {
         // The request was made but no response was received
         setErrorRegister(
-          'Brak odpowiedzi z serwera. Skontaktuj się z administratorem'
+          'Brak odpowiedzi od serwera. Sprawdź połączenie internetowe.'
         )
       } else {
         // Something happened in setting up the request that triggered an Error
-        setErrorRegister('Wystąpił błąd. Spróbuj ponownie później')
+        setErrorRegister('Coś poszło nie tak. Spróbuj ponownie później.')
       }
 
       setLoading(false)
@@ -202,9 +243,6 @@ const MultiPageDialog = ({ fieldId }) => {
   }
 
   const renderPage = () => {
-    if (errorRegister) {
-      return <p>Błąd podczas ładowania danych. Spróbuj ponownie później.</p>
-    }
     switch (currentPage) {
       case 1:
         return (
@@ -226,7 +264,6 @@ const MultiPageDialog = ({ fieldId }) => {
             errorRegister={errorRegister}
           />
         )
-
       default:
         return null
     }
@@ -275,11 +312,18 @@ const Page1 = ({ formState, handleInputChange, nextPage }) => {
           placeholder={formState.postalCode}
         />
         <FormInput
-          label="Geotag (współrzędne)"
+          label="Szerokość geograficzna (Latitude)"
           type="text"
-          value={formState.coordinates}
-          onChange={(e) => handleInputChange('coordinates', e.target.value)}
-          placeholder={formState.coordinates}
+          value={formState.latitude}
+          onChange={(e) => handleInputChange('latitude', e.target.value)}
+          placeholder={formState.latitude}
+        />
+        <FormInput
+          label="Długość geograficzna (Longitude)"
+          type="text"
+          value={formState.longitude}
+          onChange={(e) => handleInputChange('longitude', e.target.value)}
+          placeholder={formState.latitude}
         />
       </div>
       <Button variant="outline" onClick={nextPage}>
@@ -303,9 +347,9 @@ const Page2 = ({
         <FormInput
           label="Nazwa pola"
           type="text"
-          value={formState.fieldName}
-          onChange={(e) => handleInputChange('fieldName', e.target.value)}
-          placeholder={formState.fieldName}
+          value={formState.name}
+          onChange={(e) => handleInputChange('name', e.target.value)}
+          placeholder={formState.name}
         />
         <FormInput
           label="Powierzchnia w m²"
@@ -318,18 +362,20 @@ const Page2 = ({
           label="Regulamin"
           type="file"
           value={formState.regulations}
+          className="text-white"
           onChange={(e) => handleInputChange('regulations', e.target.value)}
           placeholder={formState.regulations}
         />
       </div>
-      <label className="text-primary">Opis</label>
+      <label className="text-primary">Opis (max 500 znaków)</label>
       <textarea
-        placeholder={formState.Description}
+        placeholder={formState.description}
         rows="9"
         cols="40"
         className="text-black"
-        value={formState.Description}
-        onChange={(e) => handleInputChange('Description', e.target.value)}
+        value={formState.description}
+        onChange={(e) => handleInputChange('description', e.target.value)}
+        maxLength={500}
       ></textarea>
       <div className="grid grid-cols-2 items-center gap-4">
         <FormInput
@@ -376,7 +422,7 @@ const Page2 = ({
       {errorRegister && (
         <p
           className={`mt-2 text-sm ${
-            errorRegister === 'Zmieniono dane! Możesz zamknąć to okno.'
+            errorRegister === 'Zmieniono dane! Możesz zamknąć to okno'
               ? 'text-green-500'
               : 'text-destructive'
           }`}
@@ -392,14 +438,15 @@ const EditFieldDialog = ({ fieldId }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="outline" size="lg" className="rounded border-primary">
+        <Button variant="default" size="lg" className="rounded border-primary">
           Edytuj pole
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="min-w-max border-primary">
         <DialogHeader>
           <DialogTitle>Edytuj pole</DialogTitle>
         </DialogHeader>
+
         <MultiPageDialog fieldId={fieldId} />
       </DialogContent>
     </Dialog>

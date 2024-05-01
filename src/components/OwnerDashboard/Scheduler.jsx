@@ -16,7 +16,6 @@ const Scheduler = ({ fieldId }) => {
   const [formData, setFormData] = useState({
     eventType: 'open',
     selectedDays: [],
-    isRecurrent: false,
     finalDate: '',
     name: '',
     date: '',
@@ -179,7 +178,7 @@ const Scheduler = ({ fieldId }) => {
               </div>
               {formData.isMultiple && (
                 <div>
-                  <label>Select Days:</label>
+                  <label>Wybierz dni:</label>
                   <div>
                     {[
                       { eng: 'Monday', pl: 'Poniedziałek' },
@@ -308,7 +307,7 @@ const Scheduler = ({ fieldId }) => {
               </div>
               {formData.isMultiple && (
                 <div>
-                  <label>Select Days:</label>
+                  <label>Wybierz dni:</label>
                   <div>
                     {[
                       { eng: 'Monday', pl: 'Poniedziałek' },

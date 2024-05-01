@@ -27,6 +27,15 @@ const FormInput = ({
               </option>
             ))}
           </select>
+        ) : type === 'file' ? (
+          <input
+            type={type}
+            id={name}
+            name={name}
+            value={value}
+            className="w-full p-2 text-white border rounded"
+            onChange={onChange}
+          />
         ) : (
           <input
             placeholder={placeholder}

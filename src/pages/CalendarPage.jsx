@@ -149,6 +149,7 @@ const CallendarPage = () => {
         geoTag: formattedGeoTag,
         description,
       })
+      console.log(fieldInfo)
     } catch (error) {
       console.error('Error fetching field information:', error)
     }
@@ -282,7 +283,7 @@ const CallendarPage = () => {
             <div className="w-full ">
               <h1 className="text-white text-xl font-bold italic mb-4 ">
                 Najbliższe rozgrywki otwarte na{' '}
-                <span className="text-primary">{fieldName}</span>
+                <span className="text-primary">{fieldInfo.name}</span>
               </h1>
               <OpenEventsTable fieldID={fieldID} />
             </div>
@@ -291,7 +292,7 @@ const CallendarPage = () => {
             <div className="w-full">
               <h1 className="text-white text-xl font-bold italic mb-4">
                 Najbliższe wolne terminy na zamówienie pola na{' '}
-                <span className="text-primary">{fieldName}</span>
+                <span className="text-primary">{fieldInfo.name}</span>
               </h1>
               <PrivateEventsTable fieldID={fieldID} />
             </div>

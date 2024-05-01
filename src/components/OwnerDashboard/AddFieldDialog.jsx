@@ -22,7 +22,8 @@ const MultiPageDialog = () => {
     houseNo: '',
     city: '',
     postalCode: '',
-    coordinates: '',
+    Latitude: '',
+    Longitude: '',
     fieldName: '',
     area: '',
     regulations: '',
@@ -37,6 +38,9 @@ const MultiPageDialog = () => {
   const { isLoggedIn } = useContext(AuthContext)
 
   const handleInputChange = (field, value, index) => {
+    if (field === 'Latitude' || field === 'Longitude') {
+      value = value.replace('.', ',')
+    }
     if (index !== undefined) {
       // Handling changes in the sets array
       setFormState((prevState) => ({
@@ -59,10 +63,33 @@ const MultiPageDialog = () => {
   }
 
   const prevPage = () => {
+    setFormState((prevState) => ({
+      ...prevState,
+      regulations: null,
+    }))
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
   }
 
   const handleSubmit = async () => {
+    if (
+      !formState.phone ||
+      !formState.street ||
+      !formState.houseNo ||
+      !formState.city ||
+      !formState.postalCode ||
+      !formState.Latitude ||
+      !formState.Longitude ||
+      !formState.fieldName ||
+      !formState.area ||
+      !formState.Description ||
+      !formState.minPlayers ||
+      !formState.maxPlayers ||
+      !formState.maxSimultaneousEvents
+    ) {
+      setErrorRegister('Uzupełnij wszystkie pola')
+      return
+    }
+
     const formData = new FormData()
     setLoading(true)
     setErrorRegister('')
@@ -89,6 +116,21 @@ const MultiPageDialog = () => {
     formData.append('maxPlayers', formState.maxPlayers)
     formData.append('maxSimultaneousEvents', formState.maxSimultaneousEvents)
     formData.append('fieldType', 'Paintball')
+    const phoneRegex = /^\+?[0-9\s-]{3,}$/
+
+    const postalCodeRegex = /^\d{2}-\d{3}$/
+
+    if (!phoneRegex.test(formState.phone)) {
+      setErrorRegister('Wprowadź poprawny numer telefonu (9 cyfr).')
+      setLoading(false)
+      return
+    }
+
+    if (!postalCodeRegex.test(formState.postalCode)) {
+      setErrorRegister('Wprowadź poprawny kod pocztowy (XX-XXX).')
+      setLoading(false)
+      return
+    }
 
     const config = {
       headers: {
@@ -277,7 +319,7 @@ const Page2 = ({
           onChange={(e) => handleInputChange('regulations', e.target.value)}
         />
       </div>
-      <label className="text-primary">Opis</label>
+      <label className="text-primary">Opis (max 500 znaków)</label>
       <textarea
         placeholder="Opis"
         rows="9"
@@ -285,6 +327,7 @@ const Page2 = ({
         className="text-black"
         value={formState.Description}
         onChange={(e) => handleInputChange('Description', e.target.value)}
+        maxLength={500}
       ></textarea>
       <div className="grid grid-cols-2 items-center gap-4">
         <FormInput
