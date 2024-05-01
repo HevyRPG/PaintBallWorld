@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Button } from '@/components/ui/button'
+import React, { useState, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,89 +9,104 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import OpenModalComponent from './modals/OpenModalComponent'
-import axios from 'axios' // Import Axios
-import APIKEYS from '../APIKEYS'
-import Cookies from 'js-cookie'
-
-
+} from "@/components/ui/table";
+import OpenModalComponent from "./modals/OpenModalComponent";
+import UnregisterAlertDialog from "./modals/UnregisterAlertDialog";
+import { toast } from "sonner";
+import axios from "axios"; // Import Axios
+import APIKEYS from "../APIKEYS";
+import Cookies from "js-cookie";
 
 const OpenEventsTable = ({ fieldID }) => {
-  const [events, setEvents] = useState([])
-  const [sortedEvents, setSortedEvents] = useState([])
-  const [sortDirection, setSortDirection] = useState('asc')
-  const [sortBy, setSortBy] = useState('date')
-  const [isLoading, setIsLoading] = useState(false)
-  const [modalIsOpen, setIsOpen] = useState(false)
-  const [selectedEventId, setSelectedEventId] = useState(null)
-  const token = Cookies.get('authToken')
+  const [events, setEvents] = useState([]);
+  const [sortedEvents, setSortedEvents] = useState([]);
+  const [sortDirection, setSortDirection] = useState("asc");
+  const [sortBy, setSortBy] = useState("date");
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const token = Cookies.get("authToken");
 
   const config = {
     headers: {
       ...APIKEYS.headers,
       Authorization: `Bearer ${token}`,
     },
-  }
+  };
 
   const openModal = (eventId) => {
-    setSelectedEventId(eventId) 
-    setIsOpen(true) 
-  }
+    setSelectedEventId(eventId);
+    setIsOpen(true);
+  };
 
   const closeModal = () => {
-    setSelectedEventId(null) 
-    setIsOpen(false) 
-  }
+    setSelectedEventId(null);
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     if (!fieldID) {
-      setEvents([])
-      setSortedEvents([])
-      return // Exit early if no fieldID
+      setEvents([]);
+      setSortedEvents([]);
+      return; // Exit early if no fieldID
     }
 
-    setIsLoading(true) // Set loading state to true before fetching data
-    const apiUrl = import.meta.env.VITE_API_URL
+    setIsLoading(true); // Set loading state to true before fetching data
+    const apiUrl = import.meta.env.VITE_API_URL;
     axios
       .get(`${apiUrl}/api/Event/PublicEvent/${fieldID}`, config) // Use Axios to make GET request
       .then((response) => {
-        setEvents(response.data)
-        setSortedEvents(response.data)
-        setIsLoading(false) // Set loading state to false after fetching data
+        setEvents(response.data);
+        setSortedEvents(response.data);
+        setIsLoading(false); // Set loading state to false after fetching data
       })
       .catch((error) => {
-        console.error('Error fetching data:', error)
-        setIsLoading(false) // Set loading state to false on error
-      })
-  }, [fieldID])
+        console.error("Error fetching data:", error);
+        setIsLoading(false); // Set loading state to false on error
+      });
+  }, [fieldID]);
 
   const handleSort = (sortKey) => {
     const direction =
-      sortBy === sortKey ? (sortDirection === 'asc' ? 'desc' : 'asc') : 'asc'
+      sortBy === sortKey ? (sortDirection === "asc" ? "desc" : "asc") : "asc";
     const sorted = [...sortedEvents].sort((a, b) => {
-      if (sortKey === 'date') {
-        const dateA = new Date(a.date)
-        const dateB = new Date(b.date)
-        return direction === 'asc' ? dateA - dateB : dateB - dateA
-      } else if (sortKey === 'attendees') {
-        return direction === 'asc'
+      if (sortKey === "date") {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return direction === "asc" ? dateA - dateB : dateB - dateA;
+      } else if (sortKey === "attendees") {
+        return direction === "asc"
           ? a.attendees - b.attendees
-          : b.attendees - a.attendees
+          : b.attendees - a.attendees;
       }
-      return 0
-    })
-    setSortedEvents(sorted)
-    setSortDirection(direction)
-    setSortBy(sortKey)
-  }
+      return 0;
+    });
+    setSortedEvents(sorted);
+    setSortDirection(direction);
+    setSortBy(sortKey);
+  };
 
   if (!fieldID) {
     return (
       <div className="text-primary">Wybierz pole aby wyświetlić rozgrywki</div>
-    )
+    );
   }
 
+  const handleUnregister = async (eventId) => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      await axios.delete(`${apiUrl}/api/Event/PublicEvent`, {
+        data: { eventId: eventId },
+        config,
+      });
+      toast.success("Wypisano z wydarzenia!");
+    } catch (error) {
+      console.error("Błąd podczas wypisywania z wydarzenia:", error);
+      toast.error("Nie można się wypisać z wydarzenia.");
+    }
+  };
+
+  // to mozna przeniesc do jakiegos osobnego pliku:
   if (isLoading) {
     return (
       <div className="space-y-3 ">
@@ -136,7 +151,7 @@ const OpenEventsTable = ({ fieldID }) => {
           </tbody>
         </table>
       </div>
-    )
+    );
   }
 
   return (
@@ -147,28 +162,28 @@ const OpenEventsTable = ({ fieldID }) => {
           <TableRow>
             <TableHead
               className="cursor-pointer text-center"
-              onClick={() => handleSort('name')}
+              onClick={() => handleSort("name")}
             >
               Nazwa wydarzenia
             </TableHead>
             <TableHead
               className="cursor-pointer text-center"
-              onClick={() => handleSort('date')}
+              onClick={() => handleSort("date")}
             >
-              Data {sortBy === 'date' && (sortDirection === 'asc' ? '↑' : '↓')}
+              Data {sortBy === "date" && (sortDirection === "asc" ? "↑" : "↓")}
             </TableHead>
             <TableHead
               className="cursor-pointer text-center"
-              onClick={() => handleSort('hour')}
+              onClick={() => handleSort("hour")}
             >
               Godzina
             </TableHead>
             <TableHead
               className="cursor-pointer text-center"
-              onClick={() => handleSort('attendees')}
+              onClick={() => handleSort("attendees")}
             >
-              Ilość osób / maksymalna ilość{' '}
-              {sortBy === 'attendees' && (sortDirection === 'asc' ? '↑' : '↓')}
+              Ilość osób / maksymalna ilość{" "}
+              {sortBy === "attendees" && (sortDirection === "asc" ? "↑" : "↓")}
             </TableHead>
             <TableHead></TableHead>
           </TableRow>
@@ -178,24 +193,36 @@ const OpenEventsTable = ({ fieldID }) => {
             <TableRow key={event.eventId.value} className="hover:bg-secondary">
               <TableCell className="text-center">{event.name}</TableCell>
               <TableCell className="text-center">
-                {event.date.split('T')[0]}
+                {event.date.split("T")[0]}
               </TableCell>
               <TableCell className="text-center">
-                {event.date.split('T')[1]}
+                {event.date.split("T")[1]}
               </TableCell>
               <TableCell className="text-center">{`${event.signedPlayers}/${event.maxPlayers}`}</TableCell>
               <TableCell className="text-center">
-                <Button variant="default" size="lg" onClick={() => openModal(event.eventId.value)}>
+                <Button
+                  variant="default"
+                  size="lg"
+                  onClick={() => openModal(event.eventId.value)}
+                >
                   Zapisz się
                 </Button>
+                <UnregisterAlertDialog
+                  onConfirm={() => handleUnregister(event.eventId.value)}
+                />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <OpenModalComponent isOpen={modalIsOpen} closeModal={closeModal} fieldID={fieldID} eventId={selectedEventId} />
+      <OpenModalComponent
+        isOpen={modalIsOpen}
+        closeModal={closeModal}
+        fieldID={fieldID}
+        eventId={selectedEventId}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default OpenEventsTable
+export default OpenEventsTable;

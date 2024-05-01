@@ -11,8 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Cookies from "js-cookie";
 import APIKEYS from "../../APIKEYS";
-import { Checkbox } from "@/components/ui/checkbox"
-import { toast } from "sonner"
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
 Modal.setAppElement("#root");
 
@@ -24,8 +24,8 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    width: "50vw",
-    height: "50vh",
+    width: "48vw",
+    height: "48vh",
     backgroundColor: "hsl(var(--primary-foreground))",
     padding: "20px",
     borderRadius: "8px",
@@ -75,8 +75,7 @@ const customStyles = {
     marginBottom: "20px",
   },
   checkbox: {
-    marginTop: "12px",
-    marginBottom: "20px",
+    marginTop: "30px",
     color: "#007bff",
   },
   link: {
@@ -145,8 +144,8 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
     if (!isCheckboxChecked || !selectedPackage) return;
 
     const data = {
-      eventId: eventId, 
-      setId: selectedPackage.id, 
+      eventId: eventId,
+      setId: selectedPackage.id,
     };
 
     try {
@@ -158,8 +157,6 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
       console.error("Błąd podczas zapisywania na wydarzenie:", error);
     }
   };
-  console.log("FIeldID:",fieldID)
-  console.log(eventId)
 
   return (
     <Modal
@@ -184,7 +181,7 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
             <SelectContent>
               {packageOptions.map((pkg, index) => (
                 <SelectItem key={pkg.id} value={pkg.id}>
-                  {index + 1}
+                  Pakiet: {index + 1}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -206,10 +203,18 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
             </div>
           )}
 
+          <div style={customStyles.checkbox}>
+            <Checkbox
+              checked={isCheckboxChecked}
+              onCheckedChange={handleCheckboxChange}
+            />
+            <span className="ml-2">Regulamin</span>
+          </div>
+
           <Button
             variant="default"
             size="lg"
-            className="mt-8"
+            className="mt-2"
             disabled={!isCheckboxChecked}
             onClick={handleSignUp}
           >
@@ -222,13 +227,6 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
               {selectedPackage.description}
             </div>
           )}
-          <div style={customStyles.checkbox}>
-           <Checkbox 
-              checked={isCheckboxChecked}
-              onCheckedChange={handleCheckboxChange}
-            />
-            <span className="ml-2">Regulamin</span>
-          </div>
         </div>
       </div>
     </Modal>
