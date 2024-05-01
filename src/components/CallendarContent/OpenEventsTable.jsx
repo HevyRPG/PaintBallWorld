@@ -15,6 +15,8 @@ import axios from 'axios' // Import Axios
 import APIKEYS from '../APIKEYS'
 import Cookies from 'js-cookie'
 
+
+
 const OpenEventsTable = ({ fieldID }) => {
   const [events, setEvents] = useState([])
   const [sortedEvents, setSortedEvents] = useState([])
@@ -22,6 +24,7 @@ const OpenEventsTable = ({ fieldID }) => {
   const [sortBy, setSortBy] = useState('date')
   const [isLoading, setIsLoading] = useState(false)
   const [modalIsOpen, setIsOpen] = useState(false)
+  const [selectedEventId, setSelectedEventId] = useState(null)
   const token = Cookies.get('authToken')
 
   const config = {
@@ -31,12 +34,14 @@ const OpenEventsTable = ({ fieldID }) => {
     },
   }
 
-  const openModal = () => {
-    setIsOpen(true)
+  const openModal = (eventId) => {
+    setSelectedEventId(eventId) 
+    setIsOpen(true) 
   }
 
   const closeModal = () => {
-    setIsOpen(false)
+    setSelectedEventId(null) 
+    setIsOpen(false) 
   }
 
   useEffect(() => {
@@ -180,7 +185,7 @@ const OpenEventsTable = ({ fieldID }) => {
               </TableCell>
               <TableCell className="text-center">{`${event.signedPlayers}/${event.maxPlayers}`}</TableCell>
               <TableCell className="text-center">
-                <Button variant="default" size="lg" onClick={openModal}>
+                <Button variant="default" size="lg" onClick={() => openModal(event.eventId.value)}>
                   Zapisz się
                 </Button>
               </TableCell>
@@ -188,7 +193,7 @@ const OpenEventsTable = ({ fieldID }) => {
           ))}
         </TableBody>
       </Table>
-      <OpenModalComponent isOpen={modalIsOpen} closeModal={closeModal} />
+      <OpenModalComponent isOpen={modalIsOpen} closeModal={closeModal} fieldID={fieldID} eventId={selectedEventId} />
     </div>
   )
 }

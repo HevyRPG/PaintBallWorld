@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Modal from "react-modal";
 import {
   Select,
@@ -8,6 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import Cookies from "js-cookie";
+import APIKEYS from "../../APIKEYS";
+import { Checkbox } from "@/components/ui/checkbox"
+import { toast } from "sonner"
 
 Modal.setAppElement("#root");
 
@@ -25,15 +30,14 @@ const customStyles = {
     padding: "20px",
     borderRadius: "8px",
     boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
-    overflow: "auto",
-
+    position: "fixed",
+    overflow: "visible",
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
-    
   },
   title: {
     fontSize: "26px",
@@ -67,11 +71,11 @@ const customStyles = {
   },
   price: {
     fontSize: "22px",
-    color: "#007bff",
-    marginTop: "10px",
-    marginBottom: "40px",
+    marginTop: "12px",
+    marginBottom: "20px",
   },
   checkbox: {
+    marginTop: "12px",
     marginBottom: "20px",
     color: "#007bff",
   },
@@ -81,56 +85,149 @@ const customStyles = {
     textDecoration: "none",
     cursor: "pointer",
   },
+  colors: {
+    color: "#007bff",
+  },
 };
 
-const OpenModalComponent = ({ isOpen, closeModal }) => {
+const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
+  const [packageOptions, setPackageOptions] = useState([]);
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const token = Cookies.get("authToken");
+  const config = {
+    headers: {
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const fetchPackageOptions = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await axios.get(
+        `${apiUrl}/api/Field/Sets/${fieldID}`,
+        config
+      );
+
+      setPackageOptions(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Błąd podczas pobierania danych:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (fieldID) {
+      fetchPackageOptions();
+    }
+  }, [fieldID]);
+
+  const handleSelectChange = (value) => {
+    const selectedPackage = packageOptions.find((pkg) => pkg.id === value);
+    setSelectedPackage(selectedPackage);
+  };
+
+  const handleCheckboxChange = (checked) => {
+    setIsCheckboxChecked(checked); // Zaktualizuj stan checkboxa
+  };
+
+  const handleModalClose = () => {
+    setSelectedPackage(null);
+    setLoading(true);
+    closeModal();
+  };
+
+  const handleSignUp = async () => {
+    if (!isCheckboxChecked || !selectedPackage) return;
+
+    const data = {
+      eventId: eventId, 
+      setId: selectedPackage.id, 
+    };
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      await axios.post(`${apiUrl}/api/Event/PublicEvent`, data, config);
+      toast.success("Zapisano na wydarzenie!");
+      handleModalClose();
+    } catch (error) {
+      console.error("Błąd podczas zapisywania na wydarzenie:", error);
+    }
+  };
+  console.log("FIeldID:",fieldID)
+  console.log(eventId)
+
   return (
     <Modal
-      portalClassName="modal-portal"
       isOpen={isOpen}
-      onRequestClose={closeModal}
+      onRequestClose={handleModalClose}
       style={customStyles}
       contentLabel="Zapisywanie na rozgrywkę"
     >
       <div style={customStyles.header}>
         <div style={customStyles.title}>Paintball Warszawa</div>
 
-        <Button
-          variant="ghost"
-          className="border-2"
-          onClick={closeModal}
-        >
+        <Button variant="ghost" className="border-2" onClick={handleModalClose}>
           Cofnij
         </Button>
       </div>
       <div style={customStyles.footer}>
         <div style={customStyles.selectWrapper}>
-          <Select>
+          <Select onValueChange={handleSelectChange}>
             <SelectTrigger className="w-3/4">
               <SelectValue placeholder="Wybierz pakiet" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="basic">Podstawowy</SelectItem>
-              <SelectItem value="premium">Premium</SelectItem>
-              <SelectItem value="vip">Vip</SelectItem>
+              {packageOptions.map((pkg, index) => (
+                <SelectItem key={pkg.id} value={pkg.id}>
+                  {index + 1}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
-          <div style={customStyles.price}>100 zł</div>
-          <Button variant="default" size="lg">
+          {selectedPackage && (
+            <div style={customStyles.price}>
+              <p>
+                Ilość amunicji:
+                <span style={customStyles.colors}> {selectedPackage.ammo}</span>
+              </p>
+              <p>
+                Cena:
+                <span style={customStyles.colors}>
+                  {" "}
+                  {selectedPackage.price}zł
+                </span>
+              </p>
+            </div>
+          )}
+
+          <Button
+            variant="default"
+            size="lg"
+            className="mt-8"
+            disabled={!isCheckboxChecked}
+            onClick={handleSignUp}
+          >
             Zapisz się
           </Button>
         </div>
         <div style={customStyles.descriptionWrapper}>
-          <div style={customStyles.description}>
-            Pod Warszawą mamy dwa zewnętrzne uzbrojone w liczne przeszkody pola.
-            Teren do gry sprawdza się dobrze zarówno przy małych, jak i
-            większych grupach. Nasze pola staraliśmy się uzbroić w przeszkody z
-            największą starannością, tak aby każda z nich była solidna i
-            bezpieczna dla uczestników.
-          </div>
+          {selectedPackage && (
+            <div style={customStyles.description}>
+              {selectedPackage.description}
+            </div>
+          )}
           <div style={customStyles.checkbox}>
-            <p className="pt-6">Regulamin</p>
+           <Checkbox 
+              checked={isCheckboxChecked}
+              onCheckedChange={handleCheckboxChange}
+            />
+            <span className="ml-2">Regulamin</span>
           </div>
         </div>
       </div>
