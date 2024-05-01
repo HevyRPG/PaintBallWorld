@@ -101,3 +101,9 @@
   bottom: 0;  */
   z-index: 9999; 
 }
+
+.SelectContent {
+  position: absolute;
+  z-index: 2000; /* Wysoki z-index, aby był na wierzchu */
+  top: 100%; /* Upewnij się, że pojawia się poniżej SelectTrigger */
+}

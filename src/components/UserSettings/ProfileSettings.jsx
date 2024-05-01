@@ -136,12 +136,15 @@ const ProfileSettings = () => {
               type="text"
               name="lastName"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(e) => {
+                setLastName(e.target.value);
+                setValidationError("");
+              }}
             />
           </div>
           {validationError && (
-              <div className="text-red-500">{validationError}</div>
-            )}
+            <div className="text-red-500">{validationError}</div>
+          )}
 
           <div className="mb-2 sm:mb-4">
             <FormInput
@@ -150,11 +153,10 @@ const ProfileSettings = () => {
               name="dateOfBirth"
               value={dateOfBirth}
               onChange={(e) => {
-                setLastName(e.target.value);
-                setValidationError("");
+                setDateOfBirth(e.target.value);
               }}
             />
-           
+
             <span className="text-sm bg-secondary p-2 rounded">
               Aktualna data urodzenia: {truncatedDateOfBirth}
             </span>
