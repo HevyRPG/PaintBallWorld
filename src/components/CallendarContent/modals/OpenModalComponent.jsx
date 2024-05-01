@@ -75,6 +75,7 @@ const customStyles = {
     marginBottom: "20px",
   },
   checkbox: {
+    marginLeft: "2px",
     marginTop: "30px",
     color: "#007bff",
   },
