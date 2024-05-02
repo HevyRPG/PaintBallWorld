@@ -221,7 +221,7 @@ const CallendarPage = () => {
           </MapContainer>
         </div>
 
-        <div className="overflow-y-auto  w-1/3 max-h-[500px]">
+        <div>
           <div className="sticky top-0 mr-2 bg-background z-10">
             <div className="flex items-center justify-between mb-8">
               <div>
