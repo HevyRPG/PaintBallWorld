@@ -16,9 +16,11 @@ import axios from 'axios'
 import APIKEYS from '../components/APIKEYS'
 import Scheduler from '@/components/OwnerDashboard/Scheduler'
 import OwnerEventsData from '../components/OwnerDashboard/OwnerEventsData'
+import { format } from 'date-fns'
 
 const OwnerDashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const formattedDate = format(selectedDate, 'yyyy-MM-dd')
   const [fieldId, setFieldId] = useState('')
   const { isLoggedIn, logout } = useContext(AuthContext)
   const navigate = useNavigate()
@@ -97,6 +99,7 @@ const OwnerDashboard = () => {
                   </h1>
                   <Calendar
                     mode="single"
+                    required
                     selected={selectedDate}
                     onSelect={setSelectedDate}
                     numberOfMonths={2}
@@ -125,7 +128,7 @@ const OwnerDashboard = () => {
                 <div className="w-full min-w-screen-xl">
                   <OwnerEventsData
                     fieldId={fieldId}
-                    selectedDate={selectedDate}
+                    selectedDate={formattedDate}
                   />
                 </div>
               </section>

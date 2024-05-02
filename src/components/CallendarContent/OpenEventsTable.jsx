@@ -159,7 +159,7 @@ const OpenEventsTable = ({ fieldID }) => {
   return (
     <div className="max-h-60 min-h-60 overflow-y-auto">
       <Table>
-        <TableCaption>Lista wydarzeń</TableCaption>
+        <TableCaption>Lista wydarzeń otwartych</TableCaption>
         <TableHeader className="sticky top-0 bg-background">
           <TableRow>
             <TableHead
@@ -202,16 +202,15 @@ const OpenEventsTable = ({ fieldID }) => {
               </TableCell>
               <TableCell className="text-center">{`${event.signedPlayers}/${event.maxPlayers}`}</TableCell>
               <TableCell className="text-center">
-                <Button
-                  variant="default"
-                  size="lg"
-                  onClick={() => openModal(event.eventId.value, event.name)}
-                >
-                  Zapisz się
-                </Button>
-                <UnregisterAlertDialog
-                  onConfirm={() => handleUnregister(event.eventId.value)}
-                />
+
+                {event.signedPlayers >= event.maxPlayers ? (
+                  <p className="p-2">Brak miejsc</p>
+                ) : (
+                  <Button variant="default" size="lg" onClick={openModal}>
+                    Zapisz się
+                  </Button>
+                )}
+
               </TableCell>
             </TableRow>
           ))}
