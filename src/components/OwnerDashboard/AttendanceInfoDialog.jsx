@@ -22,13 +22,13 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
   const fetchAttendanceData = async () => {
     setLoading(true) // Set loading state to true before making the request
     try {
-      const apiUrl = import.meta.env.VITE_API_URL
-      const token = Cookies.get('authToken')
-      const response = await axios.get(`${apiUrl}/api/attendance/${eventId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      // const apiUrl = import.meta.env.VITE_API_URL
+      // const token = Cookies.get('authToken')
+      // const response = await axios.get(`${apiUrl}/api/attendance/${eventId}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // })
       setAttendanceData(response.data)
       setLoading(false) // Set loading state to false after receiving the response
     } catch (error) {
@@ -57,11 +57,13 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button>Obecność</Button>
+        <Button className="rounded-lg" variant="link">
+          Info
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Informacje o uczestnikach</DialogTitle>
+          <DialogTitle>Informacje o zapisach</DialogTitle>
         </DialogHeader>
         {loading ? (
           <p>Loading attendance data...</p> // Display loading message while loading
