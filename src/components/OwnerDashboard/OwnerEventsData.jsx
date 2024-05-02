@@ -30,58 +30,55 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
     },
   }
 
-  useEffect(
-    () => {
-      // Simulate fetching private events
-      const fetchPrivateEvents = async () => {
-        try {
-          // Simulate fetching delay
-          const privateEventsData = [
-            {
-              id: 'p1',
-              date: '2024-05-01',
-              hour: '14:00',
-              uptime: '2 hours',
-              attendees: 10,
-            },
-            {
-              id: 'p2',
-              date: '2024-05-03',
-              hour: '16:00',
-              uptime: '3 hours',
-              attendees: 12,
-            },
-          ]
+  useEffect(() => {
+    // Simulate fetching private events
+    const fetchPrivateEvents = async () => {
+      try {
+        // Simulate fetching delay
+        const privateEventsData = [
+          {
+            id: 'p1',
+            date: '2024-05-01',
+            hour: '14:00',
+            uptime: '2 hours',
+            attendees: 10,
+          },
+          {
+            id: 'p2',
+            date: '2024-05-03',
+            hour: '16:00',
+            uptime: '3 hours',
+            attendees: 12,
+          },
+        ]
 
-          setIsLoadingPrivate(false)
-        } catch (error) {
-          console.error('Error fetching private events:', error)
-          setIsLoadingPrivate(false)
-        }
+        setIsLoadingPrivate(false)
+      } catch (error) {
+        console.error('Error fetching private events:', error)
+        setIsLoadingPrivate(false)
       }
+    }
 
-      // Simulate fetching open events
-      const fetchOpenEvents = async () => {
-        try {
-          const response = await axios.get(
-            `${apiUrl}/api/Event/PublicEvent/${fieldId}`,
-            config
-          )
-          setOpenEvents(response.data)
-          setIsLoadingOpen(false)
-        } catch (error) {
-          console.error('Error fetching open events:', error)
-          setIsLoadingOpen(false)
-        }
+    // Simulate fetching open events
+    const fetchOpenEvents = async () => {
+      try {
+        const response = await axios.get(
+          `${apiUrl}/api/Event/PublicEvent/${fieldId}`,
+          config
+        )
+        setOpenEvents(response.data)
+        setIsLoadingOpen(false)
+      } catch (error) {
+        console.error('Error fetching open events:', error)
+        setIsLoadingOpen(false)
       }
+    }
 
-      // Call fetch functions
-      fetchPrivateEvents()
-      fetchOpenEvents()
-    },
-    [fieldId],
-    selectedDate
-  )
+    // Call fetch functions
+    fetchPrivateEvents()
+    fetchOpenEvents()
+    console.log(selectedDate)
+  }, [fieldId, selectedDate])
 
   const handlePrivateEventClick = (eventId) => {
     setSelectedPrivateEventId(eventId)
@@ -90,7 +87,7 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
   const handleOpenEventClick = (eventId) => {
     setSelectedOpenEventId(eventId)
   }
-
+  //console.log(selectedDate)
   return (
     <div className="flex min-w-screen-xl justify-between">
       <div className="max-h-96 min-h-60 m-2 overflow-y-auto w-1/2">
