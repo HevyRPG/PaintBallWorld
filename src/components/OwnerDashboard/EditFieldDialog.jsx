@@ -26,7 +26,7 @@ const MultiPageDialog = ({ fieldId }) => {
     longitude: '',
     fieldName: '',
     area: '',
-    regulations: null,
+    regulationsFile: null,
     description: '',
     minPlayers: '',
     maxPlayers: '',
@@ -68,7 +68,6 @@ const MultiPageDialog = ({ fieldId }) => {
 
         area: fieldData.area,
         name: fieldData.name,
-        regulations: fieldData.regulations,
         description: fieldData.description,
         minPlayers: fieldData.minPlayers,
         maxPlayers: fieldData.maxPlayers,
@@ -87,31 +86,27 @@ const MultiPageDialog = ({ fieldId }) => {
     console.log(formState)
   }, [fieldId])
 
-  const handleInputChange = (field, value, index) => {
+  const handleInputChange = (field, value) => {
     if (field === 'latitude' || field === 'longitude') {
       value = value.replace('.', ',')
-    }
-
-    if (index !== undefined) {
-      // Handling changes in the sets array
-      setFormState((prevState) => ({
-        ...prevState,
-        sets: prevState.sets.map((set, i) =>
-          i === index ? { ...set, [field]: value } : set
-        ),
-      }))
-    } else if (field === 'regulations' && value instanceof File) {
-      // If regulations field is a file
-      setFormState((prevState) => ({
-        ...prevState,
-        [field]: value,
-      }))
     } else {
       // Handling changes in top-level form state properties
       setFormState((prevState) => ({
         ...prevState,
         [field]: value,
       }))
+    }
+  }
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file && file.type === 'application/pdf') {
+      setFormState((prevState) => ({
+        ...prevState,
+        regulationsFile: file,
+      }))
+    } else {
+      // Display an error message or perform any other action as needed
+      setErrorRegister('Wybierz plik PDF!.')
     }
   }
 
@@ -122,7 +117,7 @@ const MultiPageDialog = ({ fieldId }) => {
   const prevPage = () => {
     setFormState((prevState) => ({
       ...prevState,
-      regulations: null,
+      regulationsFile: null,
     }))
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
   }
@@ -146,8 +141,8 @@ const MultiPageDialog = ({ fieldId }) => {
 
     formData.append('name', formState.name)
     formData.append('area', formState.area)
-    if (formState.regulations instanceof File)
-      formData.append('regulations', formState.regulations)
+
+    formData.append('regulationsFile', formState.regulationsFile)
 
     formData.append('description', formState.description)
     formData.append('minPlayers', formState.minPlayers)
@@ -257,6 +252,7 @@ const MultiPageDialog = ({ fieldId }) => {
           <Page2
             formState={formState}
             handleInputChange={handleInputChange}
+            handleFileChange={handleFileChange}
             prevPage={prevPage}
             nextPage={nextPage}
             handleSubmit={handleSubmit}
@@ -338,6 +334,7 @@ const Page2 = ({
   prevPage,
   handleSubmit,
   handleInputChange,
+  handleFileChange,
   loading,
   errorRegister,
 }) => {
@@ -361,10 +358,8 @@ const Page2 = ({
         <FormInput
           label="Regulamin"
           type="file"
-          value={formState.regulations}
           className="text-white"
-          onChange={(e) => handleInputChange('regulations', e.target.value)}
-          placeholder={formState.regulations}
+          onChange={handleFileChange}
         />
       </div>
       <label className="text-primary">Opis (max 500 znaków)</label>

@@ -1,7 +1,17 @@
 import React from 'react'
 import PhotoGallery from '../ui/PhotoGallery'
+import { Link } from 'react-router-dom'
+import FieldInfoSets from './FieldInfoSets'
 
-const FieldInfo = ({ name, owner, address, description, geoTag, fieldID }) => {
+const FieldInfo = ({
+  name,
+  owner,
+  address,
+  description,
+  geoTag,
+  regulations,
+  fieldID,
+}) => {
   // Sprawdź, czy wszystkie wymagane propsy są dostarczone
   const isEmpty = !fieldID
 
@@ -29,9 +39,15 @@ const FieldInfo = ({ name, owner, address, description, geoTag, fieldID }) => {
         {geoTag !== null && (
           <h1 className="text-gray-400 text-lg mb-1">{geoTag}</h1>
         )}
+        {regulations && (
+          <Link to={regulations} className="underline italic text-primary">
+            Regulamin pola
+          </Link>
+        )}
         {description && (
           <p className="text-secondary-foreground italic mt-3">{description}</p>
         )}
+        <FieldInfoSets fieldId={fieldID} />
       </div>
 
       <div className="flex flex-col items-center justify-center">
