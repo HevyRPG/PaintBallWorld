@@ -103,7 +103,7 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
     fetchPrivateEvents()
     fetchOpenEvents()
   }, [fieldId, selectedDate])
-
+  console.log(openEvents)
   return (
     <div className="flex min-w-screen-xl justify-between">
       {/* Private Events Table */}
@@ -180,7 +180,7 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
               </TableRow>
             ) : (
               openEvents.map((event) => (
-                <TableRow key={event.id}>
+                <TableRow key={event.eventId.value}>
                   <TableCell className="text-center">{event.name}</TableCell>
                   <TableCell className="text-center">
                     {event.date.split('T')[0]}
@@ -190,7 +190,10 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
                   </TableCell>
                   <TableCell className="text-center">{`${event.signedPlayers}/${event.maxPlayers}`}</TableCell>
                   <TableCell className="text-center ">
-                    <AttendanceInfoDialog eventId={event.id} eventType="open" />
+                    <AttendanceInfoDialog
+                      eventId={event.eventId.value}
+                      eventType="open"
+                    />
                   </TableCell>
                 </TableRow>
               ))

@@ -43,6 +43,7 @@ const CallendarPage = () => {
     address: '',
     geoTag: '',
     description: '',
+    regulations: '',
   })
   const apiUrl = import.meta.env.VITE_API_URL
   // Function to format address
@@ -139,7 +140,7 @@ const CallendarPage = () => {
         `${apiUrl}/api/Field/Fields/${fieldID}`,
         APIHeaders
       )
-      const { name, owner, address, description } = response.data
+      const { name, owner, address, description, regulations } = response.data
       const formattedAddress = formatAddress(address)
       const formattedGeoTag = formatGeoTag(address.location)
       setFieldInfo({
@@ -148,6 +149,7 @@ const CallendarPage = () => {
         address: formattedAddress,
         geoTag: formattedGeoTag,
         description,
+        regulations,
       })
       console.log(fieldInfo)
     } catch (error) {
@@ -275,6 +277,7 @@ const CallendarPage = () => {
           geoTag={fieldInfo.geoTag}
           description={fieldInfo.description}
           fieldID={fieldID}
+          regulations={fieldInfo.regulations}
         />
       </div>
       {fieldID !== null && (

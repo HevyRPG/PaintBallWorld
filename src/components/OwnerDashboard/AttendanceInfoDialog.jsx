@@ -9,32 +9,50 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import APIKEYS from '../APIKEYS'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 const AttendanceInfoDialog = ({ eventId, eventType }) => {
   const [attendanceData, setAttendanceData] = useState([])
+  const [additionalInfo, setAdditionalInfo] = useState()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const token = Cookies.get('authToken')
+
+  const config = {
+    headers: {
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  }
 
   useEffect(() => {
     fetchAttendanceData()
   }, [eventId])
 
   const fetchAttendanceData = async () => {
-    setLoading(true) // Set loading state to true before making the request
+    setLoading(true)
     try {
-      // const apiUrl = import.meta.env.VITE_API_URL
-      // const token = Cookies.get('authToken')
-      // const response = await axios.get(`${apiUrl}/api/attendance/${eventId}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // })
-      setAttendanceData(response.data)
-      setLoading(false) // Set loading state to false after receiving the response
+      const apiUrl = import.meta.env.VITE_API_URL
+      const response = await axios.get(
+        `${apiUrl}/api/Owner/MyEvents/${eventId}`,
+        config
+      )
+      setAttendanceData(response.data.participants)
+      setAdditionalInfo(response.data)
+      setLoading(false)
     } catch (error) {
       console.error('Error fetching attendance data:', error)
       setError('Error fetching attendance data')
-      setLoading(false) // Set loading state to false if an error occurs
+      setLoading(false)
     }
   }
 
@@ -42,7 +60,7 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL
       const token = Cookies.get('authToken')
-      await axios.delete(`${apiUrl}/api/event/${eventId}`, {
+      await axios.delete(`${apiUrl}/api/Owner/MyEvents/${eventId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,9 +84,9 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
           <DialogTitle>Informacje o zapisach</DialogTitle>
         </DialogHeader>
         {loading ? (
-          <p>Loading attendance data...</p> // Display loading message while loading
+          <p>Loading attendance data...</p>
         ) : error ? (
-          <p>Error: {error}</p> // Display error message if there's an error
+          <p>Error: {error}</p>
         ) : (
           <AttendanceInfoTable
             attendanceData={attendanceData}
@@ -84,44 +102,24 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
 const AttendanceInfoTable = ({ attendanceData, eventType, onDeleteEvent }) => {
   return (
     <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Surname</th>
-            {eventType === 'private' && (
-              <>
-                <th>No. of Participants</th>
-                <th>Additional Conditions</th>
-                <th>Selected Set</th>
-                <th>Estimated Price</th>
-              </>
-            )}
-            <th>Selected Set</th>
-          </tr>
-        </thead>
-        <tbody>
-          {attendanceData.map((entry) => (
-            <tr key={entry.id}>
-              <td>{entry.username}</td>
-              <td>{entry.email}</td>
-              <td>{entry.name}</td>
-              <td>{entry.surname}</td>
-              {eventType === 'private' && (
-                <>
-                  <td>{entry.participants}</td>
-                  <td>{entry.conditions}</td>
-                  <td>{entry.selectedSet}</td>
-                  <td>{entry.price}</td>
-                </>
-              )}
-              <td>{entry.selectedSet}</td>
-            </tr>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Imię i nazwisko</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Wybrany zestaw</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {attendanceData.map((entry, index) => (
+            <TableRow key={index}>
+              <TableCell>{entry.name}</TableCell>
+              <TableCell>{entry.email}</TableCell>
+              <TableCell>{entry.email}</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
       <div>
         <Button onClick={onDeleteEvent}>Delete Event</Button>
       </div>

@@ -22,11 +22,11 @@ const MultiPageDialog = () => {
     houseNo: '',
     city: '',
     postalCode: '',
-    Latitude: '',
-    Longitude: '',
+    latitude: '',
+    longitude: '',
     fieldName: '',
     area: '',
-    regulations: '',
+    regulations: null,
     Description: '',
     minPlayers: '',
     maxPlayers: '',
@@ -37,24 +37,25 @@ const MultiPageDialog = () => {
 
   const { isLoggedIn } = useContext(AuthContext)
 
-  const handleInputChange = (field, value, index) => {
-    if (field === 'Latitude' || field === 'Longitude') {
-      value = value.replace('.', ',')
-    }
-    if (index !== undefined) {
-      // Handling changes in the sets array
+  const handleInputChange = (field, value) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }))
+    console.log(formState.longitude)
+    console.log(formState.latitude)
+  }
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file && file.type === 'application/pdf') {
       setFormState((prevState) => ({
         ...prevState,
-        sets: prevState.sets.map((set, i) =>
-          i === index ? { ...set, [field]: value } : set
-        ),
+        regulations: file,
       }))
     } else {
-      // Handling changes in top-level form state properties
-      setFormState((prevState) => ({
-        ...prevState,
-        [field]: value,
-      }))
+      // Display an error message or perform any other action as needed
+      setErrorRegister('Wybierz plik PDF!.')
     }
   }
 
@@ -77,8 +78,8 @@ const MultiPageDialog = () => {
       !formState.houseNo ||
       !formState.city ||
       !formState.postalCode ||
-      !formState.Latitude ||
-      !formState.Longitude ||
+      !formState.latitude ||
+      !formState.longitude ||
       !formState.fieldName ||
       !formState.area ||
       !formState.Description ||
@@ -103,13 +104,12 @@ const MultiPageDialog = () => {
     formData.append('address.City', formState.city) // Removed the extra period after 'City'
     formData.append('address.PostalNumber', formState.postalCode)
     formData.append('address.Country', 'Poland')
-    formData.append('address.location.Latitude', formState.Latitude)
-    formData.append('address.location.Longitude', formState.Longitude)
+    formData.append('address.location.Latitude', formState.latitude)
+    formData.append('address.location.Longitude', formState.longitude)
 
     formData.append('name', formState.fieldName)
     formData.append('area', formState.area)
-    if (formState.regulations instanceof File)
-      formData.append('regulations', formState.regulations)
+    formData.append('regulations', formState.regulations)
 
     formData.append('description', formState.Description)
     formData.append('minPlayers', formState.minPlayers)
@@ -217,6 +217,7 @@ const MultiPageDialog = () => {
           <Page2
             formState={formState}
             handleInputChange={handleInputChange}
+            handleFileChange={handleFileChange}
             prevPage={prevPage}
             nextPage={nextPage}
             handleSubmit={handleSubmit}
@@ -270,16 +271,16 @@ const Page1 = ({ formState, handleInputChange, nextPage }) => {
         <FormInput
           label="Szerokość geograficzna (Latitude)"
           type="text"
-          value={formState.Latitude}
-          onChange={(e) => handleInputChange('Latitude', e.target.value)}
-          placeholder="52,23198970"
+          value={formState.latitude.replace('.', ',')}
+          onChange={(e) => handleInputChange('latitude', e.target.value)}
+          placeholder="22,2222"
         />
         <FormInput
           label="Długość geograficzna (Longitude)"
           type="text"
-          value={formState.Longitude}
-          onChange={(e) => handleInputChange('Longitude', e.target.value)}
-          placeholder="21,005957745"
+          value={formState.longitude.replace('.', ',')}
+          onChange={(e) => handleInputChange('longitude', e.target.value)}
+          placeholder="11,111"
         />
       </div>
       <Button variant="outline" onClick={nextPage}>
@@ -294,6 +295,7 @@ const Page2 = ({
   prevPage,
   handleSubmit,
   handleInputChange,
+  handleFileChange,
   loading,
   errorRegister,
 }) => {
@@ -315,8 +317,8 @@ const Page2 = ({
         <FormInput
           label="Regulamin"
           type="file"
-          value={formState.regulations}
-          onChange={(e) => handleInputChange('regulations', e.target.value)}
+          className="text-white"
+          onChange={handleFileChange}
         />
       </div>
       <label className="text-primary">Opis (max 500 znaków)</label>
