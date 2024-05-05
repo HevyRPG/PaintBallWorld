@@ -50,8 +50,8 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
       setAdditionalInfo(response.data)
       setLoading(false)
     } catch (error) {
-      console.error('Error fetching attendance data:', error)
-      setError('Error fetching attendance data')
+      console.error('No sign-ups', error)
+      setError('Brak zapisu')
       setLoading(false)
     }
   }
@@ -86,10 +86,11 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
         {loading ? (
           <p>Loading attendance data...</p>
         ) : error ? (
-          <p>Error: {error}</p>
+          <p>Błąd: {error}</p>
         ) : (
           <AttendanceInfoTable
             attendanceData={attendanceData}
+            additionalInfo={additionalInfo}
             eventType={eventType}
             onDeleteEvent={handleDeleteEvent}
           />
@@ -99,7 +100,11 @@ const AttendanceInfoDialog = ({ eventId, eventType }) => {
   )
 }
 
-const AttendanceInfoTable = ({ attendanceData, eventType, onDeleteEvent }) => {
+const AttendanceInfoTable = ({
+  attendanceData,
+  additionalInfo,
+  onDeleteEvent,
+}) => {
   return (
     <div>
       <Table>
@@ -120,6 +125,22 @@ const AttendanceInfoTable = ({ attendanceData, eventType, onDeleteEvent }) => {
           ))}
         </TableBody>
       </Table>
+      <div className="p-4">
+        <p>
+          {' '}
+          Łączna ilość uczestników:{' '}
+          <span className="text-primary">
+            {additionalInfo.participantsCount}
+          </span>
+        </p>
+        <p>
+          Szacunkowe przychody:{' '}
+          <span className="text-green-500">
+            {additionalInfo.estimatedPrice}
+          </span>{' '}
+          zł
+        </p>
+      </div>
       <div>
         <Button onClick={onDeleteEvent}>Delete Event</Button>
       </div>

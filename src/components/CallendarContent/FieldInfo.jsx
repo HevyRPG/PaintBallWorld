@@ -2,6 +2,9 @@ import React from 'react'
 import PhotoGallery from '../ui/PhotoGallery'
 import { Link } from 'react-router-dom'
 import FieldInfoSets from './FieldInfoSets'
+import axios from 'axios'
+import APIKEYS from '../APIKEYS'
+import { useState, useEffect } from 'react'
 
 const FieldInfo = ({
   name,
@@ -12,7 +15,31 @@ const FieldInfo = ({
   regulations,
   fieldID,
 }) => {
-  // Sprawdź, czy wszystkie wymagane propsy są dostarczone
+  const itemsPerPage = 2
+  const [rating, setRating] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL
+        const response = await axios.get(
+          `${apiUrl}/api/Rating/FieldRating?fieldId=${fieldID}`,
+          APIKEYS
+        )
+        setRating(response.data)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error fetching user history:', error)
+        setError('Error fetching user history')
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
   const isEmpty = !fieldID
 
   if (isEmpty) {
@@ -38,6 +65,11 @@ const FieldInfo = ({
         )}
         {geoTag !== null && (
           <h1 className="text-gray-400 text-lg mb-1">{geoTag}</h1>
+        )}
+        {rating.averageRating !== null && (
+          <h1 className="text-gray-400 text-lg mb-1">
+            Ocena: {rating.averageRating}
+          </h1>
         )}
         {regulations && (
           <Link to={regulations} className="underline italic text-primary">
