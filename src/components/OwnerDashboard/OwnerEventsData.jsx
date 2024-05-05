@@ -33,44 +33,11 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
     const fetchPrivateEvents = async () => {
       try {
         // Simulate fetching delay
-        const privateEventsData = [
-          {
-            id: 'p1',
-            date: '2024-05-01',
-            hour: '14:00',
-            uptime: '2',
-            attendees: 10,
-          },
-          {
-            id: 'p2',
-            date: '2024-05-02',
-            hour: '16:00',
-            uptime: '3',
-            attendees: 12,
-          },
-          {
-            id: 'p3',
-            date: '2024-05-03',
-            hour: '16:00',
-            uptime: '3',
-            attendees: 12,
-          },
-          {
-            id: 'p4',
-            date: '2024-05-04',
-            hour: '16:00',
-            uptime: '3',
-            attendees: 12,
-          },
-          {
-            id: 'p5',
-            date: '2024-05-05',
-            hour: '16:00',
-            uptime: '3',
-            attendees: 12,
-          },
-        ]
-        const filteredPrivateEvents = privateEventsData.filter(
+        const response = await axios.get(
+          `${apiUrl}/api/Schedule/PrivateEvent/${fieldId}`,
+          config
+        )
+        const filteredPrivateEvents = response.data.filter(
           (event) => event.date.split('T')[0] === selectedDate
         )
         setPrivateEvents(filteredPrivateEvents)
@@ -85,7 +52,7 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
     const fetchOpenEvents = async () => {
       try {
         const response = await axios.get(
-          `${apiUrl}/api/Event/PublicEvent/${fieldId}`,
+          `${apiUrl}/api/Schedule/PublicEvent/${fieldId}`,
           config
         )
         const filteredOpenEvents = response.data.filter(
@@ -136,15 +103,21 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
             ) : (
               privateEvents.map((event) => (
                 <TableRow key={event.id}>
-                  <TableCell className="text-center">{event.date}</TableCell>
-                  <TableCell className="text-center">{event.hour}</TableCell>
-                  <TableCell className="text-center">{event.uptime}</TableCell>
                   <TableCell className="text-center">
-                    {event.attendees}
+                    {event.date.split('T')[0]}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {event.date.split('T')[1]}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {event.maxPlaytime}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {event.maxPlayers}
                   </TableCell>
                   <TableCell className="text-center min-w-[58px]">
                     <AttendanceInfoDialog
-                      eventId={event.id}
+                      eventId={event.fieldScheduleId}
                       eventType="private"
                     />
                   </TableCell>
