@@ -11,14 +11,23 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import PrivateModalComponent from './modals/PrivateModalComponent copy'
+import APIKEYS from '../APIKEYS'
+import Cookies from 'js-cookie'
+import axios from 'axios'
 
 const PrivateEventsTable = ({ fieldID }) => {
   const [events, setEvents] = useState([])
   const [sortedEvents, setSortedEvents] = useState([])
   const [sortDirection, setSortDirection] = useState('desc') // Initialize to 'desc'
   const [isLoading, setIsLoading] = useState(false)
-
   const [modalIsOpen, setIsOpen] = useState(false)
+  const token = Cookies.get('authToken')
+  const config = {
+    headers: {
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
+  }
 
   const openModal = () => {
     setIsOpen(true)
@@ -36,62 +45,18 @@ const PrivateEventsTable = ({ fieldID }) => {
     }
 
     setIsLoading(true) // Set loading state to true before fetching data
-
-    // Mock data specific to private events, showing up when fieldID is '123'
-    const mockApiResponse =
-      fieldID === '123'
-        ? [
-            {
-              id: '1',
-              date: '2024-03-01',
-              hour: '14:00',
-              uptime: '2 hours',
-              attendees: 10,
-            },
-            {
-              id: '2',
-              date: '2024-03-02',
-              hour: '16:00',
-              uptime: '3 hours',
-              attendees: 12,
-            },
-            {
-              id: '3',
-              date: '2024-03-05',
-              hour: '11:00',
-              uptime: '1.5 hours',
-              attendees: 8,
-            },
-            {
-              id: '4',
-              date: '2024-03-05',
-              hour: '11:00',
-              uptime: '1.5 hours',
-              attendees: 8,
-            },
-            {
-              id: '5',
-              date: '2024-03-05',
-              hour: '11:00',
-              uptime: '1.5 hours',
-              attendees: 8,
-            },
-            {
-              id: '6',
-              date: '2024-03-05',
-              hour: '11:00',
-              uptime: '1.5 hours',
-              attendees: 8,
-            },
-          ]
-        : []
-
-    setTimeout(() => {
-      // Simulate fetching delay
-      setEvents(mockApiResponse)
-      setSortedEvents(mockApiResponse)
-      setIsLoading(false) // Set loading state to false after fetching data
-    }, 1000)
+    const apiUrl = import.meta.env.VITE_API_URL
+    axios
+      .get(`${apiUrl}/api/Schedule/PrivateEvent/open/${fieldID}`, config) // Use Axios to make GET request
+      .then((response) => {
+        setEvents(response.data)
+        setSortedEvents(response.data)
+        setIsLoading(false) // Set loading state to false after fetching data
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error)
+        setIsLoading(false) // Set loading state to false on error
+      })
   }, [fieldID])
 
   const handleSort = () => {
@@ -188,10 +153,14 @@ const PrivateEventsTable = ({ fieldID }) => {
         <TableBody>
           {sortedEvents.map((event) => (
             <TableRow key={event.id} className="hover:bg-secondary">
-              <TableCell className="text-center">{event.date}</TableCell>
-              <TableCell className="text-center">{event.hour}</TableCell>
-              <TableCell className="text-center">{event.uptime}</TableCell>
-              <TableCell className="text-center">{event.attendees}</TableCell>
+              <TableCell className="text-center">
+                {event.date.split('T')[0]}
+              </TableCell>
+              <TableCell className="text-center">
+                {event.date.split('T')[1]}
+              </TableCell>
+              <TableCell className="text-center">{event.maxPlaytime}</TableCell>
+              <TableCell className="text-center">{event.maxPlayers}</TableCell>
               <TableCell className="text-center">
                 <Button variant="default" onClick={openModal} size="lg">
                   Umów
