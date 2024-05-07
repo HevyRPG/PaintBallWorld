@@ -6,8 +6,9 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import axios from 'axios'
 import APIKEYS from '../components/APIKEYS'
 import Cookies from 'js-cookie'
-import PaginationComponent from '@/components/ProfilePageComponents/Pagination'
+import PaginationHistory from '@/components/ProfilePageComponents/PaginationHistory'
 import { AuthContext } from '../context/AuthContext'
+import PaginationIncoming from '../components/ProfilePageComponents/PaginationIncoming'
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null)
@@ -184,17 +185,9 @@ const ProfilePage = () => {
 
           <section className="flex gap-6">
             <div className="w-full flex flex-col  text-secondary-foreground">
-              <div className="shadow rounded-xl mb-8">
-                <div className="flex flex-col rounded-xl items-center bg-secondary justify-between px-6 py-5 font-semibold border">
-                  <span className="text-secondary-foreground pb-8">
-                    Najblizsze rozgrywki
-                  </span>
-                  <span>Poznań 06.05.2024</span>
-                  <span>Warszawa 04.06.2024</span>
-                </div>
-              </div>
+              <PaginationIncoming />
 
-              <PaginationComponent />
+              <PaginationHistory />
             </div>
           </section>
         </main>

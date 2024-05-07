@@ -13,8 +13,8 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import APIKEYS from '../APIKEYS'
 
-const PaginationComponent = () => {
-  const itemsPerPage = 2
+const PaginationIncoming = () => {
+  const itemsPerPage = 4
   const [currentPage, setCurrentPage] = useState(1)
   const [historyData, setHistoryData] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -33,10 +33,7 @@ const PaginationComponent = () => {
       setLoading(true)
       try {
         const apiUrl = import.meta.env.VITE_API_URL
-        const response = await axios.get(
-          `${apiUrl}/api/User/UserHistory`,
-          config
-        )
+        const response = await axios.get(`${apiUrl}/api/User/Incoming`, config)
         setHistoryData(response.data)
         setLoading(false)
       } catch (error) {
@@ -72,7 +69,7 @@ const PaginationComponent = () => {
       <div className="flex flex-col rounded-xl items-center bg-secondary justify-between px-6 py-5 font-semibold border">
         <Table className="table-auto w-full text-white">
           <TableCaption className="sticky  bottom-0 bg-secondary">
-            Historia rozgrywek
+            Nadchodzące wydarzenia
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -113,4 +110,4 @@ const PaginationComponent = () => {
   )
 }
 
-export default PaginationComponent
+export default PaginationIncoming

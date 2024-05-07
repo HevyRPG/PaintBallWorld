@@ -120,7 +120,7 @@ const AttendanceInfoTable = ({
             <TableRow key={index}>
               <TableCell>{entry.name}</TableCell>
               <TableCell>{entry.email}</TableCell>
-              <TableCell>{entry.email}</TableCell>
+              <TableCell>{entry.setId}</TableCell>
             </TableRow>
           ))}
         </TableBody>
