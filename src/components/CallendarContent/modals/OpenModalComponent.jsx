@@ -32,6 +32,7 @@ const customStyles = {
     boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
     position: "fixed",
     overflow: "visible",
+    zIndex: 9999,
   },
   header: {
     display: "flex",
@@ -210,7 +211,7 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId, eventName })
               checked={isCheckboxChecked}
               onCheckedChange={handleCheckboxChange}
             />
-            <span className="ml-2">Regulamin</span>
+            <span className="ml-2">Akceptuję Regulamin</span>
           </div>
 
           <Button
@@ -226,7 +227,7 @@ const OpenModalComponent = ({ isOpen, closeModal, fieldID, eventId, eventName })
         <div style={customStyles.descriptionWrapper}>
           {selectedPackage && (
             <div style={customStyles.description}>
-              {selectedPackage.description}
+              <p>Opis:</p>{selectedPackage.description}
             </div>
           )}
         </div>
