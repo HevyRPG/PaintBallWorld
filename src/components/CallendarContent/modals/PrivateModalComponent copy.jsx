@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Modal from "react-modal";
 import {
   Select,
@@ -8,7 +9,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import FormInput from "@/components/FormInput"; // Dla pola tekstowego
+import Cookies from "js-cookie";
+import APIKEYS from "../../APIKEYS";
+import FormInput from "@/components/FormInput";
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
 Modal.setAppElement("#root");
 
@@ -27,23 +32,80 @@ const customStyles = {
     boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
     overflow: "auto",
   },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
+  },
+  price: {
+    fontSize: "22px",
+    marginTop: "12px",
+    marginBottom: "20px",
+  },
+  colors: {
+    color: "#007bff",
+  },
+  title: {
+    fontSize: "26px",
+    color: "#fff",
+  },
 };
 
-const PrivateModalComponent = ({ isOpen, closeModal }) => {
+const PrivateModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
   const [numPeople, setNumPeople] = useState(1);
   const [packageType, setPackageType] = useState("basic");
-  const packagePrices = {
-    basic: 100,
-    premium: 150,
-    vip: 200,
+
+  const [packageOptions, setPackageOptions] = useState([]);
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const token = Cookies.get("authToken");
+  const config = {
+    headers: {
+      ...APIKEYS.headers,
+      Authorization: `Bearer ${token}`,
+    },
   };
 
-  // Dodajemy stan opisów pakietów
-  const [packageDescriptions, setPackageDescriptions] = useState({
-    basic: "czas gry: 1h, kule: 200, max ilosc osob:10 ",
-    premium: "czas gry: 1,30h, kule: 350, max ilosc osob:15 ",
-    vip: "czas gry: 2h, kule: 450, max ilosc osob:20 ",
-  });
+  const fetchPackageOptions = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await axios.get(
+        `${apiUrl}/api/Field/Sets/${fieldID}`,
+        config
+      );
+
+      setPackageOptions(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Błąd podczas pobierania danych:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (fieldID) {
+      fetchPackageOptions();
+    }
+  }, [fieldID]);
+
+  const handleSelectChange = (value) => {
+    const selectedPackage = packageOptions.find((pkg) => pkg.id === value);
+    setSelectedPackage(selectedPackage);
+  };
+
+  const handleCheckboxChange = (checked) => {
+    setIsCheckboxChecked(checked);
+  };
+
+  const handleModalClose = () => {
+    setSelectedPackage(null);
+    setIsCheckboxChecked(false);
+    setLoading(true);
+    closeModal();
+  };
 
   const handlePeopleChange = (e) => {
     const value = parseInt(e.target.value, 10);
@@ -52,28 +114,46 @@ const PrivateModalComponent = ({ isOpen, closeModal }) => {
     }
   };
 
-  const handlePackageChange = (value) => {
-    setPackageType(value);
+  const handleSignUp = async () => {
+    if (!isCheckboxChecked || !selectedPackage) return;
+
+    const data = {
+      scheduleId: eventId,
+      setId: selectedPackage.id,
+      isPrivate: true,
+      description: "lydka grubasa",
+      playersCount: numPeople,
+    };
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      await axios.post(`${apiUrl}/api/Event/Reservation`, data, config);
+      toast.success("Umówiono na wydarzenie!");
+      handleModalClose();
+    } catch (error) {
+      console.error("Błąd podczas zapisywania na wydarzenie:", error);
+    }
   };
 
-  const totalCost = packagePrices[packageType] * numPeople;
+  const totalCost = selectedPackage?.price * numPeople;
+  console.log("Cena:", selectedPackage);
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={closeModal}
+      onRequestClose={handleModalClose}
       style={customStyles}
       contentLabel="Rezerwacja pola paintballowego"
     >
-      <div className="flex justify-between items-center mb-6 text-white">
-        <div className="text-lg font-bold">Paintball Warszawa</div>
-        <Button variant="ghost" onClick={closeModal}  className="border-2">
+      <div style={customStyles.header}>
+        <div style={customStyles.title}>Umów się na wydarzenie</div>
+        <Button variant="ghost" onClick={handleModalClose} className="border-2">
           Cofnij
         </Button>
       </div>
 
       <div className="flex justify-between text-white">
-        <div className="w-52">
+        <div className="w-62">
           <FormInput
             label="Liczba osób"
             type="number"
@@ -81,46 +161,76 @@ const PrivateModalComponent = ({ isOpen, closeModal }) => {
             onChange={handlePeopleChange}
           />
 
-          <Select onValueChange={handlePackageChange}>
+          <Select onValueChange={handleSelectChange}>
             <SelectTrigger className="w-3/4">
               <SelectValue placeholder="Wybierz pakiet" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="basic">Podstawowy</SelectItem>
-              <SelectItem value="premium">Premium</SelectItem>
-              <SelectItem value="vip">Vip</SelectItem>
+              {packageOptions.map((pkg, index) => (
+                <SelectItem key={pkg.id} value={pkg.id}>
+                  Pakiet: {index + 1}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
-          <div className="mt-4">
-            <p>{packageDescriptions[packageType]}</p>
+
+          {selectedPackage && (
+            <div style={customStyles.price}>
+              <p>
+                Ilość amunicji:
+                <span style={customStyles.colors}> {selectedPackage.ammo}</span>
+              </p>
+              <p>
+                Cena:
+                <span style={customStyles.colors}>
+                  {" "}
+                  {selectedPackage.price}zł
+                </span>
+              </p>
+            </div>
+          )}
+
+          <div style={customStyles.price} className="mt-6">
+            <hr className="my-4" />
+            Całkowity koszt:
+            {totalCost ? (
+              <span className="text-primary"> {totalCost} zł</span>
+            ) : (
+              <span className="text-primary">Wybierz pakiet</span>
+            )}
           </div>
-          <div className="text-lg mt-20">
-            Całkowity koszt: <span className="text-primary">{totalCost} zł</span>
-            
+          <div className="mt-4">
+            <Checkbox
+              checked={isCheckboxChecked}
+              onCheckedChange={handleCheckboxChange}
+            />
+            <span className="ml-2">Akceptuję Regulamin</span>
+          </div>
+          <div className="mt-2">
+            <Button
+              variant="default"
+              size="lg"
+              className="mt-2"
+              disabled={!isCheckboxChecked}
+              onClick={handleSignUp}
+            >
+              Umów
+            </Button>
           </div>
         </div>
 
         <div className="w-1/2">
-          <p>Opis pola paintballowego:</p>
-          <p>
-            Pod Warszawą mamy dwa zewnętrzne uzbrojone w liczne przeszkody pola.
-            Teren do gry sprawdza się dobrze zarówno przy małych, jak i osób
-            dorosłych
-          </p>
+          {selectedPackage && (
+            <div style={customStyles.description}>
+              <p>Opis:</p>
+              {selectedPackage.description}
+            </div>
+          )}
           <p className="mt-4">Uwagi dla wynajmującego:</p>
           <textarea
             className="border p-2 mt-2 rounded w-full text-black"
             placeholder="Podaj wszelkie dodatkowe informacje lub pytania..."
           />
-          <div className="mt-4">
-            <label className="flex items-center space-x-2">
-              <input type="checkbox" className="w-4 h-4" />
-              <span>Akceptuję regulamin</span>
-            </label>
-          </div>
-          <div className="mt-6 flex justify-end ">
-            <Button variant="default">Rezerwuj</Button>
-          </div>
         </div>
       </div>
     </Modal>
