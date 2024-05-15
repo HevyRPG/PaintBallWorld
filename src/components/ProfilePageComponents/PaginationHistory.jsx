@@ -114,13 +114,12 @@ const PaginationHistory = () => {
                   {new Date(game.event.date).toLocaleDateString()}
                 </TableCell>
 
-                <TableCell className="text-center">
+                <TableCell className=" text-center text-sm">
                   {game.event.price}
                 </TableCell>
                 <TableCell className="text-center">
                   <Button
                     variant="default"
-                    size="lg"
                     onClick={() => openModal(game.field.fieldId)}
                   >
                     Oceń pole
@@ -145,6 +144,7 @@ const PaginationHistory = () => {
       <FieldRatingModalComponent
         isOpen={modalIsOpen}
         closeModal={closeModal}
+        fieldId={selectedEventId}
       ></FieldRatingModalComponent>
     </>
   );

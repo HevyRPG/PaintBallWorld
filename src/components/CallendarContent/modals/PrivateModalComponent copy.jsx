@@ -97,7 +97,7 @@ const PrivateModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
   };
 
   const handleCheckboxChange = (checked) => {
-    setIsCheckboxChecked(checked); // Zaktualizuj stan checkboxa
+    setIsCheckboxChecked(checked);
   };
 
   const handleModalClose = () => {
@@ -121,8 +121,8 @@ const PrivateModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
       scheduleId: eventId,
       setId: selectedPackage.id,
       isPrivate: true,
+      description: "lydka grubasa",
       playersCount: numPeople,
-      description: "łydka grubasa",
     };
 
     try {
@@ -136,6 +136,7 @@ const PrivateModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
   };
 
   const totalCost = selectedPackage?.price * numPeople;
+  console.log("Cena:", selectedPackage);
 
   return (
     <Modal
@@ -152,7 +153,7 @@ const PrivateModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
       </div>
 
       <div className="flex justify-between text-white">
-        <div className="w-52">
+        <div className="w-62">
           <FormInput
             label="Liczba osób"
             type="number"
@@ -188,8 +189,9 @@ const PrivateModalComponent = ({ isOpen, closeModal, fieldID, eventId }) => {
               </p>
             </div>
           )}
-          <hr />
+
           <div style={customStyles.price} className="mt-6">
+            <hr className="my-4" />
             Całkowity koszt:
             {totalCost ? (
               <span className="text-primary"> {totalCost} zł</span>
