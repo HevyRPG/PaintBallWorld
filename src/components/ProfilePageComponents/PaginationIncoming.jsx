@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,61 +8,83 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import axios from 'axios'
-import Cookies from 'js-cookie'
-import APIKEYS from '../APIKEYS'
+} from "@/components/ui/table";
+import axios from "axios";
+import Cookies from "js-cookie";
+import APIKEYS from "../APIKEYS";
+import UnregisterAlertDialog from "../CallendarContent/modals/UnregisterAlertDialog";
+import { toast } from "sonner";
 
 const PaginationIncoming = () => {
-  const itemsPerPage = 4
-  const [currentPage, setCurrentPage] = useState(1)
-  const [historyData, setHistoryData] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const token = Cookies.get('authToken')
+  const itemsPerPage = 4;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [historyData, setHistoryData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const token = Cookies.get("authToken");
 
   const config = {
     headers: {
       ...APIKEYS.headers,
       Authorization: `Bearer ${token}`,
     },
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const apiUrl = import.meta.env.VITE_API_URL
-        const response = await axios.get(`${apiUrl}/api/User/Incoming`, config)
-        setHistoryData(response.data)
-        setLoading(false)
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const response = await axios.get(`${apiUrl}/api/User/Incoming`, config);
+        setHistoryData(response.data);
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching user history:', error)
-        setError('Error fetching user history')
-        setLoading(false)
+        console.error("Error fetching user history:", error);
+        setError("Error fetching user history");
+        setLoading(false);
       }
-    }
-    fetchData()
-  }, [])
+    };
+    fetchData();
+  }, []);
 
-  if (loading) return <p>Ładuję dane...</p>
-  if (error) return <p>Error: {error}</p>
+  if (loading) return <p>Ładuję dane...</p>;
+  if (error) return <p>Error: {error}</p>;
 
-  const { games } = historyData || { games: [] }
+  const { games } = historyData || { games: [] };
 
-  const indexOfLastItem = currentPage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = games.slice(indexOfFirstItem, indexOfLastItem)
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = games.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(games.length / itemsPerPage)
+  const totalPages = Math.ceil(games.length / itemsPerPage);
 
   const nextPage = () => {
-    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))
-  }
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
 
   const prevPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
-  }
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleUnregister = async (eventId, isPublic) => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      let endpoint = isPublic
+        ? "/api/Event/PublicEvent"
+        : "/api/Event/Reservation";
+      let method = isPublic ? "PATCH" : "DELETE";
+      await axios({
+        method: method,
+        url: `${apiUrl}${endpoint}`,
+        data: { eventId: eventId },
+        headers: config.headers,
+      });
+      toast.success("Wypisano z wydarzenia!");
+    } catch (error) {
+      console.error("Błąd podczas wypisywania z wydarzenia:", error);
+      toast.error("Nie można się wypisać z wydarzenia.");
+    }
+  };
 
   return (
     <>
@@ -78,6 +100,8 @@ const PaginationIncoming = () => {
               <TableHead>Data</TableHead>
 
               <TableHead>Cena</TableHead>
+              <TableHead>Wydarzenie </TableHead>
+              <TableHead>Anuluj wydarzenie</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -90,6 +114,35 @@ const PaginationIncoming = () => {
                 </TableCell>
 
                 <TableCell>{game.event.price}</TableCell>
+                <TableCell>
+                  {game.isPublic ? "Otwarte" : "Rezerwacja"}
+                </TableCell>
+                <TableCell>
+                  {!game.isPublic ? (
+                    <UnregisterAlertDialog
+                      onConfirm={() =>
+                        handleUnregister(
+                          game.event.eventId,
+                          game.isPublic
+                        )
+                      }
+                    />
+                  ) : (
+                    <Button
+                      onClick={() =>
+                        handleUnregister(
+                          game.event.eventId,
+                          game.isPublic
+                        )
+                      }
+                      variant="destructive"
+                      size="lg"
+                      className="ml-4"
+                    >
+                      Odwołaj rezerwację
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -107,7 +160,7 @@ const PaginationIncoming = () => {
         </Button>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PaginationIncoming
+export default PaginationIncoming;

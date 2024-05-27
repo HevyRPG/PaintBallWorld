@@ -11,8 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import OpenModalComponent from "./modals/OpenModalComponent";
-import UnregisterAlertDialog from "./modals/UnregisterAlertDialog";
-import { toast } from "sonner";
 import axios from "axios"; // Import Axios
 import APIKEYS from "../APIKEYS";
 import Cookies from "js-cookie";
@@ -94,19 +92,7 @@ const OpenEventsTable = ({ fieldID }) => {
     );
   }
 
-  const handleUnregister = async (eventId) => {
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL;
-      await axios.delete(`${apiUrl}/api/Event/PublicEvent`, {
-        data: { eventId: eventId },
-        config,
-      });
-      toast.success("Wypisano z wydarzenia!");
-    } catch (error) {
-      console.error("Błąd podczas wypisywania z wydarzenia:", error);
-      toast.error("Nie można się wypisać z wydarzenia.");
-    }
-  };
+
 
   // to mozna przeniesc do jakiegos osobnego pliku:
   if (isLoading) {
@@ -213,9 +199,6 @@ const OpenEventsTable = ({ fieldID }) => {
                     >
                       Zapisz się
                     </Button>
-                    <UnregisterAlertDialog
-                      onConfirm={() => handleUnregister(event.eventId.value)}
-                    />
                   </>
                 )}
               </TableCell>
