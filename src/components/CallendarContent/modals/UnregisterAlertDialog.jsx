@@ -16,7 +16,7 @@ const UnregisterAlertDialog = ({ onConfirm, onCancel }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" className="ml-4"  size="lg">
+        <Button variant="destructive" className=""  size="lg">
           Wypisz się
         </Button>
       </AlertDialogTrigger>
