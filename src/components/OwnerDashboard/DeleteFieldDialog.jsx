@@ -19,7 +19,7 @@ const FieldDeleteButton = ({ fieldId, onDelete }) => {
     headers: {
       'Content-Type': 'multipart/form-data',
       ...APIKEYS.headers,
-      Authorization: `Bearer ${token}`, // Append Authorization header
+      Authorization: `Bearer ${token}`,
     },
   }
   const handleDelete = async () => {
@@ -47,7 +47,6 @@ const DeleteFieldDialog = ({ fieldId }) => {
 
   const handleFieldDelete = () => {
     setShowFieldDeletedMessage(true)
-    // You can add additional logic here if needed
   }
 
   return (

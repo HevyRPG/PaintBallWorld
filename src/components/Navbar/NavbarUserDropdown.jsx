@@ -13,12 +13,11 @@ import { AuthContext } from '../../context/AuthContext'
 import Cookies from 'js-cookie'
 
 export function DropdownMenuDemo() {
-  const { logout } = useContext(AuthContext) // Use context to check if user is logged in
-  const navigate = useNavigate() // Use the useNavigate hook
+  const { logout } = useContext(AuthContext)
+  const navigate = useNavigate()
   const role = Cookies.get('role')
   const isOwner = role === 'Owner'
   useEffect(() => {
-    // Check for the presence of required cookies when the component mounts
     if (
       !Cookies.get('role') ||
       !Cookies.get('username') ||
@@ -28,7 +27,6 @@ export function DropdownMenuDemo() {
       navigate('/')
     }
 
-    // Set up an interval to periodically check for the cookies
     const interval = setInterval(() => {
       if (
         !Cookies.get('role') ||
@@ -38,14 +36,14 @@ export function DropdownMenuDemo() {
         logout()
         navigate('/')
       }
-    }, 10000) // Check every 10 seconds
+    }, 10000)
 
     return () => clearInterval(interval)
   }, [logout, navigate])
 
   const handleLogout = () => {
-    logout() // Use logout function from context
-    navigate('/') // Redirect to home page after logout
+    logout()
+    navigate('/')
   }
 
   return (

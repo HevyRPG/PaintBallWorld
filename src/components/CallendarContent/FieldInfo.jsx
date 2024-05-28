@@ -66,11 +66,7 @@ const FieldInfo = ({
         {geoTag !== null && (
           <h1 className="text-gray-400 text-lg mb-1">{geoTag}</h1>
         )}
-        {/* {rating.averageRating !== null && (
-          <h1 className="text-gray-400 text-lg mb-1">
-            Ocena: {rating.averageRating}
-          </h1>
-        )} */}
+
         {regulations && (
           <Link to={regulations} className="underline italic text-primary">
             Regulamin pola

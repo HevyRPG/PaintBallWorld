@@ -10,8 +10,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import FormInput from '@/components/FormInput'
-import { AuthContext } from '@/context/AuthContext' // Ensure this path is correct
-import APIKEYS from '@/components/APIKEYS' // Ensure this path is correct
+import { AuthContext } from '@/context/AuthContext'
+import APIKEYS from '@/components/APIKEYS'
 import '@/index.css'
 
 const MultiPageDialog = () => {
@@ -54,7 +54,6 @@ const MultiPageDialog = () => {
         regulations: file,
       }))
     } else {
-      // Display an error message or perform any other action as needed
       setErrorRegister('Wybierz plik PDF!.')
     }
   }
@@ -95,13 +94,13 @@ const MultiPageDialog = () => {
     setLoading(true)
     setErrorRegister('')
     console.log(formData)
-    // Retrieve the token from cookies
+
     const token = Cookies.get('authToken')
 
     formData.append('address.PhoneNo', formState.phone)
     formData.append('address.Street', formState.street)
     formData.append('address.HouseNo', formState.houseNo)
-    formData.append('address.City', formState.city) // Removed the extra period after 'City'
+    formData.append('address.City', formState.city)
     formData.append('address.PostalNumber', formState.postalCode)
     formData.append('address.Country', 'Poland')
     formData.append('address.location.Latitude', formState.latitude)
@@ -136,7 +135,7 @@ const MultiPageDialog = () => {
       headers: {
         'Content-Type': 'multipart/form-data',
         ...APIKEYS.headers,
-        Authorization: `Bearer ${token}`, // Append Authorization header
+        Authorization: `Bearer ${token}`,
       },
     }
     console.log('Logging config:', config)
@@ -151,7 +150,7 @@ const MultiPageDialog = () => {
 
       if (response.status === 200) {
         setErrorRegister('Pole dodane pomyślnie! Możesz zamknąć to okno')
-        // Reset form or navigate as needed
+
         setLoading(false)
       }
     } catch (error) {
@@ -161,13 +160,11 @@ const MultiPageDialog = () => {
         let message = defaultMessage
 
         if (error.response.data && error.response.data.errors) {
-          // If there are validation errors, construct a message from them
           const errors = error.response.data.errors
           message = Object.entries(errors)
             .map(([key, value]) => `${key}: ${value.join(', ')}`)
             .join('\n')
         } else {
-          // Otherwise, try to retrieve a more specific message from the server's response
           message =
             error.response.data.message ||
             error.response.data.error ||
@@ -185,16 +182,13 @@ const MultiPageDialog = () => {
             setErrorRegister(`Wystąpił błąd. Spróbuj ponownie później.`)
             break
           default:
-            // Handle other statuses
             setErrorRegister(message)
         }
       } else if (error.request) {
-        // The request was made but no response was received
         setErrorRegister(
           'Brak odpowiedzi od serwera. Sprawdź połączenie internetowe.'
         )
       } else {
-        // Something happened in setting up the request that triggered an Error
         setErrorRegister('Coś poszło nie tak. Spróbuj ponownie później.')
       }
 

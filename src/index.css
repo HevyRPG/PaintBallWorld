@@ -47,7 +47,7 @@
 
 .gradient {
   color: white;
-  /* background: linear-gradient(90deg, #d53369 0%, #daae51 100%); */
+
   background: linear-gradient(90deg, #371080 0%, #61c947 100%);
 }
 
@@ -89,21 +89,17 @@
 .active {
   background-color: hsl(var(--primary));
   color: white;
-  border: 1px solid
-  
+  border: 1px solid;
 }
 
 .modal-portal {
   position: fixed;
-  /* top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;  */
-  z-index: 9999; 
+
+  z-index: 9999;
 }
 
 .SelectContent {
   position: absolute;
-  z-index: 2000; /* Wysoki z-index, aby był na wierzchu */
-  top: 100%; /* Upewnij się, że pojawia się poniżej SelectTrigger */
+  z-index: 2000;
+  top: 100%;
 }

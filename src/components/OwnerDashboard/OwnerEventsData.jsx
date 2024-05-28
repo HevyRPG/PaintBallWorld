@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import AttendanceInfoDialog from './AttendanceInfoDialog' // Import the AttendanceInfoDialog component
+import AttendanceInfoDialog from './AttendanceInfoDialog'
 import APIKEYS from '../APIKEYS'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -29,10 +29,8 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
   }
 
   useEffect(() => {
-    // Fetch private events
     const fetchPrivateEvents = async () => {
       try {
-        // Simulate fetching delay
         const response = await axios.get(
           `${apiUrl}/api/Schedule/PrivateEvent/${fieldId}`,
           config
@@ -48,7 +46,6 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
       }
     }
 
-    // Fetch open events
     const fetchOpenEvents = async () => {
       try {
         const response = await axios.get(
@@ -66,14 +63,12 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
       }
     }
 
-    // Call fetch functions
     fetchPrivateEvents()
     fetchOpenEvents()
   }, [fieldId, selectedDate])
   console.log(openEvents)
   return (
     <div className="flex min-w-screen-xl justify-between">
-      {/* Private Events Table */}
       <div className="max-h-96 min-h-60 m-2 overflow-y-auto w-1/2">
         <Table className="table-auto w-full text-white">
           <TableCaption className="sticky bottom-0 bg-background">
@@ -90,7 +85,6 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
                 Maksymalna liczba uczestników
               </TableHead>
               <TableHead className="text-center min-w-[58px]"></TableHead>{' '}
-              {/* View Attendance */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -127,7 +121,7 @@ const OwnerEventsData = ({ fieldId, selectedDate }) => {
           </TableBody>
         </Table>
       </div>
-      {/* Open Events Table */}
+
       <div className="max-h-96 min-h-60 m-2 overflow-y-auto w-1/2">
         <Table className="table-auto w-full text-white">
           <TableCaption className="sticky bottom-0 bg-background">

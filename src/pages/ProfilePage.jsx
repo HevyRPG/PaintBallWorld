@@ -27,11 +27,11 @@ const ProfilePage = () => {
         const response = await axios.get(`${apiUrl}/api/User/User/profile`, {
           headers: {
             ...APIKEYS.headers,
-            Authorization: `Bearer ${token}`, // Append Authorization header
+            Authorization: `Bearer ${token}`,
           },
         })
         setUserData(response.data)
-        setLoading(false) // Set loading to false once data is fetched
+        setLoading(false)
       } catch (error) {
         console.error('Error fetching user profile:', error)
       }
@@ -111,15 +111,12 @@ const ProfilePage = () => {
           </div>
           <section className="flex gap-6">
             <div className="flex items-center text-center justify-center py-4 border bg-secondary text-secondary-foreground shadow rounded-xl md:w-1/4 relative">
-              {/* Username displayed above user data */}
-
               {loading && (
                 <div>
                   <Skeleton className="h-8 w-[250px]" />
                 </div>
               )}
 
-              {/* Render user profile data */}
               {!loading && userData && (
                 <div>
                   <img

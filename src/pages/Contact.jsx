@@ -1,35 +1,35 @@
-import { Button } from "@/components/ui/button";
-import FormInput from "../components/FormInput";
-import FormTextarea from "../components/FormTextarea";
+import { Button } from '@/components/ui/button'
+import FormInput from '../components/FormInput'
+import FormTextarea from '../components/FormTextarea'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import axios from "axios";
-import { useState } from "react";
-import APIHeaders from "../components/APIHeaders";
+} from '@/components/ui/select'
+import axios from 'axios'
+import { useState } from 'react'
+import APIHeaders from '../components/APIHeaders'
 
 const ContactPage = () => {
-  const [email, setEmail] = useState("");
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // Stan do komunikatów o błędach
+  const [email, setEmail] = useState('')
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!title) {
-      setErrorMessage("Proszę wybrać temat.");
-      return;
+      setErrorMessage('Proszę wybrać temat.')
+      return
     }
 
-    setErrorMessage("");
+    setErrorMessage('')
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL;
+      const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.post(
         `${apiUrl}/api/Default/Contact`,
         {
@@ -38,11 +38,11 @@ const ContactPage = () => {
           content,
         },
         APIHeaders
-      );
+      )
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error)
     }
-  };
+  }
 
   return (
     <div className="max-w-screen-lg mx-auto p-12 ">
@@ -116,7 +116,7 @@ const ContactPage = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ContactPage;
+export default ContactPage

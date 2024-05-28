@@ -19,7 +19,7 @@ const DeleteSetDialog = ({ fieldId, set }) => {
     headers: {
       'Content-Type': 'multipart/form-data',
       ...APIKEYS.headers,
-      Authorization: `Bearer ${token}`, // Append Authorization header
+      Authorization: `Bearer ${token}`,
     },
   }
   const handleDeleteSet = async () => {

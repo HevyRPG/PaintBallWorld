@@ -21,7 +21,7 @@ const PhotoDialog = ({ fieldId }) => {
     headers: {
       'Content-Type': 'multipart/form-data',
       ...APIKEYS.headers,
-      Authorization: `Bearer ${token}`, // Append Authorization header
+      Authorization: `Bearer ${token}`,
     },
   }
 
@@ -35,7 +35,7 @@ const PhotoDialog = ({ fieldId }) => {
       } else {
         setSelectedFile(file)
         setError(null)
-        // Show image preview
+
         const reader = new FileReader()
         reader.onload = () => {
           setPreviewUrl(reader.result)
@@ -54,7 +54,6 @@ const PhotoDialog = ({ fieldId }) => {
     const formData = new FormData()
     formData.append('photos', selectedFile)
     try {
-      // Use the provided fieldId in the API endpoint
       const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.post(
         `${apiUrl}/api/Field/FieldManagement/photos/${fieldId}`,

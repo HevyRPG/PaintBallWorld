@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { AuthContext } from '../../context/AuthContext' // Adjust the path as necessary
+import { AuthContext } from '../../context/AuthContext'
 import { Button } from '@/components/ui/button'
 import NavbarUserView from './NavbarUserView'
 
 const Navbar = () => {
   const location = useLocation()
 
-  const { isLoggedIn, logout } = useContext(AuthContext) // Use context to check if user is logged in
+  const { isLoggedIn, logout } = useContext(AuthContext)
 
   const isActive = (path) => {
     return location.pathname === path

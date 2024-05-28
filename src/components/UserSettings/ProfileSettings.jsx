@@ -1,49 +1,49 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-import APIKEYS from "../APIKEYS";
-import FormInput from "../FormInput";
-import FormTextarea from "../FormTextarea";
-import { Button } from "@/components/ui/button";
-import { fetchUserProfile } from "./components/AccountSettingsMethods";
-import { format, parseISO } from "date-fns";
-import { formatPhone, handlePhoneChange } from "./utils/phoneUtils"; // Import nowego pliku
-import { ProfilePicture } from "./components/ProfilePicture";
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import Cookies from 'js-cookie'
+import APIKEYS from '../APIKEYS'
+import FormInput from '../FormInput'
+import FormTextarea from '../FormTextarea'
+import { Button } from '@/components/ui/button'
+import { fetchUserProfile } from './components/AccountSettingsMethods'
+import { format, parseISO } from 'date-fns'
+import { formatPhone, handlePhoneChange } from './utils/phoneUtils' // Import nowego pliku
+import { ProfilePicture } from './components/ProfilePicture'
 
 const ProfileSettings = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNo, setPhone] = useState("");
-  const [description, setDescription] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isModified, setIsModified] = useState(false);
-  const [phoneError, setPhoneError] = useState(null);
-  const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [validationError, setValidationError] = useState(""); // Stan do komunikatów o błędach
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [phoneNo, setPhone] = useState('')
+  const [description, setDescription] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('')
+  const [profile, setProfile] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [isModified, setIsModified] = useState(false)
+  const [phoneError, setPhoneError] = useState(null)
+  const [updateSuccess, setUpdateSuccess] = useState(false)
+  const [validationError, setValidationError] = useState('') // Stan do komunikatów o błędach
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchUserProfile();
-        setProfile(data);
-        setFirstName(data.firstName);
-        setLastName(data.lastName);
-        setPhone(data.phoneNo);
-        setDescription(data.description);
+        const data = await fetchUserProfile()
+        setProfile(data)
+        setFirstName(data.firstName)
+        setLastName(data.lastName)
+        setPhone(data.phoneNo)
+        setDescription(data.description)
         if (data.dateOfBirth) {
-          setDateOfBirth(format(parseISO(data.dateOfBirth), "yyyy-MM-dd"));
+          setDateOfBirth(format(parseISO(data.dateOfBirth), 'yyyy-MM-dd'))
         }
-        setLoading(false);
+        setLoading(false)
       } catch (error) {
-        console.error("Błąd podczas pobierania profilu:", error);
-        setLoading(false);
+        console.error('Błąd podczas pobierania profilu:', error)
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   useEffect(() => {
     if (
@@ -54,27 +54,27 @@ const ProfileSettings = () => {
         description !== profile.description ||
         dateOfBirth.slice(0, 10) !== profile.dateOfBirth.slice(0, 10))
     ) {
-      setIsModified(true);
+      setIsModified(true)
     } else {
-      setIsModified(false);
+      setIsModified(false)
     }
-  }, [firstName, lastName, phoneNo, description, dateOfBirth, profile]);
+  }, [firstName, lastName, phoneNo, description, dateOfBirth, profile])
 
   const onPhoneChange = (e) => {
-    handlePhoneChange(e, setPhone, setPhoneError);
-  };
+    handlePhoneChange(e, setPhone, setPhoneError)
+  }
 
   const handleSave = async () => {
     if (!isModified || phoneError) {
-      return;
+      return
     }
 
-    if (firstName.trim() === "" || lastName.trim() === "") {
-      setValidationError("Imię i nazwisko nie mogą być puste");
-      return;
+    if (firstName.trim() === '' || lastName.trim() === '') {
+      setValidationError('Imię i nazwisko nie mogą być puste')
+      return
     }
 
-    setValidationError("");
+    setValidationError('')
 
     const updatedData = {
       firstName,
@@ -82,35 +82,35 @@ const ProfileSettings = () => {
       phoneNo,
       description,
       dateOfBirth,
-    };
+    }
 
-    const token = Cookies.get("authToken");
+    const token = Cookies.get('authToken')
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL;
+      const apiUrl = import.meta.env.VITE_API_URL
       await axios.put(`${apiUrl}/api/User/User/profile`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
           ...APIKEYS.headers,
         },
-      });
-      setUpdateSuccess(true);
+      })
+      setUpdateSuccess(true)
 
       setTimeout(() => {
-        setUpdateSuccess(false);
-      }, 3000);
+        setUpdateSuccess(false)
+      }, 3000)
     } catch (error) {
-      console.error("Błąd podczas zapisywania danych:", error);
+      console.error('Błąd podczas zapisywania danych:', error)
     }
-  };
+  }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   const truncatedDateOfBirth = profile.dateOfBirth
     ? profile.dateOfBirth.slice(0, 10)
-    : "";
+    : ''
 
   return (
     <div className="p-2 md:p-4">
@@ -127,8 +127,8 @@ const ProfileSettings = () => {
               name="firstName"
               value={firstName}
               onChange={(e) => {
-                setFirstName(e.target.value);
-                setValidationError(""); // Resetuj komunikat o błędach przy edycji
+                setFirstName(e.target.value)
+                setValidationError('')
               }}
             />
             <FormInput
@@ -137,8 +137,8 @@ const ProfileSettings = () => {
               name="lastName"
               value={lastName}
               onChange={(e) => {
-                setLastName(e.target.value);
-                setValidationError("");
+                setLastName(e.target.value)
+                setValidationError('')
               }}
             />
           </div>
@@ -153,7 +153,7 @@ const ProfileSettings = () => {
               name="dateOfBirth"
               value={dateOfBirth}
               onChange={(e) => {
-                setDateOfBirth(e.target.value);
+                setDateOfBirth(e.target.value)
               }}
             />
 
@@ -200,7 +200,7 @@ const ProfileSettings = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProfileSettings;
+export default ProfileSettings

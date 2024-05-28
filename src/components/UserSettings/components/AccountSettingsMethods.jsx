@@ -9,14 +9,14 @@ export const fetchUserProfile = async () => {
     const response = await axios.get(`${apiUrl}/api/User/User/profile`, {
       headers: {
         ...APIKEYS.headers,
-        Authorization: `Bearer ${token}`, // Append Authorization header
+        Authorization: `Bearer ${token}`,
       },
     })
 
     return response.data
   } catch (error) {
     console.error('Błąd podczas pobierania profilu użytkownika:', error)
-    throw error // Rzuć błąd, aby mógł być obsłużony w komponencie wywołującym funkcję
+    throw error
   }
 }
 

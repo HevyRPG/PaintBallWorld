@@ -52,7 +52,6 @@ const MultiPageDialog = ({ fieldId }) => {
       )
       const fieldData = response.data
 
-      // Map the fetched field data to match the formState structure
       const mappedData = {
         phone: fieldData.address.phoneNo,
         street: fieldData.address.street,
@@ -77,7 +76,6 @@ const MultiPageDialog = ({ fieldId }) => {
       setFormState(mappedData)
     } catch (error) {
       console.error('Error fetching field data:', error)
-      // Handle error if needed
     }
   }
 
@@ -90,7 +88,6 @@ const MultiPageDialog = ({ fieldId }) => {
     if (field === 'latitude' || field === 'longitude') {
       value = value.replace('.', ',')
     } else {
-      // Handling changes in top-level form state properties
       setFormState((prevState) => ({
         ...prevState,
         [field]: value,
@@ -105,7 +102,6 @@ const MultiPageDialog = ({ fieldId }) => {
         regulationsFile: file,
       }))
     } else {
-      // Display an error message or perform any other action as needed
       setErrorRegister('Wybierz plik PDF!.')
     }
   }
@@ -127,13 +123,13 @@ const MultiPageDialog = ({ fieldId }) => {
     setLoading(true)
     setErrorRegister('')
     console.log(formData)
-    // Retrieve the token from cookies
+
     const token = Cookies.get('authToken')
 
     formData.append('address.PhoneNo', formState.phone)
     formData.append('address.Street', formState.street)
     formData.append('address.HouseNo', formState.houseNo)
-    formData.append('address.City', formState.city) // Removed the extra period after 'City'
+    formData.append('address.City', formState.city)
     formData.append('address.PostalNumber', formState.postalCode)
     formData.append('address.Country', 'Poland')
     formData.append('address.location.Latitude', formState.latitude)
@@ -154,7 +150,6 @@ const MultiPageDialog = ({ fieldId }) => {
 
     const postalCodeRegex = /^\d{2}-\d{3}$/
 
-    // Validate phone number
     if (formState.phone && !phoneRegex.test(formState.phone)) {
       setErrorRegister('Wprowadź poprawny numer telefonu (9 cyfr).')
       setLoading(false)
@@ -171,7 +166,7 @@ const MultiPageDialog = ({ fieldId }) => {
       headers: {
         'Content-Type': 'multipart/form-data',
         ...APIKEYS.headers,
-        Authorization: `Bearer ${token}`, // Append Authorization header
+        Authorization: `Bearer ${token}`,
       },
     }
     console.log('Logging config:', config)
@@ -186,7 +181,7 @@ const MultiPageDialog = ({ fieldId }) => {
 
       if (response.status === 200) {
         setErrorRegister('Zmieniono dane! Możesz zamknąć to okno')
-        // Reset form or navigate as needed
+
         setLoading(false)
       }
     } catch (error) {
@@ -196,13 +191,11 @@ const MultiPageDialog = ({ fieldId }) => {
         let message = defaultMessage
 
         if (error.response.data && error.response.data.errors) {
-          // If there are validation errors, construct a message from them
           const errors = error.response.data.errors
           message = Object.entries(errors)
             .map(([key, value]) => `${key}: ${value.join(', ')}`)
             .join('\n')
         } else {
-          // Otherwise, try to retrieve a more specific message from the server's response
           message =
             error.response.data.message ||
             error.response.data.error ||
@@ -220,16 +213,13 @@ const MultiPageDialog = ({ fieldId }) => {
             setErrorRegister(`Wystąpił błąd. Spróbuj ponownie później.`)
             break
           default:
-            // Handle other statuses
             setErrorRegister(message)
         }
       } else if (error.request) {
-        // The request was made but no response was received
         setErrorRegister(
           'Brak odpowiedzi od serwera. Sprawdź połączenie internetowe.'
         )
       } else {
-        // Something happened in setting up the request that triggered an Error
         setErrorRegister('Coś poszło nie tak. Spróbuj ponownie później.')
       }
 

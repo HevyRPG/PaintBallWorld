@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { useNavigate, Link } from 'react-router-dom' // Import useNavigate hook
+import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import { Button } from '@/components/ui/button'
 import FormInput from '../components/FormInput'
@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [errorRegister, setErrorRegister] = useState('')
-  const navigate = useNavigate() // Use useNavigate hook for redirection
+  const navigate = useNavigate()
 
   const handleLogin = async () => {
     setLoading(true)
@@ -24,7 +24,7 @@ const LoginPage = () => {
     })
     try {
       await login(username, password)
-      navigate('/profile') // Redirect to dashboard on successful login
+      navigate('/profile')
     } catch (error) {
       console.error('Error logging in:', error)
       setErrorRegister('Wystąpił błąd podczas logowania. Spróbuj ponownie.')
@@ -36,7 +36,7 @@ const LoginPage = () => {
   if (isLoggedIn) {
     return (
       <p className="flex justify-center text-white">Jesteś już zalogowany.</p>
-    ) // Or redirect to another page
+    )
   }
 
   return (
@@ -65,7 +65,7 @@ const LoginPage = () => {
             type="submit"
             className="w-full p-2 rounded bg-primary text-primary-foreground"
             onClick={handleLogin}
-            disabled={loading} // Disable button while loading
+            disabled={loading}
           >
             {loading ? 'Logowanie...' : 'Login'}
           </Button>

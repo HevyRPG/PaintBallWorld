@@ -35,7 +35,6 @@ const HomePage = () => {
 
   return (
     <main className="mx-auto max-w-screen-2xl bg-background text-primary-foreground">
-      {/* Sekcja główna */}
       <section className="text-center py-20 px-4 bg-background text-primary">
         <div className="sm:max-w-md md:max-w-md 2xl:max-w-3xl   mx-auto">
           <img src="logosm.png" alt="logo" />
@@ -50,11 +49,9 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Sekcja cech */}
       <section className="py-20 bg-background text-foreground">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            {/* Cecha 1 */}
             <div className="bg-card text-card-foreground p-8 rounded-lg shadow-lg">
               <h3 className="text-2xl font-bold mb-4">
                 <span className="text-primary">Dynamiczne</span> areny
@@ -64,7 +61,7 @@ const HomePage = () => {
                 oferuje unikalne wyzwanie.
               </p>
             </div>
-            {/* Cecha 2 */}
+
             <div className="bg-card text-card-foreground p-8 rounded-lg shadow-lg">
               <h3 className="text-2xl font-bold mb-4">
                 Wszystko w <span className="text-primary">jednym</span> miejscu
@@ -73,7 +70,7 @@ const HomePage = () => {
                 Znajdź, zapisz się i <span className="text-primary">graj!</span>
               </p>
             </div>
-            {/* Cecha 3 */}
+
             <div className="bg-card text-card-foreground p-8 rounded-lg shadow-lg">
               <h3 className="text-2xl font-bold mb-4">
                 <span className="text-primary">Społeczność</span> i wydarzenia
@@ -87,7 +84,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Sekcja wezwania do działania */}
       <section className="text-center py-20 bg-background text-accent-foreground">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-4xl font-bold mb-6">Gotowy, aby zacząć?</h2>

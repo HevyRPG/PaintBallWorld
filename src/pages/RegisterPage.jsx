@@ -150,10 +150,6 @@ const RegisterPage = () => {
           city: companyCity,
           postalNumber: companyPostalNumber,
           country: 'Poland',
-          // location: {
-          //   Latitude: '1',
-          //   Longitude: '1',
-          // },
         },
       },
     }
@@ -189,7 +185,6 @@ const RegisterPage = () => {
         setErrorRegister('Wystąpił błąd podczas rejestracji. Spróbuj ponownie.')
       }
     } finally {
-      // Set loading to false after request completes
       setLoading(false)
     }
   }
@@ -259,7 +254,6 @@ const RegisterPage = () => {
         setErrorRegister('Wystąpił błąd podczas rejestracji. Spróbuj ponownie.')
       }
     } finally {
-      // Set loading to false after request completes
       setLoading(false)
     }
   }
@@ -416,7 +410,7 @@ const RegisterPage = () => {
             <div className="loader"></div>
           </div>
         )}
-        {/* Error message */}
+
         {errorRegister && (
           <p
             className={`mt-2 text-sm ${

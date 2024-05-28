@@ -1,43 +1,41 @@
-import React, { useContext } from "react";
-import ReactDOM from "react-dom/client"; // Correct import for React 18
-import "./index.css";
+import React, { useContext } from 'react'
+import ReactDOM from 'react-dom/client' // Correct import for React 18
+import './index.css'
 import {
   BrowserRouter,
   Routes,
   Route,
   Navigate,
   Outlet,
-} from "react-router-dom";
-import { AuthProvider, AuthContext } from "./context/AuthContext"; // Ensure this path is correct
+} from 'react-router-dom'
+import { AuthProvider, AuthContext } from './context/AuthContext' // Ensure this path is correct
 
-import Layout from "./Layout.jsx";
-import HomePage from "./pages/HomePage.jsx";
-import CalendarPage from "./pages/CalendarPage.jsx";
-import AboutPage from "./pages/AboutPage.jsx";
-import RegisterPage from "./pages/RegisterPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
-import ContactPage from "./pages/Contact.jsx";
-import ErrorPage from "./pages/ErrorPage.jsx";
-import TestPage from "./pages/TestPage.jsx";
-import ForgotPassword from "./pages/ForgotPassword.jsx";
-import EditProfile from "./pages/EditProfile.jsx";
-import OwnerDashboard from "./pages/OwnerDashboard.jsx";
+import Layout from './Layout.jsx'
+import HomePage from './pages/HomePage.jsx'
+import CalendarPage from './pages/CalendarPage.jsx'
+import AboutPage from './pages/AboutPage.jsx'
+import RegisterPage from './pages/RegisterPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+import ProfilePage from './pages/ProfilePage.jsx'
+import ContactPage from './pages/Contact.jsx'
+import ErrorPage from './pages/ErrorPage.jsx'
+import TestPage from './pages/TestPage.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
+import EditProfile from './pages/EditProfile.jsx'
+import OwnerDashboard from './pages/OwnerDashboard.jsx'
 
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from '@/components/ui/sonner'
 
 // Custom route component to protect routes
 const ProtectedRoute = () => {
-  const { isLoggedIn, isChecking } = useContext(AuthContext); // Accessing isChecking along with isLoggedIn
+  const { isLoggedIn, isChecking } = useContext(AuthContext)
 
-  // If still checking the auth status, you might want to display a loading indicator or similar
   if (isChecking) {
-    return <div>Loading...</div>; // Placeholder for loading state, consider replacing with a loading spinner or similar
+    return <div>Loading...</div>
   }
 
-  // After checking is complete, proceed based on the isLoggedIn status
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
-};
+  return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />
+}
 
 const App = () => {
   return (
@@ -59,20 +57,19 @@ const App = () => {
               <Route path="edit-profile" element={<EditProfile />} />
               <Route path="dashboard" element={<OwnerDashboard />} />
             </Route>
-            {/* Catch-all route */}
+
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
       <Toaster />
     </AuthProvider>
-  );
-};
+  )
+}
 
-// Correct way to use ReactDOM.createRoot for React 18+
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
-);
+)

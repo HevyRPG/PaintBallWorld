@@ -1,20 +1,20 @@
 import React, { createContext, useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios'
-import APIHeaders from '../components/APIHeaders' // Importing your APIHeaders
+import APIHeaders from '../components/APIHeaders'
 import APIKEYS from '../components/APIKEYS'
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isChecking, setIsChecking] = useState(true) // add a state to indicate the checking process
+  const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       const token = Cookies.get('authToken')
       setIsLoggedIn(!!token)
-      setIsChecking(false) // set it to false after checking the auth status
+      setIsChecking(false)
     }
 
     checkAuthStatus()
@@ -25,13 +25,13 @@ export const AuthProvider = ({ children }) => {
       const apiUrl = import.meta.env.VITE_API_URL
       const response = await axios.post(
         `${apiUrl}/api/Auth/Login`,
-        { username, password }, // This is the correct place for the payload
-        APIHeaders // Directly use APIHeaders here as the configuration
+        { username, password },
+        APIHeaders
       )
 
       const token = response.data.token
       const role = response.data.role
-      // Store token in cookies with security flags
+
       Cookies.set('authToken', token, {
         expires: 3,
         secure: false,
@@ -46,12 +46,11 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Error logging in:', error)
       setIsLoggedIn(false)
-      throw error // Re-throw the error for handling in the component
+      throw error
     }
   }
 
   const logout = () => {
-    // Remove token from cookies
     Cookies.remove('authToken')
     Cookies.remove('role')
     Cookies.remove('username')
@@ -66,7 +65,7 @@ export const AuthProvider = ({ children }) => {
       await axios.delete(`${apiUrl}/api/Auth/Login`, {
         headers: {
           ...APIKEYS.headers,
-          Authorization: `Bearer ${token}`, // Append Authorization header
+          Authorization: `Bearer ${token}`,
         },
         data: {
           username: username,

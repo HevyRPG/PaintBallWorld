@@ -11,7 +11,7 @@ const Autocomplete = ({ onSelection }) => {
   const [suggestions, setSuggestions] = useState([])
   const inputRef = useRef(null)
   const [selectedSuggestion, setSelectedSuggestion] = useState(null)
-  const [isLoading, setIsLoading] = useState(false) // Track loading state
+  const [isLoading, setIsLoading] = useState(false)
 
   const apiUrl = import.meta.env.VITE_API_URL
   useEffect(() => {
@@ -29,21 +29,21 @@ const Autocomplete = ({ onSelection }) => {
   }, [])
 
   const fetchSuggestions = async (input) => {
-    setIsLoading(true) // Start loading
+    setIsLoading(true)
     try {
       const response = await axios.get(
         `${apiUrl}/api/Default/Localization/${input}`,
         APIHeaders
       )
       if (response.data && response.data.isSuccess) {
-        setSuggestions(response.data.data) // Store entire suggestion objects
+        setSuggestions(response.data.data)
       } else {
         console.error('Error fetching suggestions:', response.data.message)
       }
     } catch (error) {
       console.error('Error fetching suggestions:', error)
     } finally {
-      setIsLoading(false) // End loading
+      setIsLoading(false)
     }
   }
 
@@ -75,7 +75,6 @@ const Autocomplete = ({ onSelection }) => {
           className="w-[240px] m-1 p-6 rounded"
         />
         {isLoading ? (
-          // Skeleton loader styled similar to suggestions for visual consistency
           <div className="absolute bg-background w-1/2 rounded-lg shadow-md mt-1 z-10">
             {[...Array(2)].map((_, index) => (
               <Skeleton
@@ -88,14 +87,13 @@ const Autocomplete = ({ onSelection }) => {
           suggestions.length > 0 && (
             <ul className="absolute bg-background w-3/4 border shadow-md mt-1 z-10">
               {suggestions.map((suggestion, index) => {
-                // Remove "WOJEWÓDZTWO" from the province string
                 const provinceWithoutPrefix = suggestion.province.replace(
                   /^województwo\s+/i,
                   ''
                 )
-                // Use municipality if county is null
+
                 const location = suggestion.county || suggestion.municipality
-                // Build the location string with commas
+
                 const locationString = [
                   suggestion.name,
                   provinceWithoutPrefix,

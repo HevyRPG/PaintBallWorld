@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
-import { Button } from "@/components/ui/button";
-import FormInput from "../FormInput";
-import { changePassword } from "./components/AccountSettingsMethods";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useState, useContext } from 'react'
+import { Button } from '@/components/ui/button'
+import FormInput from '../FormInput'
+import { changePassword } from './components/AccountSettingsMethods'
+import { AuthContext } from '../../context/AuthContext'
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -13,46 +13,46 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog'
 
 const AccountSettings = () => {
-  const { deleteAccount } = useContext(AuthContext);
+  const { deleteAccount } = useContext(AuthContext)
 
-  const [showPasswordInput, setShowPasswordInput] = useState(false);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [showPasswordInput, setShowPasswordInput] = useState(false)
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+  const [passwordsMatch, setPasswordsMatch] = useState(true)
 
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const handleDeleteAccount = () => {
-    setShowPasswordInput(true);
-  };
+    setShowPasswordInput(true)
+  }
 
   const handleConfirmDelete = () => {
-    deleteAccount();
-  };
+    deleteAccount()
+  }
 
   const handleChangePassword = async () => {
-    setSuccessMessage(null); 
+    setSuccessMessage(null)
 
     if (newPassword !== confirmNewPassword) {
-      setPasswordsMatch(false);
-      return;
+      setPasswordsMatch(false)
+      return
     }
 
-    setPasswordsMatch(true);
-    setErrorMessage(null);
+    setPasswordsMatch(true)
+    setErrorMessage(null)
 
     try {
-      await changePassword(oldPassword, newPassword);
-      setSuccessMessage("Hasło zostało zmienione!");
+      await changePassword(oldPassword, newPassword)
+      setSuccessMessage('Hasło zostało zmienione!')
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage(error.message)
     }
-  };
+  }
 
   return (
     <>
@@ -167,7 +167,7 @@ const AccountSettings = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default AccountSettings;
+export default AccountSettings

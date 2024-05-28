@@ -1,8 +1,6 @@
-// errorpage.jsx
 import React from 'react'
 
 export default function ErrorPage() {
-  // Removed useRouteError and using a static error message instead.
   const errorMessage = 'Page not found.'
 
   return (

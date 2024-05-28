@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ImageGallery from 'react-image-gallery'
 import 'react-image-gallery/styles/css/image-gallery.css'
-import axios from 'axios' // Import Axios
+import axios from 'axios'
 import APIHeaders from '@/components/APIHeaders'
 
 function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
@@ -48,7 +48,6 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
             originalHeight: 300,
             originalWidth: 300,
           },
-          // Add more placeholder images as needed
         ])
       } else {
         try {
@@ -59,15 +58,15 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
           )
           console.log(fieldID)
           const formattedImages = response.data.map((image) => ({
-            original: image.url, // Assuming `url` is the property name in your response
+            original: image.url,
             thumbnail: image.url,
             description: image.description || 'No description',
-            originalHeight: 300, // Placeholder or from the API
-            originalWidth: 300, // Placeholder or from the API
+            originalHeight: 300,
+            originalWidth: 300,
           }))
 
           setImages(formattedImages)
-          setError('') // Reset any previous errors
+          setError('')
         } catch (error) {
           console.error('Error fetching images:', error)
           setError('Failed to fetch images. Please try again later.')
@@ -76,7 +75,7 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
     }
 
     fetchImages()
-  }, [fieldID]) // Re-run effect whenever fieldID changes
+  }, [fieldID])
 
   return (
     <>
@@ -84,16 +83,16 @@ function PhotoGallery({ fieldID, photoGalleryProps, width, height }) {
       <ImageGallery
         items={images}
         className="image-gallery"
-        {...defaultPhotoGalleryProps} // Spread the photoGalleryProps
+        {...defaultPhotoGalleryProps}
         renderItem={(item) => (
           <div className="image-gallery-image">
             <img
               src={item.original}
               alt={item.originalAlt}
               style={{
-                width: `${width}px`, // Set width from props
-                height: `${height}px`, // Set height from props
-                objectFit: 'fill', // Stretch the image to fit container
+                width: `${width}px`,
+                height: `${height}px`,
+                objectFit: 'fill',
               }}
             />
           </div>

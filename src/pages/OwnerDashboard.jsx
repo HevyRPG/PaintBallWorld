@@ -65,7 +65,6 @@ const OwnerDashboard = () => {
             </div>
           </div>
           <section className="flex flex-col md:flex-row gap-6 min-w-full">
-            {/* Manage Field Section */}
             <div className="relative p-4 border border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center m-auto">
               <h1 className="text-xl font-semibold mb-4">Zarządzaj Polem</h1>
               <div className="flex gap-2">
@@ -74,7 +73,7 @@ const OwnerDashboard = () => {
                 {fieldId !== null && <DeleteFieldDialog fieldId={fieldId} />}
               </div>
             </div>
-            {/* Manage Sets and Photos Section */}
+
             {fieldId !== null && (
               <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">
                 <h1 className="text-xl font-semibold mb-4">
@@ -89,7 +88,7 @@ const OwnerDashboard = () => {
               </div>
             )}
           </section>
-          {/* Calendar and Photo Gallery Section */}
+
           {fieldId !== null && (
             <section className="flex flex-col md:flex-row gap-6">
               <div className="w-full md:w-1/2">
@@ -115,7 +114,7 @@ const OwnerDashboard = () => {
               </div>
             </section>
           )}
-          {/* Event Planning Section */}
+
           {fieldId !== null && (
             <>
               <div className="relative p-4 border m-auto border-secondary text-secondary-foreground shadow rounded-xl flex flex-col items-center justify-center">

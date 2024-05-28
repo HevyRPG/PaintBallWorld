@@ -10,10 +10,10 @@ import Cookies from 'js-cookie'
 const EditProfile = () => {
   const role = Cookies.get('role')
   const isOwner = role === 'Owner'
-  const { isLoggedIn, logout } = useContext(AuthContext) // Use context to check if user is logged in
+  const { isLoggedIn, logout } = useContext(AuthContext)
   const handleLogout = () => {
     logout() // Use logout function from context
-    navigate('/') // Redirect to home page after logout
+    navigate('/')
   }
 
   const navigate = useNavigate()
